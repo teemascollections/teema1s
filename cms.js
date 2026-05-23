@@ -25,7 +25,7 @@
 
 // ─── SUPABASE CONFIG ────────────────────────────────────────────────────────
 // ▼ PASTE YOUR SUPABASE URL AND ANON KEY HERE ▼
-const SUPABASE_URL  = "https://zvfbkvnbndbptqtjunpt.supabase.co/rest/v1/";        // e.g. https://xyzabc.supabase.co
+const SUPABASE_URL  = "https://zvfbkvnbndbptqtjunpt.supabase.co";        // e.g. https://xyzabc.supabase.co
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2ZmJrdm5ibmRicHRxdGp1bnB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NDg4OTksImV4cCI6MjA5NTEyNDg5OX0.K22NFSvkn6pNuWJeR5SclOlgh02kMkE9kWwdBHUSM5A";   // starts with eyJ...
 // ▲ SUPABASE CONFIG ▲
 

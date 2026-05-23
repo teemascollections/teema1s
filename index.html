@@ -976,9 +976,8 @@
     // ║  HOW: File → Share → Publish to web → CSV → copy URL          ║
     // ╚═══════════════════════════════════════════════════════════════╝
 
-    // ▼ PASTE YOUR CSV LINK HERE ▼
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9a5ROp9IVB9ykk-K3lUO9tGBSlDJNjZLFeIaKlm2BsLJNnyhe0dOU1gPHQtwOvYB7TIVHyXmI1XYR/pub?output=csv";
-    // ▲ PASTE YOUR CSV LINK ABOVE ▲
+    // CSV system is disabled — products come from Supabase via cms.js
+    // const CSV_URL = "..."; // ← no longer used
 
     // ── WA_NUMBER: Country code + number, no + or spaces ──────────
     const WA_NUMBER = "2348039567566"; // ← WA_NUMBER
@@ -1046,21 +1045,14 @@
     const ORDERS_ENDPOINT     = "https://formspree.io/f/xqejeglr"; // ← e.g. "https://formspree.io/f/xabcdefg"
     const NEWSLETTER_ENDPOINT = "https://formspree.io/f/mojbjpne"; // ← e.g. "https://formspree.io/f/xhijklmn"
 
-    // ╔═══════════════════════════════════════════════════════════════╗
-    // ║  SALES PAGE — Separate CSV for sale items                      ║
-    // ║  Leave empty ("") to show the "come back later" message.       ║
-    // ║  Format same as main CSV (name, price, category, image, etc.)  ║
-    // ╚═══════════════════════════════════════════════════════════════╝
-    // ▼ PASTE YOUR SALES CSV LINK HERE (or leave "" for no sales) ▼
-    const SALES_CSV_URL = ""; // ← e.g. "https://docs.google.com/.../pub?output=csv"
-    // ▲ SALES CSV ▲
+
+    // ── SALES now uses allProducts filtered by is_sale flag from Supabase ──
+    // No CSV needed. Mark products as "on sale" in the Admin → Products panel.
 
     // ╔═══════════════════════════════════════════════════════════════╗
     // ║  NEW ARRIVALS — how many days back counts as "new"             ║
-    // ║  Products with a "date_added" column within this many days     ║
-    // ║  get the pink NEW badge. If no date_added column exists,       ║
-    // ║  the LAST NEW_ARRIVALS_COUNT products (by CSV row order) are   ║
-    // ║  treated as new.                                               ║
+    // ║  Products with a date_added column within this many days       ║
+    // ║  get the pink NEW badge.                                       ║
     // ╚═══════════════════════════════════════════════════════════════╝
     const NEW_ARRIVALS_DAYS  = 14;   // ← days that count as "new"
     const NEW_ARRIVALS_COUNT = 8;    // ← fallback: last N products are "new"
@@ -1110,56 +1102,28 @@
       }).filter(p => p.name && p.name.length > 0);
     }
 
-    // ── LOAD PRODUCTS FROM CSV ─────────────────────────────────────
-    async function loadProducts() {
-      if (!CSV_URL || CSV_URL.trim() === "" || CSV_URL.includes("PASTE_YOUR")) {
-        showDemo(); return;
-      }
-      try {
-        const res = await fetch(CSV_URL + "&t=" + Date.now());
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const text = await res.text();
-        const products = parseCSV(text);
-        if (products.length === 0) throw new Error("No products");
-        allProducts = products;
-        renderProducts(allProducts);
-        buildFilterButtons();
-      } catch (e1) {
-        console.warn("Direct CSV failed:", e1.message, "— trying proxy…");
-        try {
-          const proxyURL = "https://api.allorigins.win/get?url=" + encodeURIComponent(CSV_URL);
-          const res  = await fetch(proxyURL);
-          const json = await res.json();
-          const products = parseCSV(json.contents);
-          if (products.length === 0) throw new Error("Empty via proxy");
-          allProducts = products;
-          renderProducts(allProducts);
-          buildFilterButtons();
-        } catch (e2) {
-          console.warn("CSV failed — showing demo:", e2.message);
-          showDemo();
-        }
-      }
+    // ── LOAD PRODUCTS ──────────────────────────────────────────────
+    // CSV system is DISABLED. Products load from Supabase via cms.js.
+    // cms.js (loaded above) replaces window.loadProducts synchronously
+    // before this script runs, so the function below is only a fallback
+    // in case cms.js fails to load — it shows a neutral empty state.
+    if (typeof window.loadProducts !== "function") {
+      window.loadProducts = async function loadProducts() {
+        console.warn("[index] cms.js override not found — showing empty state");
+        const grid = document.querySelector(".products-grid, .product-grid, #productGrid");
+        if (grid) grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#7B6A90"><p>Loading products…</p></div>`;
+      };
     }
 
+    // showDemo is stubbed — never render CSV/hardcoded demo products
     function showDemo() {
-      allProducts = getDemoProducts();
-      renderProducts(allProducts);
-      buildFilterButtons();
+      console.log("[index] showDemo() suppressed — Supabase is active");
     }
 
-    // ── DEMO PRODUCTS ──────────────────────────────────────────────
-    function getDemoProducts() {
-      return [
-        { name:"Floral Wrap Top",           price:"8500",  description:"Effortlessly elegant wrap silhouette in soft floral fabric.",       category:"Tops",     image:"https://res.cloudinary.com/dqbdcvsmr/image/upload/IMG_4328_yf7ce0.jpg",                                              status:"Available" },
-        { name:"Elite Satin Cami Top",       price:"4200",  description:"A curated gem — satin finish for a luxe everyday look.",             category:"Tops",     image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(2).jpeg",                   status:"Available" },
-        { name:"High-Waist Pleated Skirt",   price:"6500",  description:"Feminine pleated silhouette — pairs perfectly with any fitted top.", category:"Skirts",   image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(4).jpeg",                   status:"Available" },
-        { name:"Classic Wide-Leg Trousers",  price:"11500", description:"Power dressing made effortless. Wide-leg cut for every queen.",      category:"Trousers", image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.43.jpeg",                          status:"Available" },
-        { name:"Velvet Evening Gown",        price:"9800",  description:"Statement evening wear with a regal velvet finish.",                category:"Dresses",  image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg",                          status:"Sold Out"  },
-        { name:"Regal Wrap Dress",           price:"9800",  description:"Statement evening wear with a regal velvet finish.",                category:"Dresses",  image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg",                          status:"Available" },
-        { name:"Soft Linen Oversized Top",   price:"3800",  description:"Breathable linen top for slow, luxurious mornings.",               category:"Tops",     image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(3).jpeg",                   status:"Available" },
-      ];
-    }
+    // ── DEMO PRODUCTS — DISABLED ──────────────────────────────────
+    // All products now come from Supabase. This function is kept as a
+    // stub to prevent any remaining reference from throwing an error.
+    function getDemoProducts() { return []; }
 
     // ── BUILD FILTER BUTTONS ───────────────────────────────────────
     function buildFilterButtons() {
@@ -1210,29 +1174,15 @@
     }
 
     // ── SALES PAGE ────────────────────────────────────────────────
+    // Sales products come from Supabase (is_sale = true), not a CSV.
     async function openSales() {
       const page = document.getElementById("salesPage");
       const body = document.getElementById("salesBody");
       page.classList.add("open");
       document.body.style.overflow = "hidden";
-      if (!SALES_CSV_URL || SALES_CSV_URL.trim() === "") {
-        body.innerHTML = `<div class="sales-empty">"come back later, when we\'re on sales my queen"<span>💜 Something special is coming…</span></div>`;
-        return;
-      }
       body.innerHTML = `<div class="products-loading"><div class="spinner"></div><p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;">Loading Sales…</p></div>`;
-      let saleProducts = [];
-      try {
-        const res  = await fetch(SALES_CSV_URL + "&t=" + Date.now());
-        const text = await res.text();
-        saleProducts = parseCSV(text);
-      } catch(e) {
-        try {
-          const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(SALES_CSV_URL);
-          const res   = await fetch(proxy);
-          const json  = await res.json();
-          saleProducts = parseCSV(json.contents);
-        } catch(e2) { saleProducts = []; }
-      }
+      // Use already-loaded allProducts; filter is_sale items
+      const saleProducts = (window.allProducts || []).filter(p => p.is_sale);
       if (!saleProducts.length) {
         body.innerHTML = `<div class="sales-empty">"come back later, when we\'re on sales my queen"<span>💜 Something special is coming…</span></div>`;
         return;
@@ -1706,11 +1656,7 @@
       });
     }
 
-    // Patch loadProducts callback to also refresh mood dots
-    const _origShowDemo = showDemo;
-    function showDemo() { _origShowDemo(); refreshMoodNewDots(); }
-
-    // Re-patch the async flow: override buildFilterButtons to also refresh dots
+    // Re-patch buildFilterButtons to also refresh mood-card new dots after load
     const _origBuildFilterButtons = buildFilterButtons;
     function buildFilterButtons() { _origBuildFilterButtons(); refreshMoodNewDots(); }
 

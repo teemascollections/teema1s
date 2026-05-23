@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Teema's Collections CMS</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779233956/Logo_hyry63.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --purple:       #5B2D8E;
+      --purple-deep:  #3B1A63;
+      --purple-light: #8B5CC8;
+      --purple-mist:  #F0E8FA;
+      --gold:         #C9A84C;
+      --black:        #0D0D0D;
+      --white:        #FFFFFF;
+      --off-white:    #FAF8FC;
+      --text-muted:   #7B6A90;
+      --border:       rgba(91,45,142,0.15);
+      --danger:       #dc3545;
+      --success:      #198754;
+      --sidebar-w:    240px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Jost', sans-serif; background: var(--off-white); color: var(--black); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ── LOGIN SCREEN ── */
+    #loginScreen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; background: var(--purple-deep);
+    }
+    .login-card {
+      background: var(--white); padding: 3rem 2.5rem; width: 100%; max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .login-card .brand { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--purple-deep); text-align: center; margin-bottom: 0.3rem; }
+    .login-card .brand span { color: var(--gold); }
+    .login-card .sub { text-align: center; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2rem; }
+    .login-card input { width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--border); font-family: 'Jost', sans-serif; font-size: 0.9rem; margin-bottom: 1rem; outline: none; background: var(--off-white); }
+    .login-card input:focus { border-color: var(--purple); }
+    .login-card .btn-login { width: 100%; background: var(--purple); color: #fff; border: none; padding: 0.9rem; font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+    .login-card .btn-login:hover { background: var(--purple-deep); }
+    #loginError { color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; text-align: center; display: none; }
+
+    /* ── APP SHELL ── */
+    #app { display: none; min-height: 100vh; }
+    .sidebar {
+      position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
+      background: var(--purple-deep); color: #fff; display: flex; flex-direction: column;
+      z-index: 100; overflow-y: auto;
+    }
+    .sidebar-brand { padding: 1.5rem 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-brand .name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: #fff; }
+    .sidebar-brand .name span { color: var(--gold); }
+    .sidebar-brand .role { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.2rem; }
+    .sidebar nav { flex: 1; padding: 1rem 0; }
+    .sidebar nav a {
+      display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1.2rem;
+      font-size: 0.78rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.75);
+      cursor: pointer; transition: background 0.2s, color 0.2s; border: none; background: none; width: 100%; text-align: left;
+    }
+    .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.1); color: #fff; }
+    .sidebar nav a .icon { font-size: 1rem; width: 20px; text-align: center; }
+    .sidebar-footer { padding: 1rem 1.2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .btn-logout { width: 100%; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); padding: 0.6rem; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: 0.2s; font-family: 'Jost', sans-serif; }
+    .btn-logout:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    /* ── MAIN CONTENT ── */
+    .main { margin-left: var(--sidebar-w); padding: 2rem; min-height: 100vh; }
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .page-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; }
+    .page-header p { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── CARDS / STATS ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: #fff; padding: 1.5rem; border: 1px solid var(--border); }
+    .stat-card .label { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); }
+    .stat-card .value { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--purple-deep); line-height: 1.1; margin-top: 0.3rem; }
+
+    /* ── TABLE ── */
+    .table-wrap { background: #fff; border: 1px solid var(--border); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th { background: var(--purple-mist); padding: 0.75rem 1rem; text-align: left; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple-deep); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--purple-mist); }
+    .product-thumb { width: 50px; height: 60px; object-fit: cover; }
+    .badge { display: inline-block; padding: 0.15rem 0.6rem; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .badge.available { background: #d1e7dd; color: #0f5132; }
+    .badge.sold { background: #f8d7da; color: #842029; }
+    .badge.featured { background: #fff3cd; color: #664d03; }
+
+    /* ── FORMS ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-grid.full { grid-template-columns: 1fr; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field.span2 { grid-column: span 2; }
+    label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    input[type=text], input[type=number], input[type=url], input[type=email],
+    input[type=date], select, textarea {
+      padding: 0.7rem 0.9rem; border: 1px solid var(--border); font-family: 'Jost', sans-serif;
+      font-size: 0.88rem; outline: none; background: var(--off-white); width: 100%; resize: vertical;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--purple); background: #fff; }
+    textarea { min-height: 90px; }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.4rem; font-family: 'Jost', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; border: none; cursor: pointer; transition: 0.2s; }
+    .btn-purple  { background: var(--purple); color: #fff; }
+    .btn-purple:hover  { background: var(--purple-deep); }
+    .btn-outline-purple { background: transparent; color: var(--purple); border: 1px solid var(--purple); }
+    .btn-outline-purple:hover { background: var(--purple); color: #fff; }
+    .btn-danger  { background: var(--danger); color: #fff; }
+    .btn-danger:hover  { background: #a71d2a; }
+    .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.65rem; }
+
+    /* ── MODAL ── */
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+    .modal-backdrop.open { display: flex; }
+    .modal { background: #fff; width: 100%; max-width: 720px; position: relative; }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .modal-head h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; }
+    .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); padding: 0.2rem; }
+    .modal-close:hover { color: var(--black); }
+    .modal-body { padding: 1.5rem; }
+    .modal-foot { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 0.8rem; justify-content: flex-end; }
+
+    /* ── IMAGE UPLOAD ── */
+    .img-drop-zone {
+      border: 2px dashed var(--border); padding: 2rem; text-align: center;
+      cursor: pointer; transition: border-color 0.2s; background: var(--off-white);
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .img-drop-zone:hover, .img-drop-zone.dragover { border-color: var(--purple); background: var(--purple-mist); }
+    .img-preview-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+    .img-preview-item { position: relative; width: 80px; height: 90px; }
+    .img-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+    .img-preview-item .del-img { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff; border: none; cursor: pointer; font-size: 0.6rem; padding: 2px 5px; }
+    .img-preview-item .primary-badge { position: absolute; bottom: 0; left: 0; right: 0; background: var(--purple); color: #fff; font-size: 0.5rem; text-align: center; padding: 2px; }
+
+    /* ── SETTINGS FORM ── */
+    .settings-section { background: #fff; border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .settings-section h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .settings-field { display: grid; grid-template-columns: 200px 1fr; gap: 1rem; align-items: start; padding: 0.6rem 0; border-bottom: 1px solid rgba(91,45,142,0.06); }
+    .settings-field:last-child { border-bottom: none; }
+    .settings-field label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); padding-top: 0.6rem; }
+
+    /* ── TOAST ── */
+    #toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--purple-deep); color: #fff; padding: 0.8rem 1.4rem; font-size: 0.8rem; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    #toast.show { opacity: 1; }
+
+    /* ── LOADING ── */
+    .spinner-sm { width: 18px; height: 18px; border: 2px solid rgba(91,45,142,0.2); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-row td { text-align: center; padding: 3rem; color: var(--text-muted); }
+
+    /* ── MOBILE ── */
+    .hamburger-admin { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--purple); border: none; color: #fff; padding: 0.5rem 0.7rem; cursor: pointer; font-size: 1.1rem; }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; padding: 1rem; padding-top: 4rem; }
+      .hamburger-admin { display: block; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.span2 { grid-column: span 1; }
+      .settings-field { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════ LOGIN SCREEN ════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="brand">Teema<span>'s</span> Collections</div>
+    <div class="sub">CMS Admin Dashboard</div>
+    <input type="email" id="loginEmail" placeholder="Admin Email" />
+    <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" />
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <p id="loginError">Invalid credentials. Please try again.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════ MAIN APP ════════════════════════════════ -->
+<div id="app">
+  <button class="hamburger-admin" onclick="toggleSidebar()">☰</button>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="name">Teema<span>'s</span> CMS</div>
+      <div class="role" id="adminEmail">Admin</div>
+    </div>
+    <nav>
+      <a onclick="showPanel('dashboard')" class="active" data-panel="dashboard"><span class="icon">📊</span> Dashboard</a>
+      <a onclick="showPanel('products')"  data-panel="products"><span class="icon">👗</span> Products</a>
+      <a onclick="showPanel('sections')"  data-panel="sections"><span class="icon">🃏</span> Mood Cards</a>
+      <a onclick="showPanel('settings')"  data-panel="settings"><span class="icon">⚙️</span> Site Settings</a>
+      <a onclick="showPanel('navigation')" data-panel="navigation"><span class="icon">🔗</span> Navigation</a>
+      <a onclick="showPanel('media')"     data-panel="media"><span class="icon">🖼️</span> Media</a>
+      <a href="/" target="_blank"><span class="icon">🌐</span> View Website</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="panel-dashboard" class="panel active">
+      <div class="page-header">
+        <div><h1>Dashboard</h1><p>Welcome back, my queen 💜 Here's your store overview.</p></div>
+      </div>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="label">Total Products</div><div class="value" id="statProducts">—</div></div>
+        <div class="stat-card"><div class="label">Available</div><div class="value" id="statAvailable">—</div></div>
+        <div class="stat-card"><div class="label">Sold Out</div><div class="value" id="statSold">—</div></div>
+        <div class="stat-card"><div class="label">Featured</div><div class="value" id="statFeatured">—</div></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th>Featured</th><th>Actions</th></tr></thead>
+          <tbody id="dashProductTable"><tr class="loading-row"><td colspan="7"><div class="spinner-sm" style="margin:auto"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS ── -->
+    <div id="panel-products" class="panel">
+      <div class="page-header">
+        <div><h1>Products</h1><p>Manage your collection — add, edit, delete, toggle availability.</p></div>
+        <button class="btn btn-purple" onclick="openProductModal()">+ Add Product</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Disc. Price</th><th>Status</th><th>Featured</th><th>Sale</th><th>Sort</th><th>Actions</th></tr></thead>
+          <tbody id="productTable"><tr class="loading-row"><td colspan="10"><div class="spinner-sm" style="margin:auto"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── MOOD CARDS / SECTIONS ── -->
+    <div id="panel-sections" class="panel">
+      <div class="page-header">
+        <div><h1>Mood Cards</h1><p>Manage the Shop By Your Mood section cards.</p></div>
+        <button class="btn btn-purple" onclick="openSectionModal()">+ Add Card</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Title</th><th>Label</th><th>Filter Category</th><th>Button Text</th><th>Active</th><th>Sort</th><th>Actions</th></tr></thead>
+          <tbody id="sectionTable"><tr class="loading-row"><td colspan="8"><div class="spinner-sm" style="margin:auto"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div id="panel-settings" class="panel">
+      <div class="page-header">
+        <div><h1>Site Settings</h1><p>Edit texts, images, and content across the whole website.</p></div>
+        <button class="btn btn-purple" onclick="saveSettings()">💾 Save All Settings</button>
+      </div>
+      <div id="settingsForms"></div>
+    </div>
+
+    <!-- ── NAVIGATION ── -->
+    <div id="panel-navigation" class="panel">
+      <div class="page-header">
+        <div><h1>Navigation</h1><p>Manage header and mobile navigation links.</p></div>
+        <button class="btn btn-purple" onclick="openNavModal()">+ Add Link</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Label</th><th>Type</th><th>Target / URL</th><th>Active</th><th>Sort</th><th>Actions</th></tr></thead>
+          <tbody id="navTable"><tr class="loading-row"><td colspan="6"><div class="spinner-sm" style="margin:auto"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── MEDIA ── -->
+    <div id="panel-media" class="panel">
+      <div class="page-header">
+        <div><h1>Media Library</h1><p>Upload and manage images and assets used across the site.</p></div>
+      </div>
+      <div class="settings-section">
+        <h3>Upload New Media</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Bucket / Folder</label>
+            <select id="mediaBucket">
+              <option value="products">Products</option>
+              <option value="banners">Banners</option>
+              <option value="sections">Mood Cards</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>File</label>
+            <input type="file" id="mediaFile" accept="image/*,video/*" />
+          </div>
+        </div>
+        <button class="btn btn-purple" style="margin-top:1rem" onclick="uploadMedia()">⬆ Upload</button>
+      </div>
+      <div id="mediaGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;"></div>
+    </div>
+
+  </main><!-- /main -->
+</div><!-- /app -->
+
+<!-- ══════════════ PRODUCT MODAL ══════════════ -->
+<div class="modal-backdrop" id="productModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="productModalTitle">Add Product</h3>
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pId" />
+      <div class="form-grid">
+        <div class="field"><label>Name *</label><input type="text" id="pName" placeholder="Product name" /></div>
+        <div class="field"><label>Category</label><input type="text" id="pCategory" placeholder="Dresses, Tops…" /></div>
+        <div class="field"><label>Price (₦) *</label><input type="number" id="pPrice" placeholder="8500" min="0" /></div>
+        <div class="field"><label>Discount Price (₦)</label><input type="number" id="pDiscountPrice" placeholder="Optional sale price" min="0" /></div>
+        <div class="field"><label>Status</label>
+          <select id="pStatus"><option value="Available">Available</option><option value="Sold Out">Sold Out</option><option value="Coming Soon">Coming Soon</option></select>
+        </div>
+        <div class="field"><label>Size</label><input type="text" id="pSize" placeholder="M, L, XL, or range…" /></div>
+        <div class="field span2"><label>Description</label><textarea id="pDescription" placeholder="Short product description…"></textarea></div>
+        <div class="field"><label>Tags (comma-separated)</label><input type="text" id="pTags" placeholder="summer, casual, sale" /></div>
+        <div class="field"><label>Slug (URL-friendly ID)</label><input type="text" id="pSlug" placeholder="auto-generated if empty" /></div>
+        <div class="field"><label>Date Added</label><input type="date" id="pDateAdded" /></div>
+        <div class="field"><label>Sort Order</label><input type="number" id="pSort" value="0" min="0" /></div>
+        <div class="field"><label>SEO Title</label><input type="text" id="pSeoTitle" /></div>
+        <div class="field span2"><label>SEO Description</label><textarea id="pSeoDesc" style="min-height:60px"></textarea></div>
+      </div>
+      <div style="display:flex;gap:2rem;margin-top:1rem;">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;text-transform:none;letter-spacing:0;"><input type="checkbox" id="pFeatured" /> Featured product</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;text-transform:none;letter-spacing:0;"><input type="checkbox" id="pSale" /> On sale</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;text-transform:none;letter-spacing:0;"><input type="checkbox" id="pActive" checked /> Active (visible)</label>
+      </div>
+      <hr style="margin:1.5rem 0;border:none;border-top:1px solid var(--border);" />
+      <div class="field"><label>Product Images</label></div>
+      <div class="img-drop-zone" id="imgDropZone" onclick="document.getElementById('imgFileInput').click()">
+        <div>📷 Click to upload images or drag & drop</div>
+        <div style="font-size:0.7rem;margin-top:0.3rem">JPG, PNG, WebP — multiple allowed</div>
+        <input type="file" id="imgFileInput" accept="image/*" multiple style="display:none" onchange="handleImgSelect(event)" />
+      </div>
+      <div class="img-preview-grid" id="imgPreviewGrid"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline-purple" onclick="closeProductModal()">Cancel</button>
+      <button class="btn btn-purple" onclick="saveProduct()" id="btnSaveProduct">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SECTION MODAL ══════════════ -->
+<div class="modal-backdrop" id="sectionModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="sectionModalTitle">Add Mood Card</h3><button class="modal-close" onclick="closeSectionModal()">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="sId" />
+      <div class="form-grid">
+        <div class="field"><label>Title *</label><input type="text" id="sTitle" placeholder="Teema's Escape" /></div>
+        <div class="field"><label>Label</label><input type="text" id="sLabel" placeholder="Collection 01" /></div>
+        <div class="field span2"><label>Description</label><textarea id="sDesc" style="min-height:70px"></textarea></div>
+        <div class="field"><label>Filter Category</label><input type="text" id="sFilterCat" placeholder="Dresses" /></div>
+        <div class="field"><label>Button Text</label><input type="text" id="sBtnText" placeholder="View Collection →" /></div>
+        <div class="field span2"><label>Image URL</label><input type="url" id="sImgUrl" placeholder="https://…" /></div>
+        <div class="field"><label>Sort Order</label><input type="number" id="sSort" value="0" min="0" /></div>
+        <div class="field"><label>Active</label><select id="sActive"><option value="true">Yes</option><option value="false">No</option></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline-purple" onclick="closeSectionModal()">Cancel</button>
+      <button class="btn btn-purple" onclick="saveSection()">Save Card</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ NAV MODAL ══════════════ -->
+<div class="modal-backdrop" id="navModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head"><h3 id="navModalTitle">Add Nav Link</h3><button class="modal-close" onclick="closeNavModal()">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="nId" />
+      <div class="form-grid full">
+        <div class="field"><label>Label *</label><input type="text" id="nLabel" placeholder="New Arrivals" /></div>
+        <div class="field"><label>Type</label>
+          <select id="nType" onchange="toggleNavFields()">
+            <option value="filter">Filter Products</option>
+            <option value="scroll">Scroll to Section</option>
+            <option value="overlay">Open Overlay (openSales etc.)</option>
+            <option value="external">External URL</option>
+          </select>
+        </div>
+        <div class="field" id="nFilterField"><label>Filter Value (category)</label><input type="text" id="nFilterVal" placeholder="Dresses" /></div>
+        <div class="field" id="nScrollField" style="display:none"><label>Section ID</label><input type="text" id="nScrollId" placeholder="products, about, contact…" /></div>
+        <div class="field" id="nOverlayField" style="display:none"><label>Function Name</label><input type="text" id="nOverlayFn" placeholder="openSales, openNewArrivals" /></div>
+        <div class="field" id="nUrlField" style="display:none"><label>URL</label><input type="url" id="nUrl" placeholder="https://…" /></div>
+        <div class="field"><label>Sort Order</label><input type="number" id="nSort" value="0" min="0" /></div>
+        <div class="field"><label>Active</label><select id="nActive"><option value="true">Yes</option><option value="false">No</option></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline-purple" onclick="closeNavModal()">Cancel</button>
+      <button class="btn btn-purple" onclick="saveNav()">Save Link</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE CONFIG — paste the same values as in cms.js
+// ═══════════════════════════════════════════════════════════════
+const SUPABASE_URL  = "https://zvfbkvnbndbptqtjunpt.supabase.co/rest/v1/";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2ZmJrdm5ibmRicHRxdGp1bnB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NDg4OTksImV4cCI6MjA5NTEyNDg5OX0.K22NFSvkn6pNuWJeR5SclOlgh02kMkE9kWwdBHUSM5A";
+
+// ─── SUPABASE AUTH ───────────────────────────────────────────────────────────
+const auth = {
+  async signIn(email, password) {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+      method: "POST",
+      headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error_description || data.msg || "Auth failed");
+    return data;
+  },
+  async signOut(token) {
+    await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
+      method: "POST",
+      headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${token}` },
+    });
+  },
+  async getUser(token) {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    return res.json();
+  },
+};
+
+// ─── SUPABASE REST ───────────────────────────────────────────────────────────
+function sbHeaders(token) {
+  return {
+    "apikey":        SUPABASE_ANON,
+    "Authorization": `Bearer ${token || SUPABASE_ANON}`,
+    "Content-Type":  "application/json",
+    "Prefer":        "return=representation",
+  };
+}
+
+async function sbFrom(table, select = "*", filters = {}, opts = {}, token = null) {
+  let url = `${SUPABASE_URL}/rest/v1/${table}?select=${encodeURIComponent(select)}`;
+  Object.entries(filters).forEach(([col, val]) => { url += `&${col}=eq.${encodeURIComponent(val)}`; });
+  if (opts.order) url += `&order=${opts.order}`;
+  if (opts.limit) url += `&limit=${opts.limit}`;
+  const headers = sbHeaders(token);
+  if (opts.single) headers["Accept"] = "application/vnd.pgrst.object+json";
+  const res = await fetch(url, { headers });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.message || res.status); }
+  return res.json();
+}
+
+async function sbUpsert(table, data, token) {
+  const isUpdate = data.id && data.id !== "";
+  const url = isUpdate
+    ? `${SUPABASE_URL}/rest/v1/${table}?id=eq.${data.id}`
+    : `${SUPABASE_URL}/rest/v1/${table}`;
+  const res = await fetch(url, {
+    method:  isUpdate ? "PATCH" : "POST",
+    headers: sbHeaders(token),
+    body:    JSON.stringify(isUpdate ? data : [data]),
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.message || res.status); }
+  return res.json();
+}
+
+async function sbDelete(table, id, token) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method:  "DELETE",
+    headers: sbHeaders(token),
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.message || res.status); }
+  return true;
+}
+
+async function sbUpload(bucket, path, file, token) {
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`, {
+    method:  "POST",
+    headers: {
+      "apikey":        SUPABASE_ANON,
+      "Authorization": `Bearer ${token}`,
+      "Content-Type":  file.type,
+      "Cache-Control": "3600",
+    },
+    body: file,
+  });
+  if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+  return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+}
+
+// ─── SESSION ─────────────────────────────────────────────────────────────────
+let _token = localStorage.getItem("tc_admin_token") || "";
+let _user  = null;
+let _pendingImages = []; // { file, url (preview), isExisting, existing_url }
+
+async function checkSession() {
+  if (!_token) return false;
+  try {
+    _user = await auth.getUser(_token);
+    return !!_user;
+  } catch { return false; }
+}
+
+async function doLogin() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const pass  = document.getElementById("loginPass").value;
+  if (!email || !pass) return;
+  try {
+    const data = await auth.signIn(email, pass);
+    _token = data.access_token;
+    _user  = data.user;
+    localStorage.setItem("tc_admin_token", _token);
+    bootApp();
+  } catch (e) {
+    const err = document.getElementById("loginError");
+    err.style.display = "block";
+    err.textContent = e.message || "Login failed";
+  }
+}
+
+async function doLogout() {
+  try { await auth.signOut(_token); } catch {}
+  _token = "";
+  localStorage.removeItem("tc_admin_token");
+  document.getElementById("app").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+}
+
+function bootApp() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  if (_user) document.getElementById("adminEmail").textContent = _user.email || "Admin";
+  loadDashboard();
+  loadProductsPanel();
+  loadSettingsPanel();
+  loadSectionsPanel();
+  loadNavPanel();
+  loadMediaPanel();
+}
+
+// ─── SIDEBAR ────────────────────────────────────────────────────────────────
+function showPanel(name) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".sidebar nav a[data-panel]").forEach(a => a.classList.remove("active"));
+  document.getElementById(`panel-${name}`).classList.add("active");
+  document.querySelector(`.sidebar nav a[data-panel="${name}"]`)?.classList.add("active");
+  closeSidebarMobile();
+}
+function toggleSidebar() { document.getElementById("sidebar").classList.toggle("open"); }
+function closeSidebarMobile() { if (window.innerWidth <= 768) document.getElementById("sidebar").classList.remove("open"); }
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function toast(msg, dur = 2500) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), dur);
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const products = await sbFrom("products", "id,name,category,price,status,is_featured,is_active,sort_order", {}, { order: "sort_order.asc,created_at.desc" }, _token);
+    const images   = await sbFrom("product_images", "product_id,url,is_primary", {}, { order: "product_id.asc,is_primary.desc" }, _token);
+    const imgMap   = {};
+    (images || []).forEach(i => { if (!imgMap[i.product_id]) imgMap[i.product_id] = i.url; });
+
+    document.getElementById("statProducts").textContent  = products.length;
+    document.getElementById("statAvailable").textContent = products.filter(p => (p.status||"").toLowerCase() === "available").length;
+    document.getElementById("statSold").textContent      = products.filter(p => (p.status||"").toLowerCase().includes("sold")).length;
+    document.getElementById("statFeatured").textContent  = products.filter(p => p.is_featured).length;
+
+    window._allProducts = products;
+    window._imgMap      = imgMap;
+    renderProductTable("dashProductTable", products, imgMap, true);
+    renderProductTable("productTable", products, imgMap, false);
+  } catch (e) {
+    console.warn("Dashboard load error:", e.message);
+  }
+}
+
+function renderProductTable(tableId, products, imgMap, compact) {
+  const tbody = document.getElementById(tableId);
+  if (!products.length) { tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--text-muted)">No products yet. Add your first one!</td></tr>`; return; }
+  tbody.innerHTML = products.map(p => `
+    <tr>
+      <td><img class="product-thumb" src="${imgMap[p.id] || 'https://via.placeholder.com/50x60/F0E8FA/8B5CC8?text=TC'}" alt="${esc(p.name)}" loading="lazy" /></td>
+      <td><strong>${esc(p.name)}</strong></td>
+      <td>${esc(p.category || "—")}</td>
+      <td>₦${Number(p.price || 0).toLocaleString()}</td>
+      ${compact ? "" : `<td>—</td>`}
+      <td><span class="badge ${(p.status||"").toLowerCase().includes("sold") ? "sold" : "available"}">${esc(p.status || "Available")}</span></td>
+      <td>${p.is_featured ? "⭐" : "—"}</td>
+      ${compact ? "" : `<td>—</td><td>${p.sort_order ?? 0}</td>`}
+      <td style="white-space:nowrap;">
+        <button class="btn btn-sm btn-outline-purple" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" style="margin-left:0.3rem" onclick="deleteProduct('${p.id}')">Del</button>
+      </td>
+    </tr>`).join("");
+}
+
+// ─── PRODUCTS PANEL ─────────────────────────────────────────────────────────
+async function loadProductsPanel() { /* shared with loadDashboard */ }
+
+function openProductModal(id) {
+  _pendingImages = [];
+  renderImgPreview();
+  document.getElementById("pId").value = "";
+  ["pName","pCategory","pPrice","pDiscountPrice","pSize","pDescription","pTags","pSlug","pSeoTitle","pSeoDesc"].forEach(id => { document.getElementById(id).value = ""; });
+  document.getElementById("pSort").value = "0";
+  document.getElementById("pStatus").value = "Available";
+  document.getElementById("pDateAdded").value = new Date().toISOString().split("T")[0];
+  document.getElementById("pFeatured").checked = false;
+  document.getElementById("pSale").checked     = false;
+  document.getElementById("pActive").checked   = true;
+  document.getElementById("productModalTitle").textContent = "Add Product";
+  document.getElementById("productModal").classList.add("open");
+}
+
+async function editProduct(id) {
+  try {
+    const product = await sbFrom("products", "*", {}, {}, _token);
+    const p       = (product || []).find(x => x.id === id);
+    if (!p) return;
+    const imgs = await sbFrom("product_images", "*", { product_id: id }, { order: "is_primary.desc,sort_order.asc" }, _token);
+    _pendingImages = (imgs || []).map(i => ({ isExisting: true, existing_url: i.url, url: i.url, id: i.id, is_primary: i.is_primary }));
+    renderImgPreview();
+
+    document.getElementById("pId").value               = p.id;
+    document.getElementById("pName").value             = p.name || "";
+    document.getElementById("pCategory").value         = p.category || "";
+    document.getElementById("pPrice").value            = p.price || "";
+    document.getElementById("pDiscountPrice").value    = p.discount_price || "";
+    document.getElementById("pSize").value             = p.size || "";
+    document.getElementById("pDescription").value      = p.description || "";
+    document.getElementById("pTags").value             = p.tags || "";
+    document.getElementById("pSlug").value             = p.slug || "";
+    document.getElementById("pSort").value             = p.sort_order ?? 0;
+    document.getElementById("pSeoTitle").value         = p.seo_title || "";
+    document.getElementById("pSeoDesc").value          = p.seo_description || "";
+    document.getElementById("pStatus").value           = p.status || "Available";
+    document.getElementById("pDateAdded").value        = (p.date_added || "").split("T")[0];
+    document.getElementById("pFeatured").checked       = !!p.is_featured;
+    document.getElementById("pSale").checked           = !!p.is_sale;
+    document.getElementById("pActive").checked         = p.is_active !== false;
+    document.getElementById("productModalTitle").textContent = "Edit Product";
+    document.getElementById("productModal").classList.add("open");
+  } catch (e) { toast("Error loading product: " + e.message); }
+}
+
+function closeProductModal() { document.getElementById("productModal").classList.remove("open"); _pendingImages = []; }
+
+function handleImgSelect(e) {
+  Array.from(e.target.files).forEach(file => {
+    const url = URL.createObjectURL(file);
+    _pendingImages.push({ file, url, isExisting: false });
+  });
+  renderImgPreview();
+  e.target.value = "";
+}
+
+function renderImgPreview() {
+  const grid = document.getElementById("imgPreviewGrid");
+  grid.innerHTML = _pendingImages.map((img, i) => `
+    <div class="img-preview-item">
+      <img src="${img.url}" alt="preview" />
+      <button class="del-img" onclick="removeImg(${i})">✕</button>
+      ${i === 0 ? '<div class="primary-badge">Primary</div>' : ""}
+    </div>`).join("");
+  // Drag-and-drop area
+  const zone = document.getElementById("imgDropZone");
+  if (zone) {
+    zone.ondragover  = e => { e.preventDefault(); zone.classList.add("dragover"); };
+    zone.ondragleave = () => zone.classList.remove("dragover");
+    zone.ondrop      = e => { e.preventDefault(); zone.classList.remove("dragover"); Array.from(e.dataTransfer.files).forEach(f => _pendingImages.push({ file: f, url: URL.createObjectURL(f), isExisting: false })); renderImgPreview(); };
+  }
+}
+
+function removeImg(i) { _pendingImages.splice(i, 1); renderImgPreview(); }
+
+async function saveProduct() {
+  const id   = document.getElementById("pId").value.trim();
+  const name = document.getElementById("pName").value.trim();
+  if (!name) { toast("Product name is required"); return; }
+
+  const btn = document.getElementById("btnSaveProduct");
+  btn.disabled = true; btn.textContent = "Saving…";
+
+  try {
+    const slug = document.getElementById("pSlug").value.trim()
+      || name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+    const payload = {
+      name,
+      category:        document.getElementById("pCategory").value.trim(),
+      price:           Number(document.getElementById("pPrice").value) || 0,
+      discount_price:  Number(document.getElementById("pDiscountPrice").value) || null,
+      size:            document.getElementById("pSize").value.trim(),
+      description:     document.getElementById("pDescription").value.trim(),
+      tags:            document.getElementById("pTags").value.trim(),
+      slug,
+      status:          document.getElementById("pStatus").value,
+      sort_order:      Number(document.getElementById("pSort").value) || 0,
+      date_added:      document.getElementById("pDateAdded").value || null,
+      seo_title:       document.getElementById("pSeoTitle").value.trim(),
+      seo_description: document.getElementById("pSeoDesc").value.trim(),
+      is_featured:     document.getElementById("pFeatured").checked,
+      is_sale:         document.getElementById("pSale").checked,
+      is_active:       document.getElementById("pActive").checked,
+    };
+    if (id) payload.id = id;
+
+    const saved = await sbUpsert("products", payload, _token);
+    const savedArr = Array.isArray(saved) ? saved : [saved];
+    const productId = (savedArr[0] || {}).id || id;
+
+    // Upload new images and save to product_images
+    for (let i = 0; i < _pendingImages.length; i++) {
+      const img = _pendingImages[i];
+      if (img.isExisting) continue; // already in DB
+      try {
+        const ext  = img.file.name.split(".").pop();
+        const path = `products/${productId}/${Date.now()}_${i}.${ext}`;
+        const url  = await sbUpload("products", path, img.file, _token);
+        await sbUpsert("product_images", {
+          product_id: productId,
+          url,
+          is_primary: i === 0 && !_pendingImages.some(m => m.isExisting && m.is_primary),
+          sort_order: i,
+        }, _token);
+      } catch (imgErr) { console.warn("Image upload error:", imgErr.message); }
+    }
+
+    toast("✅ Product saved!");
+    closeProductModal();
+    loadDashboard();
+  } catch (e) {
+    toast("Error: " + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = "Save Product";
+  }
+}
+
+async function deleteProduct(id) {
+  if (!confirm("Delete this product? This cannot be undone.")) return;
+  try {
+    await sbDelete("products", id, _token);
+    toast("Product deleted");
+    loadDashboard();
+  } catch (e) { toast("Error: " + e.message); }
+}
+
+// ─── SECTIONS (MOOD CARDS) ───────────────────────────────────────────────────
+async function loadSectionsPanel() {
+  try {
+    const rows = await sbFrom("homepage_sections", "*", {}, { order: "sort_order.asc" }, _token);
+    const tbody = document.getElementById("sectionTable");
+    if (!rows.length) { tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text-muted)">No mood cards yet.</td></tr>`; return; }
+    tbody.innerHTML = rows.map(s => `
+      <tr>
+        <td><img class="product-thumb" src="${esc(s.image_url||'')}" onerror="this.src='https://via.placeholder.com/50x60/F0E8FA/8B5CC8'" loading="lazy" /></td>
+        <td><strong>${esc(s.title)}</strong></td>
+        <td>${esc(s.label||"—")}</td>
+        <td>${esc(s.filter_category||"—")}</td>
+        <td>${esc(s.button_text||"—")}</td>
+        <td>${s.is_active ? "✅" : "❌"}</td>
+        <td>${s.sort_order ?? 0}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-purple" onclick="editSection('${s.id}')">Edit</button>
+          <button class="btn btn-sm btn-danger" style="margin-left:0.3rem" onclick="deleteSection('${s.id}')">Del</button>
+        </td>
+      </tr>`).join("");
+    window._sections = rows;
+  } catch (e) { console.warn("Sections load:", e.message); }
+}
+
+function openSectionModal() {
+  ["sId","sTitle","sLabel","sDesc","sFilterCat","sBtnText","sImgUrl"].forEach(id => { document.getElementById(id).value = ""; });
+  document.getElementById("sSort").value = "0";
+  document.getElementById("sActive").value = "true";
+  document.getElementById("sectionModalTitle").textContent = "Add Mood Card";
+  document.getElementById("sectionModal").classList.add("open");
+}
+
+function editSection(id) {
+  const s = (window._sections || []).find(x => x.id === id);
+  if (!s) return;
+  document.getElementById("sId").value        = s.id;
+  document.getElementById("sTitle").value     = s.title || "";
+  document.getElementById("sLabel").value     = s.label || "";
+  document.getElementById("sDesc").value      = s.description || "";
+  document.getElementById("sFilterCat").value = s.filter_category || "";
+  document.getElementById("sBtnText").value   = s.button_text || "";
+  document.getElementById("sImgUrl").value    = s.image_url || "";
+  document.getElementById("sSort").value      = s.sort_order ?? 0;
+  document.getElementById("sActive").value    = s.is_active ? "true" : "false";
+  document.getElementById("sectionModalTitle").textContent = "Edit Mood Card";
+  document.getElementById("sectionModal").classList.add("open");
+}
+
+function closeSectionModal() { document.getElementById("sectionModal").classList.remove("open"); }
+
+async function saveSection() {
+  const title = document.getElementById("sTitle").value.trim();
+  if (!title) { toast("Title is required"); return; }
+  const payload = {
+    title,
+    label:           document.getElementById("sLabel").value.trim(),
+    description:     document.getElementById("sDesc").value.trim(),
+    filter_category: document.getElementById("sFilterCat").value.trim(),
+    button_text:     document.getElementById("sBtnText").value.trim() || "View Collection →",
+    image_url:       document.getElementById("sImgUrl").value.trim(),
+    sort_order:      Number(document.getElementById("sSort").value) || 0,
+    is_active:       document.getElementById("sActive").value === "true",
+  };
+  const id = document.getElementById("sId").value;
+  if (id) payload.id = id;
+  try {
+    await sbUpsert("homepage_sections", payload, _token);
+    toast("✅ Mood card saved!");
+    closeSectionModal();
+    loadSectionsPanel();
+  } catch (e) { toast("Error: " + e.message); }
+}
+
+async function deleteSection(id) {
+  if (!confirm("Delete this mood card?")) return;
+  try { await sbDelete("homepage_sections", id, _token); toast("Deleted"); loadSectionsPanel(); }
+  catch (e) { toast("Error: " + e.message); }
+}
+
+// ─── SETTINGS PANEL ─────────────────────────────────────────────────────────
+// Grouped settings definitions
+const SETTINGS_GROUPS = [
+  {
+    title: "General / SEO",
+    fields: [
+      { key: "site_title",       label: "Site Title",          type: "text" },
+      { key: "site_description", label: "Meta Description",    type: "textarea" },
+      { key: "logo_url",         label: "Logo Image URL",      type: "url" },
+    ]
+  },
+  {
+    title: "Announcement Bar",
+    fields: [
+      { key: "announcement_text", label: "Announcement Text", type: "text" },
+    ]
+  },
+  {
+    title: "Hero Section",
+    fields: [
+      { key: "hero_tag",         label: "Small Tag Label",     type: "text" },
+      { key: "hero_h1",         label: "Headline (HTML OK)",   type: "textarea" },
+      { key: "hero_p",          label: "Subheading Paragraph", type: "textarea" },
+      { key: "hero_btn_primary",label: "Primary Button Text",  type: "text" },
+      { key: "hero_btn_outline",label: "Outline Button Text",  type: "text" },
+      { key: "hero_image_url",  label: "Hero Image URL",       type: "url" },
+      { key: "hero_badge_label",label: "Hero Badge Label",     type: "text" },
+      { key: "hero_badge_quote",label: "Hero Badge Quote",     type: "text" },
+    ]
+  },
+  {
+    title: "Marquee & Quote",
+    fields: [
+      { key: "marquee_text",    label: "Marquee Items (pipe-separated | )", type: "text" },
+      { key: "quote_strip_text",label: "Quote Strip Text",    type: "text" },
+    ]
+  },
+  {
+    title: "Products Section",
+    fields: [
+      { key: "products_section_tag", label: "Section Tag Label", type: "text" },
+      { key: "products_section_h2",  label: "Section Heading",   type: "text" },
+    ]
+  },
+  {
+    title: "Our Promise / About",
+    fields: [
+      { key: "promise_h2", label: "Heading",    type: "text" },
+      { key: "promise_p",  label: "Paragraph",  type: "textarea" },
+    ]
+  },
+  {
+    title: "Newsletter Section",
+    fields: [
+      { key: "newsletter_h2", label: "Heading",    type: "text" },
+      { key: "newsletter_p",  label: "Subheading", type: "textarea" },
+    ]
+  },
+  {
+    title: "Footer",
+    fields: [
+      { key: "footer_tagline",   label: "Brand Tagline",  type: "textarea" },
+      { key: "footer_copyright", label: "Copyright Text", type: "text" },
+    ]
+  },
+  {
+    title: "Contact & Social",
+    fields: [
+      { key: "wa_number",      label: "WhatsApp Number (digits only, no +)", type: "text" },
+      { key: "instagram_url",  label: "Instagram URL",  type: "url" },
+      { key: "tiktok_url",     label: "TikTok URL",     type: "url" },
+    ]
+  },
+  {
+    title: "Info Modals",
+    fields: [
+      { key: "shipping_info",      label: "Shipping Info (HTML)",     type: "textarea" },
+      { key: "returns_policy",     label: "Returns Policy (HTML)",    type: "textarea" },
+      { key: "sustainability_info",label: "Sustainability Info (HTML)",type: "textarea" },
+    ]
+  },
+];
+
+let _currentSettings = {};
+
+async function loadSettingsPanel() {
+  try {
+    const rows = await sbFrom("settings", "*", {}, {}, _token);
+    rows.forEach(r => { _currentSettings[r.key] = r.value; });
+    renderSettingsForms();
+  } catch (e) { console.warn("Settings load:", e.message); renderSettingsForms(); }
+}
+
+function renderSettingsForms() {
+  const container = document.getElementById("settingsForms");
+  container.innerHTML = SETTINGS_GROUPS.map(group => `
+    <div class="settings-section">
+      <h3>${group.title}</h3>
+      ${group.fields.map(f => `
+        <div class="settings-field">
+          <label for="setting_${f.key}">${f.label}</label>
+          ${f.type === "textarea"
+            ? `<textarea id="setting_${f.key}" rows="3">${esc(_currentSettings[f.key] || "")}</textarea>`
+            : `<input type="${f.type}" id="setting_${f.key}" value="${esc(_currentSettings[f.key] || "")}" />`
+          }
+        </div>`).join("")}
+    </div>`).join("");
+}
+
+async function saveSettings() {
+  const updates = [];
+  SETTINGS_GROUPS.forEach(g => {
+    g.fields.forEach(f => {
+      const el = document.getElementById(`setting_${f.key}`);
+      if (!el) return;
+      updates.push({ key: f.key, value: el.value });
+    });
+  });
+
+  try {
+    // Upsert each setting (INSERT ON CONFLICT UPDATE)
+    for (const u of updates) {
+      const existing = Object.keys(_currentSettings).includes(u.key);
+      if (existing) {
+        // Update via key filter
+        await fetch(`${SUPABASE_URL}/rest/v1/settings?key=eq.${encodeURIComponent(u.key)}`, {
+          method:  "PATCH",
+          headers: { ...sbHeaders(_token), "Prefer": "return=minimal" },
+          body:    JSON.stringify({ value: u.value }),
+        });
+      } else {
+        await sbUpsert("settings", u, _token);
+      }
+      _currentSettings[u.key] = u.value;
+    }
+    toast("✅ Settings saved! Refresh the website to see changes.");
+  } catch (e) { toast("Error saving settings: " + e.message); }
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+let _navLinks = [];
+
+async function loadNavPanel() {
+  try {
+    _navLinks = await sbFrom("navigation", "*", {}, { order: "sort_order.asc" }, _token);
+    const tbody = document.getElementById("navTable");
+    if (!_navLinks.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">No nav links yet.</td></tr>`; return; }
+    tbody.innerHTML = _navLinks.map(n => `
+      <tr>
+        <td><strong>${esc(n.label)}</strong></td>
+        <td>${esc(n.type)}</td>
+        <td>${esc(n.filter_value || n.target_id || n.url || "—")}</td>
+        <td>${n.is_active ? "✅" : "❌"}</td>
+        <td>${n.sort_order ?? 0}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-purple" onclick="editNav('${n.id}')">Edit</button>
+          <button class="btn btn-sm btn-danger" style="margin-left:0.3rem" onclick="deleteNav('${n.id}')">Del</button>
+        </td>
+      </tr>`).join("");
+  } catch (e) { console.warn("Nav load:", e.message); }
+}
+
+function openNavModal() {
+  ["nId","nLabel","nFilterVal","nScrollId","nOverlayFn","nUrl"].forEach(id => { document.getElementById(id).value = ""; });
+  document.getElementById("nSort").value  = "0";
+  document.getElementById("nType").value  = "filter";
+  document.getElementById("nActive").value = "true";
+  toggleNavFields();
+  document.getElementById("navModalTitle").textContent = "Add Nav Link";
+  document.getElementById("navModal").classList.add("open");
+}
+
+function editNav(id) {
+  const n = _navLinks.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById("nId").value         = n.id;
+  document.getElementById("nLabel").value      = n.label || "";
+  document.getElementById("nType").value       = n.type || "filter";
+  document.getElementById("nFilterVal").value  = n.filter_value || "";
+  document.getElementById("nScrollId").value   = n.target_id || "";
+  document.getElementById("nOverlayFn").value  = n.target_id || "";
+  document.getElementById("nUrl").value        = n.url || "";
+  document.getElementById("nSort").value       = n.sort_order ?? 0;
+  document.getElementById("nActive").value     = n.is_active ? "true" : "false";
+  toggleNavFields();
+  document.getElementById("navModalTitle").textContent = "Edit Nav Link";
+  document.getElementById("navModal").classList.add("open");
+}
+
+function closeNavModal() { document.getElementById("navModal").classList.remove("open"); }
+
+function toggleNavFields() {
+  const type = document.getElementById("nType").value;
+  document.getElementById("nFilterField").style.display  = type === "filter"   ? "" : "none";
+  document.getElementById("nScrollField").style.display  = type === "scroll"   ? "" : "none";
+  document.getElementById("nOverlayField").style.display = type === "overlay"  ? "" : "none";
+  document.getElementById("nUrlField").style.display     = type === "external" ? "" : "none";
+}
+
+async function saveNav() {
+  const label = document.getElementById("nLabel").value.trim();
+  if (!label) { toast("Label is required"); return; }
+  const type = document.getElementById("nType").value;
+  const payload = {
+    label, type,
+    filter_value: type === "filter"   ? document.getElementById("nFilterVal").value.trim()  : null,
+    target_id:    type === "scroll"   ? document.getElementById("nScrollId").value.trim()
+                : type === "overlay"  ? document.getElementById("nOverlayFn").value.trim()  : null,
+    url:          type === "external" ? document.getElementById("nUrl").value.trim()        : null,
+    sort_order:   Number(document.getElementById("nSort").value) || 0,
+    is_active:    document.getElementById("nActive").value === "true",
+  };
+  const id = document.getElementById("nId").value;
+  if (id) payload.id = id;
+  try {
+    await sbUpsert("navigation", payload, _token);
+    toast("✅ Nav link saved!");
+    closeNavModal();
+    loadNavPanel();
+  } catch (e) { toast("Error: " + e.message); }
+}
+
+async function deleteNav(id) {
+  if (!confirm("Delete this nav link?")) return;
+  try { await sbDelete("navigation", id, _token); toast("Deleted"); loadNavPanel(); }
+  catch (e) { toast("Error: " + e.message); }
+}
+
+// ─── MEDIA PANEL ─────────────────────────────────────────────────────────────
+async function loadMediaPanel() {
+  try {
+    const buckets = ["products", "banners", "sections", "general"];
+    const grid = document.getElementById("mediaGrid");
+    grid.innerHTML = `<div class="spinner-sm" style="margin:auto"></div>`;
+    const allFiles = [];
+    for (const b of buckets) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/storage/v1/object/list/${b}`, {
+          method: "POST",
+          headers: sbHeaders(_token),
+          body: JSON.stringify({ limit: 50, offset: 0 }),
+        });
+        if (!res.ok) continue;
+        const files = await res.json();
+        (files || []).forEach(f => {
+          if (!f.name) return;
+          allFiles.push({ url: `${SUPABASE_URL}/storage/v1/object/public/${b}/${f.name}`, name: f.name, bucket: b });
+        });
+      } catch {}
+    }
+    if (!allFiles.length) { grid.innerHTML = `<p style="color:var(--text-muted);font-size:0.82rem">No media uploaded yet.</p>`; return; }
+    grid.innerHTML = allFiles.map(f => `
+      <div style="position:relative;border:1px solid var(--border);">
+        <img src="${f.url}" alt="${esc(f.name)}" loading="lazy" style="width:100%;height:110px;object-fit:cover;" onerror="this.style.display='none'" />
+        <div style="padding:0.4rem;font-size:0.6rem;color:var(--text-muted);word-break:break-all;">${esc(f.name)}</div>
+        <button onclick="copyUrl('${f.url}')" class="btn btn-sm btn-outline-purple" style="margin:0 0.4rem 0.4rem;font-size:0.55rem">Copy URL</button>
+      </div>`).join("");
+  } catch (e) { console.warn("Media panel:", e.message); }
+}
+
+async function uploadMedia() {
+  const bucket = document.getElementById("mediaBucket").value;
+  const fileEl = document.getElementById("mediaFile");
+  if (!fileEl.files.length) { toast("Please select a file"); return; }
+  const file = fileEl.files[0];
+  const path = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+  try {
+    const url = await sbUpload(bucket, path, file, _token);
+    toast("✅ Uploaded! URL copied.");
+    navigator.clipboard.writeText(url).catch(() => {});
+    fileEl.value = "";
+    loadMediaPanel();
+  } catch (e) { toast("Upload error: " + e.message); }
+}
+
+function copyUrl(url) {
+  navigator.clipboard.writeText(url)
+    .then(() => toast("URL copied to clipboard!"))
+    .catch(() => toast("Copy failed — URL: " + url));
+}
+
+// ─── UTIL ────────────────────────────────────────────────────────────────────
+function esc(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+(async () => {
+  const ok = await checkSession();
+  if (ok) { bootApp(); }
+})();
+
+// Enter key on login
+document.getElementById("loginPass").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+</script>
+</body>
+</html>

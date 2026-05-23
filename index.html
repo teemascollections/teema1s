@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  TEEMA'S COLLECTIONS — COMPLETE EDITABLE WEBSITE                        ║
+  ║  ──────────────────────────────────────────────────────────────────────  ║
+  ║  HOW TO EDIT THIS FILE:                                                  ║
+  ║  1. Open in Notepad (Windows) or TextEdit (Mac)                          ║
+  ║     Better option: VS Code (free at code.visualstudio.com)               ║
+  ║  2. Press Ctrl+F (Windows) / Cmd+F (Mac) to SEARCH for any text         ║
+  ║  3. Change what you want, SAVE the file, then re-upload to Netlify       ║
+  ║     (drag & drop your new file onto your Netlify site dashboard)         ║
+  ║                                                                          ║
+  ║  QUICK FIND GUIDE — search these exact words:                            ║
+  ║  🎨 COLORS         → :root {                                             ║
+  ║  🖼️  IMAGES         → CHANGE IMAGE HERE                                  ║
+  ║  📊 CSV LINK       → PASTE YOUR CSV LINK HERE                            ║
+  ║  📱 WHATSAPP NO.   → WA_NUMBER                                           ║
+  ║  📸 INSTAGRAM URL  → EDIT_INSTAGRAM                                      ║
+  ║  🎵 TIKTOK URL     → EDIT_TIKTOK                                         ║
+  ║  🗂️  CATEGORIES     → EDIT_CATEGORIES                                    ║
+  ║  🃏 MOOD CARDS     → EDIT_MOOD_CARD                                      ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+  -->
+
+  <!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  🌐 SEO & SOCIAL SHARE — Edit these to control how your site looks       ║
+  ║  when shared on WhatsApp, Facebook, Instagram etc.                       ║
+  ║                                                                          ║
+  ║  SEO_TITLE       → Page title shown on Google & browser tab              ║
+  ║  SEO_DESCRIPTION → Description shown on Google search results            ║
+  ║  SEO_IMAGE       → Image shown when link is shared on WhatsApp/Facebook  ║
+  ║                    (recommended: 1200×630px, upload to Cloudinary/Netlify)║
+  ║  FAVICON_URL     → Small icon shown in the browser tab                   ║
+  ║                    (upload a .png or .ico and paste its URL here)         ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+  -->
+
+  <!-- ▼ FAVICON — paste your favicon image URL here ▼ -->
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779233956/Logo_hyry63.png" id="faviconTag" />
+  <!-- ▲ FAVICON ▲ -->
+
+  <!-- SEO META TAGS ════════════════════════════════════════════ -->
+  <!-- ▼ SEO_TITLE — shown on Google & browser tab ▼ -->
+  <title>Teema's Collections | Feminine Luxury Thrift – Nigeria</title>
+  <!-- ▼ SEO_DESCRIPTION ▼ -->
+  <meta name="description" content="Teema's Collections is Nigeria's Feminine Luxury Thrift brand. Shop classy, elegant and affordable luxury clothing for women. Hey my queens – style that fits your royalty." />
+  <meta name="keywords" content="luxury thrift Nigeria, affordable luxury fashion Nigeria, feminine fashion Nigeria, thrift store Nigeria, classy affordable clothes Nigeria, Teema's Collections, women's fashion Nigeria" />
+  <meta name="author" content="Teema's Collections" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://teemascollections.netlify.app/" />
+
+  <!-- Language & locale -->
+  <meta http-equiv="content-language" content="en-NG" />
+  <meta name="geo.region" content="NG" />
+  <meta name="geo.country" content="Nigeria" />
+
+  <!-- Open Graph (WhatsApp / Facebook preview) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_NG" />
+  <meta property="og:url" content="https://teemascollections.netlify.app/" />
+  <!-- ▼ og:title shown on WhatsApp / Facebook ▼ -->
+  <meta property="og:title" content="Teema's Collections | Feminine Luxury Thrift – Nigeria" />
+  <!-- ▼ og:description shown on WhatsApp / Facebook ▼ -->
+  <meta property="og:description" content="Classy. Elegant. Affordable. Shop Nigeria's finest feminine luxury thrift brand. Hey my queens – your wardrobe upgrade starts here." />
+  <meta property="og:site_name" content="Teema's Collections" />
+  <!--
+    ▼ SEO_IMAGE — image shown when your link is shared on WhatsApp/Facebook ▼
+    HOW: Upload a 1200×630px image to Cloudinary or Netlify, paste the URL below.
+    Both og:image and twitter:image should use the SAME URL.
+  -->
+  <meta property="og:image" content="https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779242719/Logo_50_ajimg1.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Teema's Collections | Feminine Luxury Thrift" />
+  <meta name="twitter:description" content="Nigeria's Feminine Luxury Thrift brand. Classy, elegant & affordable. Shop now." />
+  <!-- ▼ twitter:image (same URL as og:image above) ▼ -->
+  <meta name="twitter:image" content="https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779242719/Logo_50_ajimg1.jpg" />
+
+  <!-- Schema.org (helps Google understand your business) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ClothingStore",
+    "name": "Teema's Collections",
+    "description": "Nigeria's Feminine Luxury Thrift brand – classy, elegant and affordable clothing for women.",
+    "url": "https://teemascollections.netlify.app",
+    "logo": "https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779233956/Logo_hyry63.png",
+    "image": "https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779242719/Logo_50_ajimg1.jpg",
+    "telephone": "+2348039567566",
+    "contactPoint": { "@type": "ContactPoint", "contactType": "customer service", "url": "https://wa.me/2348039567566", "availableLanguage": "English" },
+    "sameAs": ["https://www.instagram.com/TEEMAS_COLLECTIONS_NG", "https://www.tiktok.com/@TEEMASCOLLECTIONS1"],
+    "areaServed": { "@type": "Country", "name": "Nigeria" },
+    "currenciesAccepted": "NGN",
+    "paymentAccepted": "Credit Card, Bank Transfer",
+    "priceRange": "₦₦",
+    "openingHours": "Mo-Sa 09:00-18:00"
+  }
+  </script>
+
+  <!-- Paystack -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+
+  <!-- Sitemap hint for Google -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       🎨 BRAND COLORS — Edit these to change colors
+       Just replace the hex codes (e.g. #5B2D8E)
+    ════════════════════════════════════════════════ */
+    :root {
+      --purple:       #5B2D8E;   /* Main purple — buttons, badges */
+      --purple-deep:  #3B1A63;   /* Dark purple — navbar top bar */
+      --purple-light: #8B5CC8;   /* Light purple — hover, accents */
+      --purple-mist:  #F0E8FA;   /* Very light purple — backgrounds */
+      --black:        #0D0D0D;   /* Text black */
+      --white:        #FFFFFF;   /* White */
+      --off-white:    #FAF8FC;   /* Off-white section backgrounds */
+      --gold:         #C9A84C;   /* Gold accent — collection labels */
+      --text-muted:   #7B6A90;   /* Muted / secondary text */
+      --border:       rgba(91,45,142,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--off-white); color: var(--black); overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.15; }
+
+    .container { max-width: 1260px; margin: 0 auto; padding: 0 2rem; }
+    .tag { font-family: 'Jost', sans-serif; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--purple-light); }
+
+    .btn-primary { display: inline-block; background: var(--purple); color: var(--white); font-family: 'Jost', sans-serif; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.85rem 2.2rem; border: 1px solid var(--purple); cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    .btn-primary:hover { background: var(--purple-deep); transform: translateY(-2px); }
+    .btn-outline { display: inline-block; background: transparent; color: var(--purple); font-family: 'Jost', sans-serif; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.85rem 2.2rem; border: 1px solid var(--purple); cursor: pointer; transition: background 0.3s, color 0.3s, transform 0.2s; }
+    .btn-outline:hover { background: var(--purple); color: var(--white); transform: translateY(-2px); }
+
+    /* ANNOUNCEMENT BAR */
+    .announcement { background: var(--purple-deep); color: var(--white); text-align: center; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.6rem 1rem; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
+    .navbar.scrolled { box-shadow: 0 4px 24px rgba(91,45,142,0.1); }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 1rem; }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--purple-deep); letter-spacing: 0.05em; white-space: nowrap; cursor: pointer; }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); transition: color 0.2s; position: relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:var(--purple); transition:width 0.3s; }
+    .nav-links a:hover { color: var(--purple); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-icons { display: flex; align-items: center; gap: 1.2rem; }
+    .nav-icons button { background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--black); transition: color 0.2s; }
+    .nav-icons button:hover { color: var(--purple); }
+    .cart-btn { position: relative; }
+    .cart-count { position:absolute; top:-6px; right:-8px; background:var(--purple); color:#fff; font-size:0.55rem; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Jost',sans-serif; font-weight:600; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:0.3rem; }
+    .hamburger span { display:block; width:22px; height:1.5px; background:var(--black); transition:all 0.3s; }
+
+    /* HERO */
+    .hero { min-height:calc(100vh - 70px); display:grid; grid-template-columns:1fr 1fr; overflow:hidden; }
+    .hero-text { display:flex; flex-direction:column; justify-content:center; padding:5rem 4rem 5rem 5rem; background:var(--off-white); }
+    .hero-text .tag { margin-bottom:1.5rem; }
+    .hero-text h1 { font-size:clamp(3rem,5vw,5.5rem); color:var(--black); line-height:1.05; margin-bottom:1.8rem; }
+    .hero-text h1 em { font-style:italic; color:var(--purple); }
+    .hero-text p { font-size:0.95rem; color:var(--text-muted); line-height:1.8; max-width:380px; margin-bottom:2.5rem; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+    .hero-image { position:relative; overflow:hidden; background:var(--purple-deep); }
+    .hero-image img { width:100%; height:100%; object-fit:cover; opacity:0.88; transition:transform 8s ease; }
+    .hero-image:hover img { transform:scale(1.04); }
+    .hero-badge { position:absolute; bottom:2.5rem; left:2.5rem; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.25); color:var(--white); padding:1rem 1.5rem; }
+    .hero-badge p { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; opacity:0.8; margin-bottom:0.3rem; }
+    .hero-badge strong { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; font-style:italic; }
+    .scroll-hint { display:flex; align-items:center; gap:0.6rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-top:3rem; animation:bounce 2s infinite; }
+    .scroll-hint::before { content:''; display:block; width:1px; height:36px; background:var(--purple-light); }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* MARQUEE */
+    .marquee-bar { background:var(--purple); color:var(--white); padding:0.75rem 0; overflow:hidden; }
+    .marquee-track { display:flex; animation:marquee 28s linear infinite; width:max-content; }
+    .marquee-track span { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; white-space:nowrap; padding:0 2.5rem; }
+    .marquee-track span::before { content:'✦'; margin-right:2.5rem; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* QUOTE */
+    .quote-strip { text-align:center; padding:5rem 2rem; background:var(--white); }
+    .quote-strip blockquote { font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,3vw,2.8rem); font-style:italic; color:var(--purple-deep); max-width:800px; margin:0 auto 1rem; line-height:1.4; }
+    .quote-strip cite { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-muted); }
+
+    /* MOOD GRID */
+    .mood-section { padding:6rem 0; background:var(--off-white); }
+    .section-header { text-align:center; margin-bottom:4rem; }
+    .section-header .tag { display:block; margin-bottom:0.8rem; }
+    .section-header h2 { font-size:clamp(2.2rem,4vw,3.8rem); }
+    .mood-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+    .mood-card { position:relative; overflow:hidden; aspect-ratio:3/4; cursor:pointer; }
+    .mood-card img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; }
+    .mood-card:hover img { transform:scale(1.07); }
+    .mood-card-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(59,26,99,0.75) 0%,transparent 55%); display:flex; flex-direction:column; justify-content:flex-end; padding:1.8rem; transition:background 0.3s; }
+    .mood-card:hover .mood-card-overlay { background:linear-gradient(to top,rgba(59,26,99,0.88) 0%,rgba(91,45,142,0.2) 100%); }
+    .mood-card-overlay .tag { color:var(--gold); margin-bottom:0.5rem; }
+    .mood-card-overlay h3 { color:var(--white); font-size:1.4rem; margin-bottom:0.8rem; }
+    .mood-card-overlay p { font-size:0.75rem; color:rgba(255,255,255,0.75); line-height:1.6; margin-bottom:1rem; display:none; }
+    .mood-card:hover .mood-card-overlay p { display:block; }
+    .mood-link { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); border:none; border-bottom:1px solid var(--gold); padding-bottom:2px; display:inline-block; transition:opacity 0.2s; background:none; cursor:pointer; font-family:'Jost',sans-serif; }
+    .mood-link:hover { opacity:0.75; }
+
+    /* PRODUCTS */
+    .products-section { padding:6rem 0; background:var(--white); }
+    .filters { display:flex; justify-content:center; gap:0.6rem; flex-wrap:wrap; margin-bottom:3.5rem; min-height:42px; align-items:center; }
+    .filter-btn { font-family:'Jost',sans-serif; font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; padding:0.55rem 1.4rem; border:1px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; transition:all 0.25s; }
+    .filter-btn:hover,.filter-btn.active { background:var(--purple); color:var(--white); border-color:var(--purple); }
+    .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:2rem; }
+    .product-card { background:var(--white); border:1px solid var(--border); overflow:hidden; transition:box-shadow 0.3s,transform 0.3s; }
+    .product-card:hover { box-shadow:0 12px 40px rgba(91,45,142,0.12); transform:translateY(-4px); }
+    .product-image-wrap { position:relative; overflow:hidden; aspect-ratio:3/4; background:var(--purple-mist); }
+    .product-image-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; }
+    .product-card:hover .product-image-wrap img { transform:scale(1.06); }
+    .product-badge { position:absolute; top:1rem; left:1rem; background:var(--purple); color:var(--white); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.3rem 0.7rem; }
+    .product-badge.sold { background:var(--black); }
+    .product-actions { position:absolute; bottom:0; left:0; right:0; background:rgba(59,26,99,0.92); display:flex; flex-direction:column; gap:0.5rem; padding:1rem; transform:translateY(100%); transition:transform 0.35s ease; }
+    .product-card:hover .product-actions { transform:translateY(0); }
+    .product-actions a,.product-actions button { display:flex; align-items:center; justify-content:center; gap:0.4rem; text-align:center; font-family:'Jost',sans-serif; font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; padding:0.7rem; cursor:pointer; border:none; transition:background 0.2s; }
+    .btn-buy { background:var(--gold); color:var(--black); }
+    .btn-buy:hover { background:#b8943e; }
+    .btn-wa { background:rgba(37,211,102,0.18); color:var(--white); border:1px solid rgba(37,211,102,0.4) !important; }
+    .btn-wa:hover { background:rgba(37,211,102,0.32); }
+    .product-info { padding:1.2rem 1.2rem 1.4rem; }
+    .product-category { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--purple-light); margin-bottom:0.4rem; }
+    .product-name { font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--black); margin-bottom:0.5rem; }
+    .product-price { font-family:'Jost',sans-serif; font-size:1rem; font-weight:600; color:var(--purple); }
+    .product-desc { font-size:0.78rem; color:var(--text-muted); line-height:1.6; margin-top:0.4rem; }
+    .no-products { grid-column:1/-1; text-align:center; padding:4rem; color:var(--text-muted); font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-style:italic; }
+
+    /* PROMISE */
+    .promise-section { padding:6rem 0; background:var(--purple-deep); color:var(--white); }
+    .promise-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    .promise-text .tag { color:var(--gold); margin-bottom:1rem; display:block; }
+    .promise-text h2 { font-size:clamp(2rem,3.5vw,3.5rem); margin-bottom:1.5rem; }
+    .promise-text p { font-size:0.9rem; color:rgba(255,255,255,0.75); line-height:1.9; margin-bottom:2rem; max-width:440px; }
+    .promise-items { display:flex; flex-direction:column; gap:1.5rem; margin-bottom:2.5rem; }
+    .promise-item { display:flex; align-items:flex-start; gap:1rem; }
+    .promise-icon { flex-shrink:0; width:36px; height:36px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:1rem; }
+    .promise-item-text h4 { font-family:'Jost',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.3rem; }
+    .promise-item-text p { font-size:0.8rem; color:rgba(255,255,255,0.65); line-height:1.6; margin:0; }
+    .promise-image-grid { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:0.8rem; height:480px; }
+    .promise-image-grid img { width:100%; height:100%; object-fit:cover; opacity:0.85; }
+    .promise-image-grid img:first-child { grid-row:1/-1; }
+
+    /* NEWSLETTER */
+    .newsletter { background:var(--purple-mist); padding:5rem 2rem; text-align:center; border-top:1px solid var(--border); }
+    .newsletter .tag { display:block; margin-bottom:0.8rem; }
+    .newsletter h2 { font-size:clamp(1.8rem,3vw,3rem); margin-bottom:0.8rem; }
+    .newsletter p { color:var(--text-muted); font-size:0.88rem; max-width:440px; margin:0 auto 2rem; line-height:1.7; }
+    .newsletter-form { display:flex; max-width:420px; margin:0 auto; }
+    .newsletter-form input { flex:1; font-family:'Jost',sans-serif; font-size:0.82rem; padding:0.9rem 1.2rem; border:1px solid var(--purple-light); background:var(--white); color:var(--black); outline:none; }
+    .newsletter-form input::placeholder { color:var(--text-muted); }
+    .newsletter-form button { background:var(--purple); color:var(--white); border:none; padding:0.9rem 1.6rem; font-family:'Jost',sans-serif; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; transition:background 0.3s; }
+    .newsletter-form button:hover { background:var(--purple-deep); }
+
+    /* FOOTER */
+    footer { background:var(--black); color:rgba(255,255,255,0.75); padding:4rem 0 2rem; }
+    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+    .footer-brand .logo { color:var(--white); font-size:1.3rem; margin-bottom:1rem; display:block; }
+    .footer-brand p { font-size:0.8rem; line-height:1.8; color:rgba(255,255,255,0.55); max-width:220px; }
+    .footer-socials { display:flex; gap:0.8rem; margin-top:1.5rem; }
+    .footer-socials a { width:36px; height:36px; border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.6); transition:all 0.25s; }
+    .footer-socials a:hover { border-color:var(--purple-light); color:var(--purple-light); background:rgba(139,92,200,0.15); }
+    .footer-socials a svg { width:15px; height:15px; }
+    .footer-col h4 { font-family:'Jost',sans-serif; font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--white); margin-bottom:1.2rem; }
+    .footer-col ul { display:flex; flex-direction:column; gap:0.7rem; }
+    .footer-col ul a { font-size:0.8rem; color:rgba(255,255,255,0.55); transition:color 0.2s; }
+    .footer-col ul a:hover { color:var(--purple-light); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.08); padding-top:1.8rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+    .footer-bottom p { font-size:0.72rem; color:rgba(255,255,255,0.4); letter-spacing:0.05em; }
+
+    /* CART SIDEBAR */
+    .cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1999; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+    .cart-overlay.open { opacity:1; pointer-events:all; }
+    .cart-sidebar { position:fixed; top:0; right:0; width:400px; height:100%; background:var(--white); z-index:2000; display:flex; flex-direction:column; transform:translateX(100%); transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); box-shadow:-8px 0 40px rgba(0,0,0,0.15); }
+    .cart-sidebar.open { transform:translateX(0); }
+    .cart-header { display:flex; align-items:center; justify-content:space-between; padding:1.5rem 1.8rem; border-bottom:1px solid var(--border); }
+    .cart-header h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; }
+    .cart-close { background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--text-muted); transition:color 0.2s; }
+    .cart-close:hover { color:var(--black); }
+    .cart-items { flex:1; overflow-y:auto; padding:1.5rem 1.8rem; }
+    .cart-empty { text-align:center; padding:3rem 0; color:var(--text-muted); font-style:italic; font-family:'Cormorant Garamond',serif; font-size:1.1rem; }
+    .cart-item { display:grid; grid-template-columns:80px 1fr auto; gap:1rem; align-items:start; padding:1rem 0; border-bottom:1px solid var(--border); }
+    .cart-item img { width:80px; height:100px; object-fit:cover; background:var(--purple-mist); }
+    .cart-item-info h4 { font-family:'Cormorant Garamond',serif; font-size:1rem; margin-bottom:0.3rem; }
+    .cart-item-info p { font-size:0.75rem; color:var(--text-muted); }
+    .cart-item-price { font-weight:600; color:var(--purple); font-size:0.9rem; }
+    .cart-item-remove { background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:0.8rem; transition:color 0.2s; padding:0.2rem; }
+    .cart-item-remove:hover { color:#c0392b; }
+    .cart-footer { padding:1.5rem 1.8rem; border-top:1px solid var(--border); background:var(--off-white); }
+    .cart-total { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem; }
+    .cart-total span { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); }
+    .cart-total strong { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--purple-deep); }
+    .cart-actions { display:flex; flex-direction:column; gap:0.8rem; }
+    .cart-actions a,.cart-actions button { display:flex; align-items:center; justify-content:center; gap:0.5rem; text-align:center; font-family:'Jost',sans-serif; font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; padding:1rem; cursor:pointer; border:none; }
+    .btn-checkout { background:var(--purple); color:var(--white); transition:background 0.3s; }
+    .btn-checkout:hover { background:var(--purple-deep); }
+    .btn-whatsapp-checkout { background:#25D366; color:var(--white); transition:background 0.3s; }
+    .btn-whatsapp-checkout:hover { background:#1ebe5d; }
+
+    /* MOBILE NAV */
+    .mobile-nav { position:fixed; top:0; left:0; width:80%; max-width:320px; height:100%; background:var(--white); z-index:3000; transform:translateX(-100%); transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); padding:5rem 2rem 2rem; box-shadow:8px 0 40px rgba(0,0,0,0.15); }
+    .mobile-nav.open { transform:translateX(0); }
+    .mobile-nav ul { display:flex; flex-direction:column; gap:1.5rem; }
+    .mobile-nav ul a { font-size:1.1rem; font-family:'Cormorant Garamond',serif; color:var(--black); letter-spacing:0.05em; transition:color 0.2s; }
+    .mobile-nav ul a:hover { color:var(--purple); }
+    .mobile-nav-close { position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); }
+    .mobile-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:2999; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+    .mobile-overlay.open { opacity:1; pointer-events:all; }
+
+    /* LOADER */
+    .products-loading { grid-column:1/-1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4rem; gap:1rem; color:var(--text-muted); }
+    .spinner { width:36px; height:36px; border:2px solid var(--border); border-top-color:var(--purple); border-radius:50%; animation:spin 0.8s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* ── NEW BADGE ─────────────────────────────────────────────── */
+    .new-badge {
+      display:inline-block; background:#E91E8C; color:#fff;
+      font-family:'Jost',sans-serif; font-size:0.48rem; font-weight:700;
+      letter-spacing:0.15em; text-transform:uppercase;
+      padding:0.18rem 0.45rem; border-radius:2px;
+      vertical-align:middle; margin-left:0.35rem;
+      animation:newPulse 2s ease-in-out infinite;
+    }
+    @keyframes newPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.82;transform:scale(1.05)} }
+    .product-badge.new-arrival { background:#E91E8C; }
+    .mood-card .new-cat-dot {
+      position:absolute; top:0.9rem; right:0.9rem; background:#E91E8C;
+      color:#fff; font-size:0.5rem; font-weight:700; letter-spacing:0.15em;
+      text-transform:uppercase; padding:0.22rem 0.55rem; border-radius:2px;
+    }
+
+    /* ── FLOATING CONTACT ICON ─────────────────────────────────── */
+    .float-contact {
+      position:fixed; bottom:1.8rem; right:1.8rem; z-index:3500;
+      display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    }
+    .float-contact a {
+      width:52px; height:52px; border-radius:50%;
+      background:#25D366; color:#fff;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(37,211,102,0.45);
+      transition:transform 0.25s, box-shadow 0.25s;
+      font-size:1.5rem; text-decoration:none;
+    }
+    .float-contact a:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(37,211,102,0.55); }
+    .float-contact-label {
+      background:var(--purple-deep); color:#fff;
+      font-family:'Jost',sans-serif; font-size:0.58rem; font-weight:500;
+      letter-spacing:0.1em; text-transform:uppercase;
+      padding:0.25rem 0.65rem; border-radius:20px; white-space:nowrap;
+      opacity:0; transform:translateY(4px); transition:opacity 0.2s, transform 0.2s;
+      pointer-events:none;
+    }
+    .float-contact:hover .float-contact-label { opacity:1; transform:translateY(0); }
+
+    /* ── FULL-PAGE OVERLAY (New Arrivals & Sales) ──────────────── */
+    .page-overlay {
+      position:fixed; inset:0; background:var(--off-white); z-index:5000;
+      overflow-y:auto; display:none;
+    }
+    .page-overlay.open { display:block; }
+    .page-overlay-header {
+      background:rgba(255,255,255,0.96); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border); padding:0 2rem;
+      display:flex; align-items:center; justify-content:space-between;
+      height:62px; position:sticky; top:0; z-index:10;
+    }
+    .page-overlay-header h2 {
+      font-family:'Cormorant Garamond',serif; font-size:1.6rem;
+      color:var(--purple-deep); margin:0;
+    }
+    .page-overlay-close {
+      background:none; border:none; font-size:1.4rem; cursor:pointer;
+      color:var(--text-muted); transition:color 0.2s;
+    }
+    .page-overlay-close:hover { color:var(--black); }
+    .page-overlay-body { padding:3rem 2rem 5rem; max-width:1260px; margin:0 auto; }
+    .category-group { margin-bottom:3.5rem; }
+    .category-group-title {
+      font-family:'Jost',sans-serif; font-size:0.65rem; font-weight:600;
+      letter-spacing:0.28em; text-transform:uppercase; color:var(--purple);
+      border-bottom:1px solid var(--border); padding-bottom:0.6rem;
+      margin-bottom:1.5rem;
+    }
+    .sales-empty {
+      text-align:center; padding:5rem 2rem;
+      font-family:'Cormorant Garamond',serif; font-size:1.8rem;
+      font-style:italic; color:var(--purple-deep); line-height:1.5;
+    }
+    .sales-empty span { display:block; font-family:'Jost',sans-serif; font-size:0.8rem; font-style:normal; color:var(--text-muted); margin-top:0.8rem; letter-spacing:0.12em; }
+
+    /* INFO MODAL */
+    .info-modal { position:fixed; top:0; right:0; width:420px; max-width:100%; height:100%; background:var(--white); z-index:2000; display:flex; flex-direction:column; transform:translateX(100%); transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); box-shadow:-8px 0 40px rgba(0,0,0,0.15); }
+    .info-modal.open { transform:translateX(0); }
+    .info-modal-header { display:flex; align-items:center; justify-content:space-between; padding:1.5rem 1.8rem; border-bottom:1px solid var(--border); }
+    .info-modal-header h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; }
+    .info-modal-body { flex:1; overflow-y:auto; padding:2rem 1.8rem; font-size:0.88rem; line-height:1.85; color:var(--text-muted); }
+    .info-modal-body h4 { font-family:'Jost',sans-serif; font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--purple); margin:1.5rem 0 0.5rem; }
+    .info-modal-body h4:first-child { margin-top:0; }
+
+    /* NAVBAR LOGO IMAGE */
+    .logo-img { height: 42px; width: auto; object-fit: contain; display: block; }
+    .logo-img-footer { height: 36px; width: auto; object-fit: contain; display: block; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+
+    /* POST-PAYMENT MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:4000; opacity:0; pointer-events:none; transition:opacity 0.3s; display:flex; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal-box { background:var(--white); max-width:480px; width:100%; padding:2.5rem; position:relative; animation:slideUp 0.35s ease; max-height:90vh; overflow-y:auto; }
+    @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .modal-box h3 { font-family:'Cormorant Garamond',serif; font-size:1.8rem; margin-bottom:0.5rem; color:var(--purple-deep); }
+    .modal-box p { font-size:0.85rem; color:var(--text-muted); line-height:1.7; margin-bottom:1.5rem; }
+    .modal-close { position:absolute; top:1rem; right:1.2rem; background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--text-muted); }
+    .delivery-options { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+    .delivery-option { border:2px solid var(--border); padding:1.5rem 1rem; text-align:center; cursor:pointer; transition:all 0.2s; }
+    .delivery-option:hover, .delivery-option.selected { border-color:var(--purple); background:var(--purple-mist); }
+    .delivery-option .icon { font-size:1.8rem; margin-bottom:0.5rem; }
+    .delivery-option h4 { font-family:'Jost',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--black); }
+    .delivery-form { display:flex; flex-direction:column; gap:0.9rem; }
+    .delivery-form input, .delivery-form textarea { font-family:'Jost',sans-serif; font-size:0.85rem; padding:0.85rem 1rem; border:1px solid var(--purple-light); background:var(--white); color:var(--black); outline:none; width:100%; }
+    .delivery-form input::placeholder, .delivery-form textarea::placeholder { color:var(--text-muted); }
+    .delivery-form textarea { resize:vertical; min-height:80px; }
+    .pickup-msg { background:var(--purple-mist); border:1px solid var(--border); padding:1.5rem; text-align:center; margin-bottom:1.5rem; }
+    .pickup-msg p { font-style:italic; font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--purple-deep); margin-bottom:1rem; }
+    .modal-step { display:none; }
+    .modal-step.active { display:block; }
+    .success-check { font-size:3rem; text-align:center; margin-bottom:1rem; }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px) { .mood-grid { grid-template-columns:repeat(2,1fr); } .footer-grid { grid-template-columns:1fr 1fr; gap:2rem; } .promise-grid { gap:3rem; } }
+    @media(max-width:768px) { .nav-links { display:none; } .hamburger { display:flex; } .hero { grid-template-columns:1fr; } .hero-image { height:55vw; min-height:300px; } .hero-text { padding:3.5rem 2rem; } .mood-grid { grid-template-columns:1fr 1fr; gap:0.8rem; } .promise-grid { grid-template-columns:1fr; } .promise-image-grid { height:300px; } .cart-sidebar { width:100%; } .footer-grid { grid-template-columns:1fr; gap:2rem; } .footer-bottom { flex-direction:column; text-align:center; } }
+    @media(max-width:480px) { .hero-btns { flex-direction:column; } .mood-grid { grid-template-columns:1fr; } .newsletter-form { flex-direction:column; } .newsletter-form input,.newsletter-form button { width:100%; } }
+  </style>
+</head>
+<body>
+
+  <!-- EDIT: Change promo text in the announcement bar -->
+  <div class="announcement">✦ Free delivery on orders over ₦70,000 &nbsp;·&nbsp; New arrivals every week ✦</div>
+
+  <!-- NAVBAR ═══════════════════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+
+        <!-- EDIT: Brand name in navbar -->
+        <span class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})" id="navLogo">Teema<span>'s</span> Collections</span>
+
+        <!--
+          EDIT_CATEGORIES: Update these nav links to match your categories.
+          The text after filterProducts('...') must EXACTLY match the category names
+          in your Google Sheet (case-sensitive).
+        -->
+        <ul class="nav-links">
+          <li><a href="javascript:void(0)" onclick="filterProducts('all');scrollToSection('products')">All Pieces</a></li>
+          <li><a href="javascript:void(0)" onclick="openNewArrivals()" style="color:var(--purple);font-weight:600;">New Arrivals <span class="new-badge">New</span></a></li>
+          <li><a href="javascript:void(0)" onclick="openSales()" style="color:var(--gold);font-weight:600;">Sales</a></li>
+          <li><a href="javascript:void(0)" onclick="filterProducts('Dresses');scrollToSection('products')">Dresses</a></li>
+          <li><a href="javascript:void(0)" onclick="filterProducts('Tops');scrollToSection('products')">Tops</a></li>
+          <li><a href="javascript:void(0)" onclick="filterProducts('Skirts');scrollToSection('products')">Skirts</a></li>
+          <li><a href="javascript:void(0)" onclick="filterProducts('Trousers');scrollToSection('products')">Trousers</a></li>
+          <li><a href="javascript:void(0)" onclick="scrollToSection('mood-sector')">Collections</a></li>
+          <li><a href="javascript:void(0)" onclick="scrollToSection('about')">Our Story</a></li>
+          <li><a href="javascript:void(0)" onclick="scrollToSection('contact')">Contact</a></li>
+        </ul>
+
+        <div class="nav-icons">
+          <button onclick="openCart()" class="cart-btn" aria-label="Cart">
+            🛍️ <span class="cart-count" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV DRAWER ═══════════════════════════════════════════ -->
+  <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+    <!-- EDIT_CATEGORIES: Keep these matching the desktop nav above -->
+    <ul>
+      <li><a href="javascript:void(0)" onclick="filterProducts('all');scrollToSection('products');closeMobileNav()">All Pieces</a></li>
+      <li><a href="javascript:void(0)" onclick="openNewArrivals();closeMobileNav()" style="color:var(--purple);font-weight:600;">New Arrivals <span class="new-badge">New</span></a></li>
+      <li><a href="javascript:void(0)" onclick="openSales();closeMobileNav()" style="color:var(--gold);font-weight:600;">Sales</a></li>
+      <li><a href="javascript:void(0)" onclick="filterProducts('Dresses');scrollToSection('products');closeMobileNav()">Dresses</a></li>
+      <li><a href="javascript:void(0)" onclick="filterProducts('Tops');scrollToSection('products');closeMobileNav()">Tops</a></li>
+      <li><a href="javascript:void(0)" onclick="filterProducts('Skirts');scrollToSection('products');closeMobileNav()">Skirts</a></li>
+      <li><a href="javascript:void(0)" onclick="filterProducts('Trousers');scrollToSection('products');closeMobileNav()">Trousers</a></li>
+      <li><a href="javascript:void(0)" onclick="scrollToSection('mood-sector');closeMobileNav()">Collections</a></li>
+      <li><a href="javascript:void(0)" onclick="scrollToSection('about');closeMobileNav()">Our Story</a></li>
+      <li><a href="javascript:void(0)" onclick="scrollToSection('contact');closeMobileNav()">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO ═════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-text">
+      <!-- EDIT: Change this small label text -->
+      <span class="tag">✦ Established Heritage · Nigeria</span>
+      <!-- EDIT: Main headline — change text between the tags -->
+      <h1>Welcome<br><em>My Queens.</em></h1>
+      <!-- EDIT: Sub-headline paragraph -->
+      <p>Luxury is defined by the fit, not the price. Discover curated feminine fashion — classy, elegant and effortlessly affordable.</p>
+      <!-- EDIT: Button labels -->
+      <div class="hero-btns">
+        <button id="heroBtnPrimary" onclick="scrollToSection('products')" class="btn-primary">Shop The Collection</button>
+        <button id="heroBtnOutline" onclick="scrollToSection('mood-sector')" class="btn-outline">Explore Moods</button>
+      </div>
+      <div class="scroll-hint">Scroll to explore</div>
+    </div>
+    <div class="hero-image">
+      <!--
+        CHANGE IMAGE HERE — Hero banner image (right side of the homepage)
+        Replace the URL with a direct link to your photo.
+        HOW: Upload your image to Netlify, copy the URL, paste it in src="..."
+        Example: src="https://teemascollections.netlify.app/my-photo.jpg"
+      -->
+      <img
+        src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.43.jpeg"
+        alt="Teema's Collections Luxury Fashion Nigeria"
+        loading="eager"
+      />
+      <!-- EDIT: Badge text on the hero image -->
+      <div class="hero-badge">
+        <p>Our Promise</p>
+        <strong>"Uncompromised Standards. Unbeatable Prices."</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE BAR ══════════════════════════════════════════════════ -->
+  <!-- EDIT: Change the words in the scrolling ticker bar -->
+  <div class="marquee-bar" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Teema's Collections</span><span>Feminine Luxury Thrift</span><span>Nigeria's Finest</span>
+      <span>Hey My Queens</span><span>Classy · Elegant · Affordable</span><span>New Arrivals Weekly</span>
+      <span>Teema's Collections</span><span>Feminine Luxury Thrift</span><span>Nigeria's Finest</span>
+      <span>Hey My Queens</span><span>Classy · Elegant · Affordable</span><span>New Arrivals Weekly</span>
+    </div>
+  </div>
+
+  <!-- QUOTE STRIP ══════════════════════════════════════════════════ -->
+  <!-- EDIT: Change the quote text -->
+  <div class="quote-strip">
+    <blockquote>"Uncompromised Standards. Unbeatable Prices."</blockquote>
+    <cite>— Teema's Collections</cite>
+  </div>
+
+  <!-- MOOD / COLLECTIONS ═══════════════════════════════════════════
+       EDIT_MOOD_CARD: For each card below you can change:
+       1. The image (find CHANGE IMAGE HERE comment)
+       2. The collection label (e.g. "Collection 01")
+       3. The collection name (the h3 text)
+       4. The description paragraph
+       5. The filter category in onclick (must match your Google Sheet categories)
+       To ADD a new mood card, copy one entire <div class="mood-card">...</div>
+       block and paste it after the last one, then update the content.
+  ════════════════════════════════════════════════════════════════ -->
+  <section class="mood-section" id="mood-sector">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">The Curation</span>
+        <!-- EDIT: Section title -->
+        <h2>Shop By Your Mood</h2>
+      </div>
+      <div class="mood-grid">
+
+        <!-- EDIT_MOOD_CARD 1 -->
+        <div class="mood-card">
+          <!--
+            CHANGE IMAGE HERE — Mood Card 1
+            Replace the src URL with your own image
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(3).jpeg" alt="Dresses Collection" />
+          <div class="mood-card-overlay">
+            <span class="tag">Collection 01</span>      <!-- EDIT: label -->
+            <h3>Teema's Escape</h3>                      <!-- EDIT: name -->
+            <p>For the wanderer and the dreamer. Lightweight luxury for slow mornings.</p> <!-- EDIT: description -->
+            <!-- EDIT: Change 'Dresses' to the category this card should filter -->
+            <button class="mood-link" onclick="filterProducts('Dresses');scrollToSection('products')">View Collection →</button>
+          </div>
+        </div>
+
+        <!-- EDIT_MOOD_CARD 2 -->
+        <div class="mood-card">
+          <!--
+            CHANGE IMAGE HERE — Mood Card 2
+            Replace the src URL with your own image
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(2).jpeg" alt="Tops Collection" />
+          <div class="mood-card-overlay">
+            <span class="tag">Collection 02</span>
+            <h3>Soft Moments</h3>
+            <p>Delicate silhouettes for the queen who moves through life with grace.</p>
+            <!-- EDIT: Change 'Tops' to the category this card should filter -->
+            <button class="mood-link" onclick="filterProducts('Tops');scrollToSection('products')">Explore →</button>
+          </div>
+        </div>
+
+        <!-- EDIT_MOOD_CARD 3 -->
+        <div class="mood-card">
+          <!--
+            CHANGE IMAGE HERE — Mood Card 3
+            Replace the src URL with your own image
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(4).jpeg" alt="Skirts Collection" />
+          <div class="mood-card-overlay">
+            <span class="tag">Collection 03</span>
+            <h3>After Dark</h3>
+            <p>Regal presence. Where confidence meets the craftsmanship of the night.</p>
+            <!-- EDIT: Change 'Skirts' to the category this card should filter -->
+            <button class="mood-link" onclick="filterProducts('Skirts');scrollToSection('products')">Shop The Evening →</button>
+          </div>
+        </div>
+
+        <!-- EDIT_MOOD_CARD 4 -->
+        <div class="mood-card">
+          <!--
+            CHANGE IMAGE HERE — Mood Card 4
+            Replace the src URL with your own image
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg" alt="Trousers Collection" />
+          <div class="mood-card-overlay">
+            <span class="tag">Collection 04</span>
+            <h3>Office Edition</h3>
+            <p>Boss energy in every piece. Dress the part, own the room.</p>
+            <!-- EDIT: Change 'Trousers' to the category this card should filter -->
+            <button class="mood-link" onclick="filterProducts('Trousers');scrollToSection('products')">View →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS SECTION ═════════════════════════════════════════════
+       Products are loaded automatically from your Google Sheets CSV.
+       Filter buttons are built from your sheet categories automatically.
+  ════════════════════════════════════════════════════════════════ -->
+  <section class="products-section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag" id="productsSectionTag">Featured Sector</span>
+        <!-- EDIT: Products section heading -->
+        <h2 id="productsSectionH2">The Teema's Signature Selection</h2>
+      </div>
+      <!-- Filter buttons built automatically from CSV categories -->
+      <div class="filters" id="filterButtons"></div>
+      <!-- Products grid — populated from CSV -->
+      <div class="products-grid" id="productsGrid">
+        <div class="products-loading">
+          <div class="spinner"></div>
+          <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;">Loading Collection…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR PROMISE / ABOUT ══════════════════════════════════════════ -->
+  <section class="promise-section" id="about">
+    <div class="container">
+      <div class="promise-grid">
+        <div class="promise-text">
+          <!-- EDIT: Section tag label -->
+          <span class="tag">The Teema's Promise</span>
+          <!-- EDIT: Heading -->
+          <h2>Quality in Every Piece</h2>
+          <!-- EDIT: Description paragraph -->
+          <p>We source the finest thrift and ready-made pieces from UK🇬🇧/US🇺🇸. Every item in our collection is vetted for quality, trend, and ultimate comfort — because our queens deserve nothing less.</p>
+          <div class="promise-items">
+            <!-- EDIT: Change icon (emoji), title and description for each promise item -->
+            <div class="promise-item">
+              <div class="promise-icon">👑</div>
+              <div class="promise-item-text">
+                <h4>100% Authentic</h4>
+                <p>Handpicked for the fashion-forward Nigerian queen.</p>
+              </div>
+            </div>
+            <div class="promise-item">
+              <div class="promise-icon">💜</div>
+              <div class="promise-item-text">
+                <h4>Feminine Luxury</h4>
+                <p>Every piece curated with elegance and class in mind.</p>
+              </div>
+            </div>
+            <div class="promise-item">
+              <div class="promise-icon">💎</div>
+              <div class="promise-item-text">
+                <h4>Affordable Excellence</h4>
+                <p>Luxury is a feeling, not a price tag. We make it accessible.</p>
+              </div>
+            </div>
+          </div>
+          <!-- EDIT: Update WhatsApp link (replace number after wa.me/) -->
+          <a href="https://wa.me/2348039567566" target="_blank" rel="noopener"
+             class="btn-outline"
+             style="border-color:rgba(255,255,255,0.3);color:#fff;display:inline-flex;align-items:center;gap:0.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat With Us on WhatsApp
+          </a>
+        </div>
+
+        <div class="promise-image-grid">
+          <!--
+            CHANGE IMAGE HERE — Our Promise section, Image 1 (tall left image)
+            Replace the src URL
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(1).jpeg" alt="Teema's Collections" />
+          <!--
+            CHANGE IMAGE HERE — Our Promise section, Image 2 (top right)
+            Replace the src URL
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(2).jpeg" alt="Teema's Collections Style" />
+          <!--
+            CHANGE IMAGE HERE — Our Promise section, Image 3 (bottom right)
+            Replace the src URL
+          -->
+          <img src="https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(4).jpeg" alt="Teema's Collections Elegance" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER ════════════════════════════════════════════════════ -->
+  <!-- EDIT: Change heading and sub-text -->
+  <section class="newsletter" id="contact">
+    <span class="tag">Stay In The Loop</span>
+    <h2>Hey My Queens 👑</h2>
+    <p>Join our royal list — be the first to know about new arrivals, exclusive drops and special offers.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Your email address" id="newsletterEmail" />
+      <button onclick="subscribeNewsletter()">Join The List</button>
+    </div>
+  </section>
+
+  <!-- FOOTER ════════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <!-- EDIT: Footer brand name -->
+          <span class="logo" id="footerLogo">Teema<span style="color:var(--gold)">'s</span> Collections</span>
+          <!-- EDIT: Footer tagline -->
+          <p>Nigeria's Feminine Luxury Thrift brand. Curating the best of classy, elegant and affordable fashion for our queens.</p>
+
+          <div class="footer-socials">
+            <!-- EDIT: Replace 2348039567566 with your WhatsApp number -->
+            <a href="https://wa.me/2348039567566" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+
+            <!--
+              EDIT_INSTAGRAM: Replace TEEMAS_COLLECTIONS_NG with your Instagram username
+              ⚠️ DO NOT add @ in the URL — Instagram URLs have no @
+              Correct format: https://www.instagram.com/TEEMAS_COLLECTIONS_NG
+            -->
+            <a href="https://www.instagram.com/TEEMAS_COLLECTIONS_NG" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+
+            <!--
+              EDIT_TIKTOK: Replace @TEEMASCOLLECTIONS1 with your TikTok username
+              ✅ TikTok URLs DO include @ — keep it: https://www.tiktok.com/@TEEMASCOLLECTIONS1
+            -->
+            <a href="https://www.tiktok.com/@TEEMASCOLLECTIONS1" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- EDIT_CATEGORIES: Keep footer categories matching your main categories -->
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="filterProducts('all');scrollToSection('products')">All Pieces</a></li>
+            <li><a href="javascript:void(0)" onclick="filterProducts('Dresses');scrollToSection('products')">Dresses</a></li>
+            <li><a href="javascript:void(0)" onclick="filterProducts('Tops');scrollToSection('products')">Tops</a></li>
+            <li><a href="javascript:void(0)" onclick="filterProducts('Skirts');scrollToSection('products')">Skirts</a></li>
+            <li><a href="javascript:void(0)" onclick="filterProducts('Trousers');scrollToSection('products')">Trousers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="scrollToSection('mood-sector')">Collections</a></li>
+            <li><a href="javascript:void(0)" onclick="scrollToSection('about')">Our Story</a></li>
+            <li><a href="javascript:void(0)" onclick="scrollToSection('contact')">Newsletter</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="https://wa.me/2348039567566" target="_blank" rel="noopener">WhatsApp Us</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('shipping')">Shipping Info</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('returns')">Returns Policy</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('sustainability')">Sustainability</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <!-- EDIT: Copyright text -->
+        <p>© 2026 Teema's Collections. All Rights Reserved. · Nigeria</p>
+        <p style="color:rgba(255,255,255,0.25);">Hey My Queens 👑</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- INFO MODAL (Shipping / Returns / Sustainability) ═══════════ -->
+  <div class="cart-overlay" id="infoOverlay" onclick="closeInfoModal()"></div>
+  <div class="info-modal" id="infoModal">
+    <div class="info-modal-header">
+      <h3 id="infoModalTitle">Info</h3>
+      <button onclick="closeInfoModal()" class="cart-close">✕</button>
+    </div>
+    <div class="info-modal-body" id="infoModalBody"></div>
+  </div>
+
+  <!-- CART SIDEBAR ═════════════════════════════════════════════════ -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping Cart">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">₦0</strong>
+      </div>
+      <div class="cart-actions">
+        <button class="btn-checkout" onclick="initiateCheckout()">
+          💳 Get Your Items Now
+        </button>
+        <a class="btn-whatsapp-checkout" href="https://wa.me/2348039567566" target="_blank" rel="noopener">Message Us Directly</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- POST-PAYMENT DELIVERY/PICKUP MODAL ═══════════════════════ -->
+  <div class="modal-overlay" id="postPaymentOverlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closePostPayment()">✕</button>
+
+      <!-- Step 1: Choose Delivery or Pickup -->
+      <div class="modal-step active" id="stepChoose">
+        <h3>Almost There, My Queen! 👑</h3>
+        <p>Payment received. How would you like to receive your items?</p>
+        <div class="delivery-options">
+          <div class="delivery-option" id="optDelivery" onclick="selectDeliveryOption('delivery')">
+            <div class="icon">🚚</div>
+            <h4>Delivery</h4>
+          </div>
+          <div class="delivery-option" id="optPickup" onclick="selectDeliveryOption('pickup')">
+            <div class="icon">🏪</div>
+            <h4>Pickup</h4>
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="proceedFromChoose()">Continue →</button>
+      </div>
+
+      <!-- Step 2a: Delivery Form -->
+      <div class="modal-step" id="stepDelivery">
+        <h3>Delivery Details 🚚</h3>
+        <p>Fill in your delivery information and we'll get your order to you, my queen.</p>
+        <div class="delivery-form">
+          <input type="text" id="deliveryName" placeholder="Full Name" />
+          <input type="tel" id="deliveryPhone" placeholder="Phone Number" />
+          <textarea id="deliveryAddress" placeholder="Delivery Address / Park / Landmark"></textarea>
+          <input type="date" id="deliveryDate" />
+          <button class="btn-primary" style="width:100%;border:none" onclick="submitDelivery()">Confirm Delivery →</button>
+        </div>
+      </div>
+
+      <!-- Step 2b: Pickup -->
+      <div class="modal-step" id="stepPickup">
+        <h3>Pickup Details 🏪</h3>
+        <div class="pickup-msg">
+          <p>"Let us know when you'd be coming, my queen 💜"</p>
+        </div>
+        <a id="pickupWABtn" href="#" target="_blank" rel="noopener"
+           class="btn-primary" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;text-decoration:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Message Us via WhatsApp
+        </a>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div class="modal-step" id="stepSuccess">
+        <div class="success-check">💜</div>
+        <h3 style="text-align:center">Order Confirmed!</h3>
+        <p style="text-align:center">Thank you, my queen! We've received your order and delivery details. We'll be in touch soon. 👑</p>
+        <button class="btn-primary" style="width:100%;border:none" onclick="closePostPayment()">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── FLOATING CONTACT ICON ──────────────────────────────────────
+       Edit the href below to change where it links (WhatsApp, email, etc.)
+       WA link format: https://wa.me/YOURCOUNTRYCODENUMBER
+  ──────────────────────────────────────────────────────────────── -->
+  <div class="float-contact">
+    <!-- ▼ FLOAT_CONTACT_LINK — change this URL ▼ -->
+    <a href="https://wa.me/2348039567566" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" title="Chat on WhatsApp">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <span class="float-contact-label">Chat with us</span>
+  </div>
+
+  <!-- ── NEW ARRIVALS PAGE ───────────────────────────────────────── -->
+  <div class="page-overlay" id="newArrivalsPage">
+    <div class="page-overlay-header">
+      <h2>New Arrivals ✨</h2>
+      <button class="page-overlay-close" onclick="closeNewArrivals()">✕ Close</button>
+    </div>
+    <div class="page-overlay-body" id="newArrivalsBody">
+      <div class="products-loading"><div class="spinner"></div><p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;">Loading New Arrivals…</p></div>
+    </div>
+  </div>
+
+  <!-- ── SALES PAGE ──────────────────────────────────────────────── -->
+  <div class="page-overlay" id="salesPage">
+    <div class="page-overlay-header">
+      <h2>💜 Sales</h2>
+      <button class="page-overlay-close" onclick="closeSales()">✕ Close</button>
+    </div>
+    <div class="page-overlay-body" id="salesBody">
+      <div class="products-loading"><div class="spinner"></div><p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;">Loading Sales…</p></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CMS MODULE — loads Supabase integration
+       Overrides loadProducts(), patches settings into DOM
+  ════════════════════════════════════════════════════════════════ -->
+  <script src="cms.js"></script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════════════════════════════ -->
+  <script>
+
+
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  ★ CONFIGURATION — EDIT THESE SETTINGS ★                     ║
+    // ╠═══════════════════════════════════════════════════════════════╣
+    // ║  STEP 1 — PASTE YOUR GOOGLE SHEETS CSV LINK BELOW             ║
+    // ║  HOW: File → Share → Publish to web → CSV → copy URL          ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+
+    // ▼ PASTE YOUR CSV LINK HERE ▼
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9a5ROp9IVB9ykk-K3lUO9tGBSlDJNjZLFeIaKlm2BsLJNnyhe0dOU1gPHQtwOvYB7TIVHyXmI1XYR/pub?output=csv";
+    // ▲ PASTE YOUR CSV LINK ABOVE ▲
+
+    // ── WA_NUMBER: Country code + number, no + or spaces ──────────
+    const WA_NUMBER = "2348039567566"; // ← WA_NUMBER
+
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  PAYSTACK CONFIG                                               ║
+    // ║  Paste your Paystack Public Key below (starts with pk_live_   ║
+    // ║  or pk_test_ for testing)                                      ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    const PAYSTACK_PUBLIC_KEY = "pk_live_5c20f68e16b9e84dd02a0bd49263c41fdedac87c"; // ← PASTE YOUR PAYSTACK KEY HERE
+
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  BUSINESS LOGO                                                 ║
+    // ║  Paste a direct image URL below to show your logo in the       ║
+    // ║  navbar and footer. Leave empty ("") to use text logo.         ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    const LOGO_URL = "https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779233956/Logo_hyry63.png"; // ← PASTE YOUR LOGO IMAGE URL HERE (e.g. "https://yoursite.com/logo.png")
+
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  GOOGLE SHEETS — APPS SCRIPT ENDPOINT                          ║
+    // ║  Paste your deployed Apps Script Web App URL below.            ║
+    // ║                                                                 ║
+    // ║  CORRECTED APPS SCRIPT (paste in your Google Apps Script):     ║
+    // ║  ─────────────────────────────────────────────────────────────  ║
+    // ║  function doPost(e) {                                           ║
+    // ║    var sheet = SpreadsheetApp                                   ║
+    // ║      .getActiveSpreadsheet()                                    ║
+    // ║      .getSheetByName(e.parameter.type === "newsletter"          ║
+    // ║        ? "Newsletter" : "Orders");                              ║
+    // ║    if (!sheet) return ContentService                            ║
+    // ║      .createTextOutput("Sheet not found");                      ║
+    // ║    var params = e.parameter;                                    ║
+    // ║    if (params.type === "newsletter") {                          ║
+    // ║      sheet.appendRow([new Date(), params.email]);               ║
+    // ║    } else {                                                      ║
+    // ║      sheet.appendRow([new Date(), params.name, params.phone,    ║
+    // ║        params.address, params.delivery_date, params.order_items,║
+    // ║        params.total, params.payment_ref]);                      ║
+    // ║    }                                                            ║
+    // ║    return ContentService                                        ║
+    // ║      .createTextOutput(JSON.stringify({status:"ok"}))           ║
+    // ║      .setMimeType(ContentService.MimeType.JSON);                ║
+    // ║  }                                                              ║
+    // ║  function doGet(e) { return doPost(e); }                        ║
+    // ║                                                                 ║
+    // ║  DEPLOY: Extensions → Apps Script → Deploy → New deployment     ║
+    // ║  Type: Web App | Execute as: Me | Access: Anyone                ║
+    // ║  Copy the /exec URL and paste below.                            ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  FORMSPREE SETUP (replaces Google Apps Script)                 ║
+    // ║                                                                 ║
+    // ║  HOW TO GET YOUR TWO ENDPOINTS (free, 2 min):                  ║
+    // ║  1. Go to https://formspree.io and sign up free                 ║
+    // ║  2. Click "+ New Form" → name it "Teema Orders"                 ║
+    // ║     → copy the endpoint like https://formspree.io/f/xabcdefg   ║
+    // ║     → paste it as ORDERS_ENDPOINT below                         ║
+    // ║  3. Click "+ New Form" → name it "Teema Newsletter"             ║
+    // ║     → copy that endpoint                                        ║
+    // ║     → paste it as NEWSLETTER_ENDPOINT below                     ║
+    // ║                                                                 ║
+    // ║  Submissions appear in your Formspree dashboard instantly.      ║
+    // ║  Enable "Google Sheets" plugin in each form to auto-export.     ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    const ORDERS_ENDPOINT     = "https://formspree.io/f/xqejeglr"; // ← e.g. "https://formspree.io/f/xabcdefg"
+    const NEWSLETTER_ENDPOINT = "https://formspree.io/f/mojbjpne"; // ← e.g. "https://formspree.io/f/xhijklmn"
+
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  SALES PAGE — Separate CSV for sale items                      ║
+    // ║  Leave empty ("") to show the "come back later" message.       ║
+    // ║  Format same as main CSV (name, price, category, image, etc.)  ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    // ▼ PASTE YOUR SALES CSV LINK HERE (or leave "" for no sales) ▼
+    const SALES_CSV_URL = ""; // ← e.g. "https://docs.google.com/.../pub?output=csv"
+    // ▲ SALES CSV ▲
+
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  NEW ARRIVALS — how many days back counts as "new"             ║
+    // ║  Products with a "date_added" column within this many days     ║
+    // ║  get the pink NEW badge. If no date_added column exists,       ║
+    // ║  the LAST NEW_ARRIVALS_COUNT products (by CSV row order) are   ║
+    // ║  treated as new.                                               ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    const NEW_ARRIVALS_DAYS  = 14;   // ← days that count as "new"
+    const NEW_ARRIVALS_COUNT = 8;    // ← fallback: last N products are "new"
+
+    // ── STATE ──────────────────────────────────────────────────────
+    let allProducts   = [];
+    let cart          = [];
+    let activeFilter  = "all";
+    let chosenDeliveryType = ""; // "delivery" or "pickup"
+
+    // ── LOGO INIT ──────────────────────────────────────────────────
+    (function initLogo() {
+      if (!LOGO_URL) return;
+      const navLogo = document.getElementById("navLogo");
+      if (navLogo) {
+        navLogo.innerHTML = `<img src="${LOGO_URL}" alt="Teema's Collections" class="logo-img" />`;
+        navLogo.style.cssText = "display:flex;align-items:center;padding:0";
+      }
+      const footerLogo = document.getElementById("footerLogo");
+      if (footerLogo) {
+        footerLogo.innerHTML = `<img src="${LOGO_URL}" alt="Teema's Collections" class="logo-img-footer" />`;
+        footerLogo.className = "";
+      }
+    })();
+
+    // ── PARSE CSV ──────────────────────────────────────────────────
+    function parseLine(line) {
+      const cols = []; let inQ = false, cur = "";
+      for (const ch of line) {
+        if (ch === '"') { inQ = !inQ; }
+        else if (ch === ',' && !inQ) { cols.push(cur); cur = ""; }
+        else cur += ch;
+      }
+      cols.push(cur);
+      return cols;
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (lines.length < 2) return [];
+      const headers = parseLine(lines[0]).map(h => h.replace(/^"|"$/g,"").toLowerCase().trim());
+      return lines.slice(1).map(line => {
+        const cols = parseLine(line);
+        const obj  = {};
+        headers.forEach((h, i) => { obj[h] = (cols[i] || "").replace(/^"|"$/g,"").trim(); });
+        return obj;
+      }).filter(p => p.name && p.name.length > 0);
+    }
+
+    // ── LOAD PRODUCTS FROM CSV ─────────────────────────────────────
+    async function loadProducts() {
+      if (!CSV_URL || CSV_URL.trim() === "" || CSV_URL.includes("PASTE_YOUR")) {
+        showDemo(); return;
+      }
+      try {
+        const res = await fetch(CSV_URL + "&t=" + Date.now());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const text = await res.text();
+        const products = parseCSV(text);
+        if (products.length === 0) throw new Error("No products");
+        allProducts = products;
+        renderProducts(allProducts);
+        buildFilterButtons();
+      } catch (e1) {
+        console.warn("Direct CSV failed:", e1.message, "— trying proxy…");
+        try {
+          const proxyURL = "https://api.allorigins.win/get?url=" + encodeURIComponent(CSV_URL);
+          const res  = await fetch(proxyURL);
+          const json = await res.json();
+          const products = parseCSV(json.contents);
+          if (products.length === 0) throw new Error("Empty via proxy");
+          allProducts = products;
+          renderProducts(allProducts);
+          buildFilterButtons();
+        } catch (e2) {
+          console.warn("CSV failed — showing demo:", e2.message);
+          showDemo();
+        }
+      }
+    }
+
+    function showDemo() {
+      allProducts = getDemoProducts();
+      renderProducts(allProducts);
+      buildFilterButtons();
+    }
+
+    // ── DEMO PRODUCTS ──────────────────────────────────────────────
+    function getDemoProducts() {
+      return [
+        { name:"Floral Wrap Top",           price:"8500",  description:"Effortlessly elegant wrap silhouette in soft floral fabric.",       category:"Tops",     image:"https://res.cloudinary.com/dqbdcvsmr/image/upload/IMG_4328_yf7ce0.jpg",                                              status:"Available" },
+        { name:"Elite Satin Cami Top",       price:"4200",  description:"A curated gem — satin finish for a luxe everyday look.",             category:"Tops",     image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(2).jpeg",                   status:"Available" },
+        { name:"High-Waist Pleated Skirt",   price:"6500",  description:"Feminine pleated silhouette — pairs perfectly with any fitted top.", category:"Skirts",   image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(4).jpeg",                   status:"Available" },
+        { name:"Classic Wide-Leg Trousers",  price:"11500", description:"Power dressing made effortless. Wide-leg cut for every queen.",      category:"Trousers", image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.43.jpeg",                          status:"Available" },
+        { name:"Velvet Evening Gown",        price:"9800",  description:"Statement evening wear with a regal velvet finish.",                category:"Dresses",  image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg",                          status:"Sold Out"  },
+        { name:"Regal Wrap Dress",           price:"9800",  description:"Statement evening wear with a regal velvet finish.",                category:"Dresses",  image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg",                          status:"Available" },
+        { name:"Soft Linen Oversized Top",   price:"3800",  description:"Breathable linen top for slow, luxurious mornings.",               category:"Tops",     image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(3).jpeg",                   status:"Available" },
+      ];
+    }
+
+    // ── BUILD FILTER BUTTONS ───────────────────────────────────────
+    function buildFilterButtons() {
+      const total     = allProducts.length;
+      const newCats   = new Set(
+        allProducts.filter((p, i) => isNew(p, i, total)).map(p => p.category).filter(Boolean)
+      );
+      const uniqueCats = ["all", ...new Set(allProducts.map(p => p.category).filter(Boolean))];
+      const hasNew = allProducts.some((p, i) => isNew(p, i, total));
+      document.getElementById("filterButtons").innerHTML = uniqueCats.map(c => {
+        const showBadge = c === "all" ? hasNew : newCats.has(c);
+        return `<button
+          class="filter-btn${c === activeFilter ? " active" : ""}"
+          onclick="filterProducts('${c.replace(/'/g,"\\'")}')"
+          data-filter="${c}">
+          ${c === "all" ? "All Pieces" : c}${showBadge ? ` <span class="new-badge" style="font-size:0.42rem;padding:0.14rem 0.38rem;">New</span>` : ""}
+        </button>`;
+      }).join("");
+    }
+
+    // ── NEW ARRIVALS PAGE ──────────────────────────────────────────
+    function openNewArrivals() {
+      const page = document.getElementById("newArrivalsPage");
+      const body = document.getElementById("newArrivalsBody");
+      page.classList.add("open");
+      document.body.style.overflow = "hidden";
+      const total    = allProducts.length;
+      const sorted   = [...allProducts].reverse();
+      const newItems = sorted.filter(p => {
+        const realIdx = allProducts.findIndex(a => a.name===p.name && a.category===p.category);
+        return isNew(p, realIdx, total);
+      });
+      if (newItems.length === 0) {
+        body.innerHTML = `<div class="sales-empty">No new arrivals yet, my queen 💜<span>Check back soon — new pieces drop weekly!</span></div>`;
+        return;
+      }
+      const groups = {};
+      newItems.forEach(p => { const c = p.category || "Other"; if (!groups[c]) groups[c]=[]; groups[c].push(p); });
+      body.innerHTML = Object.keys(groups).map(cat => `
+        <div class="category-group">
+          <div class="category-group-title">${cat}</div>
+          <div class="products-grid">${renderProductsHTML(groups[cat])}</div>
+        </div>`).join("");
+    }
+    function closeNewArrivals() {
+      document.getElementById("newArrivalsPage").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    // ── SALES PAGE ────────────────────────────────────────────────
+    async function openSales() {
+      const page = document.getElementById("salesPage");
+      const body = document.getElementById("salesBody");
+      page.classList.add("open");
+      document.body.style.overflow = "hidden";
+      if (!SALES_CSV_URL || SALES_CSV_URL.trim() === "") {
+        body.innerHTML = `<div class="sales-empty">"come back later, when we\'re on sales my queen"<span>💜 Something special is coming…</span></div>`;
+        return;
+      }
+      body.innerHTML = `<div class="products-loading"><div class="spinner"></div><p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;">Loading Sales…</p></div>`;
+      let saleProducts = [];
+      try {
+        const res  = await fetch(SALES_CSV_URL + "&t=" + Date.now());
+        const text = await res.text();
+        saleProducts = parseCSV(text);
+      } catch(e) {
+        try {
+          const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(SALES_CSV_URL);
+          const res   = await fetch(proxy);
+          const json  = await res.json();
+          saleProducts = parseCSV(json.contents);
+        } catch(e2) { saleProducts = []; }
+      }
+      if (!saleProducts.length) {
+        body.innerHTML = `<div class="sales-empty">"come back later, when we\'re on sales my queen"<span>💜 Something special is coming…</span></div>`;
+        return;
+      }
+      const groups = {};
+      saleProducts.forEach(p => { const c = p.category || "Sale"; if (!groups[c]) groups[c]=[]; groups[c].push(p); });
+      body.innerHTML = Object.keys(groups).map(cat => `
+        <div class="category-group">
+          <div class="category-group-title">${cat}</div>
+          <div class="products-grid">${renderProductsHTML(groups[cat])}</div>
+        </div>`).join("");
+    }
+    function closeSales() {
+      document.getElementById("salesPage").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    // Shared card renderer (returns HTML string) — used by overlay pages
+    function renderProductsHTML(products) {
+      return products.map(p => {
+        const sold     = (p.status || "").toLowerCase().includes("sold");
+        const rawPrice = (p.price || "").toString().replace(/[^0-9.]/g, "");
+        const price    = rawPrice ? `₦${Number(rawPrice).toLocaleString()}` : "";
+        const imgSrc   = p.image || p.image_link || p.imagelink || p.img || "";
+        const waMsg    = encodeURIComponent(`Hey my queen 👑 I\'m interested in *${p.name}* ${price ? `(${price})` : ""}. Please confirm availability. 💜`);
+        const safeData = encodeURIComponent(JSON.stringify(p));
+        const sizeVal  = p.size || p.Size || "";
+        return `<div class="product-card">
+          <div class="product-image-wrap">
+            ${imgSrc ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy" onerror="this.src=\'https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=TC\';" />`
+              : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--purple-light);font-style:italic;font-family:\'Cormorant Garamond\',serif;padding:2rem;">No image</div>`}
+            <span class="product-badge${sold?" sold":""}">${sold?"Sold Out":"Grab Now"}</span>
+            <div class="product-actions">
+              ${!sold ? `
+                <button class="btn-buy" onclick="addToCartData(this);" data-product="${safeData}">Add to Cart</button>
+                <a class="btn-wa" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">Order via WhatsApp</a>` :
+              `<button class="btn-buy" style="opacity:0.5;cursor:not-allowed" disabled>Sold Out</button>`}
+            </div>
+          </div>
+          <div class="product-info">
+            ${p.category ? `<p class="product-category">${p.category}</p>` : ""}
+            <h3 class="product-name">${p.name}</h3>
+            ${price ? `<p class="product-price">${price}</p>` : ""}
+            ${sizeVal ? `<p class="product-desc"><strong>Size:</strong> ${sizeVal}</p>` : ""}
+            ${p.description ? `<p class="product-desc">${p.description}</p>` : ""}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    // ── NEW ARRIVAL HELPER ─────────────────────────────────────────
+    // A product is "new" if:
+    //  1. Its date_added column is within NEW_ARRIVALS_DAYS, OR
+    //  2. No date column exists → treat the last NEW_ARRIVALS_COUNT rows as new
+    function isNew(p, index, total) {
+      if (p.date_added || p.dateadded || p.date) {
+        const raw = p.date_added || p.dateadded || p.date;
+        const d   = new Date(raw);
+        if (!isNaN(d)) {
+          const ageMs = Date.now() - d.getTime();
+          return ageMs < NEW_ARRIVALS_DAYS * 86400000;
+        }
+      }
+      // Fallback: last N rows in allProducts are treated as new
+      return index >= (total - NEW_ARRIVALS_COUNT);
+    }
+
+    // ── RENDER PRODUCTS ────────────────────────────────────────────
+    // Products embed their own data so cart works correctly across all filters
+    // Supports: size field, new badge, existing features
+    function renderProducts(products, targetId) {
+      const gridId = targetId || "productsGrid";
+      const grid = document.getElementById(gridId);
+      if (!grid) return;
+      if (!products || products.length === 0) {
+        grid.innerHTML = `<div class="no-products">No pieces in this collection yet, my queens 💜</div>`;
+        return;
+      }
+      const total = allProducts.length;
+      grid.innerHTML = products.map((p, idx) => {
+        const sold     = (p.status || "").toLowerCase().includes("sold");
+        const rawPrice = (p.price || "").toString().replace(/[^0-9.]/g, "");
+        const price    = rawPrice ? `₦${Number(rawPrice).toLocaleString()}` : "";
+        const imgSrc   = p.image || p.image_link || p.imagelink || p.img || "";
+        const waMsg    = encodeURIComponent(`Hey my queen 👑 I\'m interested in *${p.name}* ${price ? `(${price})` : ""}. Please confirm availability. 💜`);
+        const safeData = encodeURIComponent(JSON.stringify(p));
+        // Find true index in allProducts for isNew check
+        const realIdx  = allProducts.findIndex(ap => ap.name === p.name && ap.category === p.category);
+        const newItem  = isNew(p, realIdx >= 0 ? realIdx : idx, total);
+        const sizeVal  = p.size || p.Size || "";
+
+        return `<div class="product-card" data-category="${(p.category||"").replace(/"/g,"")}">
+          <div class="product-image-wrap">
+            ${imgSrc
+              ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy" onerror="this.src=\'https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=Teema%27s\';" />`
+              : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--purple-light);font-style:italic;font-family:\'Cormorant Garamond\',serif;">No image yet</div>`}
+            ${newItem && !sold
+              ? `<span class="product-badge new-arrival">New ✦</span>`
+              : `<span class="product-badge${sold?" sold":""}">${sold?"Sold Out":"Grab Now"}</span>`
+            }
+            <div class="product-actions">
+              ${!sold ? `
+                <button class="btn-buy" onclick="addToCartData(this);" data-product="${safeData}">Add to Cart</button>
+                <a class="btn-wa" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  Order via WhatsApp
+                </a>` :
+              `<button class="btn-buy" style="opacity:0.5;cursor:not-allowed" disabled>Sold Out</button>`}
+            </div>
+          </div>
+          <div class="product-info">
+            ${p.category ? `<p class="product-category">${p.category}</p>` : ""}
+            <h3 class="product-name">${p.name}</h3>
+            ${price ? `<p class="product-price">${price}</p>` : ""}
+            ${sizeVal ? `<p class="product-desc" style="margin-top:0.3rem;"><strong>Size:</strong> ${sizeVal}</p>` : ""}
+            ${p.description ? `<p class="product-desc">${p.description}</p>` : ""}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    // ── FILTER ─────────────────────────────────────────────────────
+    function filterProducts(category) {
+      activeFilter = category;
+      document.querySelectorAll(".filter-btn").forEach(b =>
+        b.classList.toggle("active", b.dataset.filter === category)
+      );
+      const filtered = category === "all"
+        ? allProducts
+        : allProducts.filter(p => (p.category||"").toLowerCase() === category.toLowerCase());
+      renderProducts(filtered);
+    }
+
+    // ── SCROLL HELPER ──────────────────────────────────────────────
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // ── CART ───────────────────────────────────────────────────────
+    // FIX: addToCartData reads product from button's data-product attribute,
+    // so it works correctly regardless of active filter / section.
+    function addToCartData(btn) {
+      try {
+        const product  = JSON.parse(decodeURIComponent(btn.getAttribute("data-product")));
+        const existing = cart.find(i => i.name === product.name);
+        if (existing) existing.qty++;
+        else cart.push({ ...product, qty: 1 });
+        updateCartUI();
+        openCart();
+      } catch(e) { console.error("addToCartData error:", e); }
+    }
+    // Legacy index-based fallback (kept for safety)
+    function addToCart(index) {
+      const product  = allProducts[index];
+      if (!product) return;
+      const existing = cart.find(i => i.name === product.name);
+      if (existing) existing.qty++;
+      else cart.push({ ...product, qty: 1 });
+      updateCartUI();
+      openCart();
+    }
+
+    function removeFromCart(name) {
+      cart = cart.filter(i => i.name !== name);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((a, i) => a + i.qty, 0);
+      document.getElementById("cartCount").textContent = count;
+      const itemsEl = document.getElementById("cartItems");
+      if (cart.length === 0) {
+        itemsEl.innerHTML = `<p class="cart-empty">Your cart is empty, my queen 💜</p>`;
+        document.getElementById("cartTotal").textContent = "₦0";
+        return;
+      }
+      itemsEl.innerHTML = cart.map(item => {
+        const imgSrc = item.image || item.image_link || "";
+        const price  = Number((item.price||"0").toString().replace(/[^0-9.]/g,"")) || 0;
+        return `<div class="cart-item">
+          <img src="${imgSrc}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x100/F0E8FA/8B5CC8?text=TC'" />
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>${item.category||""} · Qty: ${item.qty}</p>
+          </div>
+          <div>
+            <p class="cart-item-price">₦${(price*item.qty).toLocaleString()}</p>
+            <button class="cart-item-remove" onclick="removeFromCart('${item.name.replace(/'/g,"\\'")}')">Remove</button>
+          </div>
+        </div>`;
+      }).join("");
+      const total = cart.reduce((a,i) => a + (Number((i.price||"0").toString().replace(/[^0-9.]/g,""))||0)*i.qty, 0);
+      document.getElementById("cartTotal").textContent = `₦${total.toLocaleString()}`;
+    }
+
+    function openCart()  { document.getElementById("cartSidebar").classList.add("open"); document.getElementById("cartOverlay").classList.add("open"); document.body.style.overflow="hidden"; }
+    function closeCart() { document.getElementById("cartSidebar").classList.remove("open"); document.getElementById("cartOverlay").classList.remove("open"); document.body.style.overflow=""; }
+
+    // ── PAYSTACK CHECKOUT ──────────────────────────────────────────
+    // Called by "Get Your Items Now" button — charges exact cart total
+    function initiateCheckout() {
+      if (cart.length === 0) { alert("Your cart is empty, my queen! 💜"); return; }
+
+      const total = cart.reduce((a,i) => a + (Number((i.price||"0").toString().replace(/[^0-9.]/g,""))||0)*i.qty, 0);
+      const itemsSummary = cart.map(i => `${i.name} x${i.qty}`).join(", ");
+
+      // Guard: If no key is set, warn and fall back to WhatsApp
+      if (!PAYSTACK_PUBLIC_KEY || PAYSTACK_PUBLIC_KEY.includes("xxxxx")) {
+        alert("⚠️ Paystack key not configured yet.\n\nTo enable payments, open the HTML file and paste your Paystack Public Key in the PAYSTACK_PUBLIC_KEY field.\n\nRedirecting to WhatsApp checkout instead…");
+        checkoutWhatsApp(); return;
+      }
+
+      const handler = PaystackPop.setup({
+        key:       PAYSTACK_PUBLIC_KEY,
+        email:     "customer@teemascollections.com", // placeholder — Paystack requires email
+        amount:    total * 100,  // Paystack amount is in kobo
+        currency:  "NGN",
+        ref:       "TC_" + Date.now(),
+        metadata:  { custom_fields: [{ display_name:"Order Items", variable_name:"order_items", value: itemsSummary }] },
+        callback: function(response) {
+          // FIX 3: Mark purchased products as Sold Out in allProducts
+          cart.forEach(cartItem => {
+            const match = allProducts.find(p => p.name === cartItem.name);
+            if (match) match.status = "Sold Out";
+          });
+          // Re-render current filter to reflect sold-out state
+          filterProducts(activeFilter);
+          // Payment successful — show delivery/pickup flow
+          closeCart();
+          openPostPayment(total, response.reference);
+        },
+        onClose: function() {
+          // User closed popup without paying — no action needed
+        }
+      });
+      handler.openIframe();
+    }
+
+    // Legacy WhatsApp checkout (kept as fallback)
+    function checkoutWhatsApp() {
+      if (cart.length === 0) { alert("Your cart is empty, my queen! 💜"); return; }
+      const items = cart.map(i => `• ${i.name} (x${i.qty}) — ₦${(Number((i.price||"0").toString().replace(/[^0-9.]/g,""))*i.qty).toLocaleString()}`).join("\n");
+      const total = cart.reduce((a,i) => a + (Number((i.price||"0").toString().replace(/[^0-9.]/g,""))||0)*i.qty, 0);
+      const msg   = encodeURIComponent(`Hey my queen 👑 I'd like to place an order:\n\n${items}\n\n*Total: ₦${total.toLocaleString()}*\n\nPlease confirm availability and delivery details. Thank you! 💜`);
+      window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, "_blank");
+    }
+
+    // ── POST-PAYMENT FLOW ──────────────────────────────────────────
+    let currentPayRef = "";
+
+    function openPostPayment(total, ref) {
+      currentPayRef = ref || "";
+      chosenDeliveryType = "";
+      document.querySelectorAll(".modal-step").forEach(s => s.classList.remove("active"));
+      document.getElementById("stepChoose").classList.add("active");
+      document.querySelectorAll(".delivery-option").forEach(o => o.classList.remove("selected"));
+      document.getElementById("postPaymentOverlay").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePostPayment() {
+      document.getElementById("postPaymentOverlay").classList.remove("open");
+      document.body.style.overflow = "";
+      // Clear cart after successful order
+      cart = [];
+      updateCartUI();
+    }
+
+    function selectDeliveryOption(type) {
+      chosenDeliveryType = type;
+      document.querySelectorAll(".delivery-option").forEach(o => o.classList.remove("selected"));
+      document.getElementById(type === "delivery" ? "optDelivery" : "optPickup").classList.add("selected");
+    }
+
+    function proceedFromChoose() {
+      if (!chosenDeliveryType) { alert("Please choose Delivery or Pickup, my queen 💜"); return; }
+      document.getElementById("stepChoose").classList.remove("active");
+      if (chosenDeliveryType === "delivery") {
+        document.getElementById("stepDelivery").classList.add("active");
+      } else {
+        // Set WhatsApp pickup message
+        const cartSummary = cart.length > 0
+          ? cart.map(i => `${i.name} x${i.qty}`).join(", ")
+          : "my recent order";
+        const msg = encodeURIComponent(`Hey my queen 👑 I just paid for my order (${cartSummary}) and I'd like to arrange a pickup. I'll let you know when I'm coming. 💜`);
+        document.getElementById("pickupWABtn").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+        document.getElementById("stepPickup").classList.add("active");
+      }
+    }
+
+    // ── FIX: submitDelivery now BOTH opens WhatsApp AND sends to Formspree.
+    //   WhatsApp opens immediately (no async delay) for reliable popup.
+    //   Formspree runs async in background so it never blocks the flow.
+    async function submitDelivery() {
+      const name    = document.getElementById("deliveryName").value.trim();
+      const phone   = document.getElementById("deliveryPhone").value.trim();
+      const address = document.getElementById("deliveryAddress").value.trim();
+      const date    = document.getElementById("deliveryDate").value;
+      if (!name || !phone || !address) { alert("Please fill in all required fields, my queen 💜"); return; }
+
+      const items  = cart.map(i => `  • ${i.name} x${i.qty}`).join("\n");
+      const total  = cart.reduce((a,i) => a + (Number((i.price||"0").toString().replace(/[^0-9.]/g,""))||0)*i.qty, 0);
+      const waText =
+        `👑 *NEW ORDER — Teema\'s Collections*\n\n` +
+        `*Customer:* ${name}\n` +
+        `*Phone:* ${phone}\n` +
+        `*Address:* ${address}\n` +
+        (date ? `*Delivery Date:* ${date}\n` : "") +
+        `\n*Items:*\n${items}\n\n` +
+        `*Total: ₦${total.toLocaleString()}*\n` +
+        `*Payment Ref:* ${currentPayRef}`;
+      const msg = encodeURIComponent(waText);
+
+      // 1. Save locally
+      const orders = JSON.parse(localStorage.getItem("tc_orders") || "[]");
+      orders.push({ name, phone, address, date, items, total, ref: currentPayRef, timestamp: new Date().toISOString() });
+      localStorage.setItem("tc_orders", JSON.stringify(orders));
+
+      // 2. Open WhatsApp immediately (must not be inside an async await to avoid popup blocker)
+      window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, "_blank");
+
+      // 3. Advance to success step right away
+      document.getElementById("stepDelivery").classList.remove("active");
+      document.getElementById("stepSuccess").classList.add("active");
+
+      // 4. Send to Formspree in background (does not block UX)
+      if (ORDERS_ENDPOINT) {
+        try {
+          await fetch(ORDERS_ENDPOINT, {
+            method:  "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body:    JSON.stringify({
+              name, phone, address,
+              delivery_date:  date,
+              order_items:    items,
+              total:          `₦${total.toLocaleString()}`,
+              payment_ref:    currentPayRef,
+              timestamp:      new Date().toISOString()
+            })
+          });
+        } catch(e) { console.warn("Formspree order submit failed (order already sent via WhatsApp):", e); }
+      }
+    }
+
+    // ── INFO MODALS ────────────────────────────────────────────────
+    const INFO_CONTENT = {
+      shipping: {
+        title: "Shipping Information",
+        body: `
+          <h4>Delivery Locations</h4>
+          <p>We deliver across Nigeria. Kaduna orders arrive within 1–2 business days. Other states: 2–5 business days.</p>
+          <h4>Delivery Fees</h4>
+          <p>Kaduna: ₦1,500 flat rate.<br>Other states: ₦3,500 – ₦6,000.<br><strong>Free delivery on orders above ₦70,000.</strong></p>
+          <h4>How to Order</h4>
+          <p>Add items to cart and checkout via Paystack, or message us at <a href="https://wa.me/2348039567566" target="_blank" style="color:var(--purple)">+234 803 956 7566</a>.</p>
+          <h4>Questions?</h4>
+          <p>Chat us on WhatsApp and we'll sort you out, my queen 💜</p>`
+      },
+      returns: {
+        title: "Returns Policy",
+        body: `
+          <h4>Our Promise</h4>
+          <p>We want every queen to love what she receives. If there's an issue, we'll make it right.</p>
+          <h4>Eligibility</h4>
+          <p>Items can be returned or exchanged within <strong>48 hours</strong> of delivery — unworn, unwashed, tags intact.</p>
+          <h4>Non-Returnable</h4>
+          <p>Sale items and "Final Sale" items are not eligible.</p>
+          <h4>How to Return</h4>
+          <p>Message us on WhatsApp at <a href="https://wa.me/2348039567566" target="_blank" style="color:var(--purple)">+234 803 956 7566</a> with your order details and photos within 48 hours.</p>`
+      },
+      sustainability: {
+        title: "Our Sustainability Promise",
+        body: `
+          <h4>Why Thrift?</h4>
+          <p>Luxury thrift is at our heart — affordable AND planet-friendly. Giving garments a second life is powerful.</p>
+          <h4>Our Curation</h4>
+          <p>Every piece is hand-inspected for quality, condition, and style. We don't settle — and neither should you.</p>
+          <h4>Less Waste, More Style</h4>
+          <p>By choosing Teema's Collections, you're shopping with purpose. Thank you, my queen 💜</p>`
+      }
+    };
+
+    function openInfoModal(type) {
+      const content = INFO_CONTENT[type];
+      if (!content) return;
+      document.getElementById("infoModalTitle").textContent = content.title;
+      document.getElementById("infoModalBody").innerHTML   = content.body;
+      document.getElementById("infoModal").classList.add("open");
+      document.getElementById("infoOverlay").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeInfoModal() {
+      document.getElementById("infoModal").classList.remove("open");
+      document.getElementById("infoOverlay").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    // ── MOBILE NAV ─────────────────────────────────────────────────
+    document.getElementById("hamburgerBtn").addEventListener("click", () => {
+      document.getElementById("mobileNav").classList.add("open");
+      document.getElementById("mobileOverlay").classList.add("open");
+      document.body.style.overflow = "hidden";
+    });
+    function closeMobileNav() {
+      document.getElementById("mobileNav").classList.remove("open");
+      document.getElementById("mobileOverlay").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    // ── NAVBAR SCROLL SHADOW ───────────────────────────────────────
+    window.addEventListener("scroll", () =>
+      document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 50)
+    );
+
+    // ── NEWSLETTER ─────────────────────────────────────────────────
+    async function subscribeNewsletter() {
+      const email = document.getElementById("newsletterEmail").value.trim();
+      if (!email || !email.includes("@")) { alert("Please enter a valid email, my queen 💜"); return; }
+
+      // Always save locally first
+      const subs = JSON.parse(localStorage.getItem("tc_newsletter") || "[]");
+      if (!subs.includes(email)) { subs.push(email); localStorage.setItem("tc_newsletter", JSON.stringify(subs)); }
+
+      // Send to Formspree if endpoint is set
+      if (NEWSLETTER_ENDPOINT) {
+        try {
+          const res = await fetch(NEWSLETTER_ENDPOINT, {
+            method:  "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body:    JSON.stringify({ email, timestamp: new Date().toISOString() })
+          });
+          if (!res.ok) console.warn("Formspree newsletter error:", res.status);
+        } catch(e) { console.warn("Formspree newsletter failed (saved locally):", e); }
+      }
+
+      alert("Hey my queen 👑 You're on the list! Welcome to Teema's Collections. 💜");
+      document.getElementById("newsletterEmail").value = "";
+    }
+
+    // ── INIT ───────────────────────────────────────────────────────
+    loadProducts();
+    updateCartUI();
+
+    // ── AUTO NEW-BADGE ON MOOD CARDS ───────────────────────────────
+    // After products load, add the pink NEW dot on mood cards whose
+    // category has at least one new product.
+    // Each mood card must have data-category="Dresses" etc.
+    // (These are already set via onclick; we read the onclick attribute
+    //  to find the category name.)
+    function refreshMoodNewDots() {
+      const total   = allProducts.length;
+      const newCats = new Set(
+        allProducts.filter((p, i) => isNew(p, i, total)).map(p => p.category).filter(Boolean)
+      );
+      document.querySelectorAll(".mood-card").forEach(card => {
+        // Read the category from the button onclick inside
+        const btn = card.querySelector(".mood-link");
+        if (!btn) return;
+        const match = (btn.getAttribute("onclick") || "").match(/filterProducts\(\'([^\']+)\'/);
+        if (!match) return;
+        const cat = match[1];
+        // Remove any existing dot first
+        card.querySelectorAll(".new-cat-dot").forEach(d => d.remove());
+        if (newCats.has(cat)) {
+          const dot = document.createElement("span");
+          dot.className = "new-cat-dot";
+          dot.textContent = "New";
+          card.appendChild(dot);
+        }
+      });
+    }
+
+    // Patch loadProducts callback to also refresh mood dots
+    const _origShowDemo = showDemo;
+    function showDemo() { _origShowDemo(); refreshMoodNewDots(); }
+
+    // Re-patch the async flow: override buildFilterButtons to also refresh dots
+    const _origBuildFilterButtons = buildFilterButtons;
+    function buildFilterButtons() { _origBuildFilterButtons(); refreshMoodNewDots(); }
+
+  </script>
+</body>
+</html>

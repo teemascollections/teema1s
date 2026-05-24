@@ -233,6 +233,20 @@
     .product-image-wrap { position:relative; overflow:hidden; aspect-ratio:3/4; background:var(--purple-mist); }
     .product-image-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; }
     .product-card:hover .product-image-wrap img { transform:scale(1.06); }
+    /* ── PRODUCT GALLERY ── */
+    .product-media-wrap { position:relative; overflow:hidden; aspect-ratio:3/4; background:var(--purple-mist); width:100%; }
+    .product-media-wrap img,.product-media-wrap video { width:100%; height:100%; object-fit:cover; display:block; }
+    .product-gallery .gallery-track img { width:100%; height:100%; object-fit:cover; }
+    .gallery-track { height:100%; will-change:transform; }
+    .gallery-dots { position:absolute; bottom:0.5rem; left:50%; transform:translateX(-50%); display:flex; gap:5px; z-index:3; }
+    .gallery-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.5); cursor:pointer; transition:background 0.2s,transform 0.2s; }
+    .gallery-dot.active { background:#fff; transform:scale(1.3); }
+    .gallery-prev,.gallery-next { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.35); color:#fff; border:none; cursor:pointer; font-size:1.2rem; line-height:1; padding:0.35rem 0.5rem; z-index:4; opacity:0; transition:opacity 0.2s; border-radius:3px; }
+    .gallery-prev { left:4px; }
+    .gallery-next { right:4px; }
+    .product-card:hover .gallery-prev,.product-card:hover .gallery-next { opacity:1; }
+    .product-video { width:100%; height:100%; object-fit:cover; background:#000; }
+    .product-card:hover .product-media-wrap img { transform:scale(1.06); transition:transform 0.6s ease; }
     .product-badge { position:absolute; top:1rem; left:1rem; background:var(--purple); color:var(--white); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.3rem 0.7rem; }
     .product-badge.sold { background:var(--black); }
     .product-actions { position:absolute; bottom:0; left:0; right:0; background:rgba(59,26,99,0.92); display:flex; flex-direction:column; gap:0.5rem; padding:1rem; transform:translateY(100%); transition:transform 0.35s ease; }
@@ -976,8 +990,9 @@
     // ║  HOW: File → Share → Publish to web → CSV → copy URL          ║
     // ╚═══════════════════════════════════════════════════════════════╝
 
-    // CSV system is disabled — products come from Supabase via cms.js
-    // const CSV_URL = "..."; // ← no longer used
+    // ▼ PASTE YOUR CSV LINK HERE ▼
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9a5ROp9IVB9ykk-K3lUO9tGBSlDJNjZLFeIaKlm2BsLJNnyhe0dOU1gPHQtwOvYB7TIVHyXmI1XYR/pub?output=csv";
+    // ▲ PASTE YOUR CSV LINK ABOVE ▲
 
     // ── WA_NUMBER: Country code + number, no + or spaces ──────────
     const WA_NUMBER = "2348039567566"; // ← WA_NUMBER
@@ -1045,14 +1060,21 @@
     const ORDERS_ENDPOINT     = "https://formspree.io/f/xqejeglr"; // ← e.g. "https://formspree.io/f/xabcdefg"
     const NEWSLETTER_ENDPOINT = "https://formspree.io/f/mojbjpne"; // ← e.g. "https://formspree.io/f/xhijklmn"
 
-
-    // ── SALES now uses allProducts filtered by is_sale flag from Supabase ──
-    // No CSV needed. Mark products as "on sale" in the Admin → Products panel.
+    // ╔═══════════════════════════════════════════════════════════════╗
+    // ║  SALES PAGE — Separate CSV for sale items                      ║
+    // ║  Leave empty ("") to show the "come back later" message.       ║
+    // ║  Format same as main CSV (name, price, category, image, etc.)  ║
+    // ╚═══════════════════════════════════════════════════════════════╝
+    // ▼ PASTE YOUR SALES CSV LINK HERE (or leave "" for no sales) ▼
+    const SALES_CSV_URL = ""; // ← e.g. "https://docs.google.com/.../pub?output=csv"
+    // ▲ SALES CSV ▲
 
     // ╔═══════════════════════════════════════════════════════════════╗
     // ║  NEW ARRIVALS — how many days back counts as "new"             ║
-    // ║  Products with a date_added column within this many days       ║
-    // ║  get the pink NEW badge.                                       ║
+    // ║  Products with a "date_added" column within this many days     ║
+    // ║  get the pink NEW badge. If no date_added column exists,       ║
+    // ║  the LAST NEW_ARRIVALS_COUNT products (by CSV row order) are   ║
+    // ║  treated as new.                                               ║
     // ╚═══════════════════════════════════════════════════════════════╝
     const NEW_ARRIVALS_DAYS  = 14;   // ← days that count as "new"
     const NEW_ARRIVALS_COUNT = 8;    // ← fallback: last N products are "new"
@@ -1102,28 +1124,56 @@
       }).filter(p => p.name && p.name.length > 0);
     }
 
-    // ── LOAD PRODUCTS ──────────────────────────────────────────────
-    // CSV system is DISABLED. Products load from Supabase via cms.js.
-    // cms.js (loaded above) replaces window.loadProducts synchronously
-    // before this script runs, so the function below is only a fallback
-    // in case cms.js fails to load — it shows a neutral empty state.
-    if (typeof window.loadProducts !== "function") {
-      window.loadProducts = async function loadProducts() {
-        console.warn("[index] cms.js override not found — showing empty state");
-        const grid = document.querySelector(".products-grid, .product-grid, #productGrid");
-        if (grid) grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#7B6A90"><p>Loading products…</p></div>`;
-      };
+    // ── LOAD PRODUCTS FROM CSV ─────────────────────────────────────
+    async function loadProducts() {
+      if (!CSV_URL || CSV_URL.trim() === "" || CSV_URL.includes("PASTE_YOUR")) {
+        showDemo(); return;
+      }
+      try {
+        const res = await fetch(CSV_URL + "&t=" + Date.now());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const text = await res.text();
+        const products = parseCSV(text);
+        if (products.length === 0) throw new Error("No products");
+        allProducts = products;
+        renderProducts(allProducts);
+        buildFilterButtons();
+      } catch (e1) {
+        console.warn("Direct CSV failed:", e1.message, "— trying proxy…");
+        try {
+          const proxyURL = "https://api.allorigins.win/get?url=" + encodeURIComponent(CSV_URL);
+          const res  = await fetch(proxyURL);
+          const json = await res.json();
+          const products = parseCSV(json.contents);
+          if (products.length === 0) throw new Error("Empty via proxy");
+          allProducts = products;
+          renderProducts(allProducts);
+          buildFilterButtons();
+        } catch (e2) {
+          console.warn("CSV failed — showing demo:", e2.message);
+          showDemo();
+        }
+      }
     }
 
-    // showDemo is stubbed — never render CSV/hardcoded demo products
     function showDemo() {
-      console.log("[index] showDemo() suppressed — Supabase is active");
+      allProducts = getDemoProducts();
+      renderProducts(allProducts);
+      buildFilterButtons();
     }
 
-    // ── DEMO PRODUCTS — DISABLED ──────────────────────────────────
-    // All products now come from Supabase. This function is kept as a
-    // stub to prevent any remaining reference from throwing an error.
-    function getDemoProducts() { return []; }
+    // ── DEMO PRODUCTS ──────────────────────────────────────────────
+    function getDemoProducts() {
+      return [
+        { name:"Floral Wrap Top",           price:"8500",  description:"Effortlessly elegant wrap silhouette in soft floral fabric.",       category:"Tops",     image:"https://res.cloudinary.com/dqbdcvsmr/image/upload/IMG_4328_yf7ce0.jpg",                                              status:"Available" },
+        { name:"Elite Satin Cami Top",       price:"4200",  description:"A curated gem — satin finish for a luxe everyday look.",             category:"Tops",     image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(2).jpeg",                   status:"Available" },
+        { name:"High-Waist Pleated Skirt",   price:"6500",  description:"Feminine pleated silhouette — pairs perfectly with any fitted top.", category:"Skirts",   image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(4).jpeg",                   status:"Available" },
+        { name:"Classic Wide-Leg Trousers",  price:"11500", description:"Power dressing made effortless. Wide-leg cut for every queen.",      category:"Trousers", image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.43.jpeg",                          status:"Available" },
+        { name:"Velvet Evening Gown",        price:"9800",  description:"Statement evening wear with a regal velvet finish.",                category:"Dresses",  image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg",                          status:"Sold Out"  },
+        { name:"Regal Wrap Dress",           price:"9800",  description:"Statement evening wear with a regal velvet finish.",                category:"Dresses",  image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44.jpeg",                          status:"Available" },
+        { name:"Soft Linen Oversized Top",   price:"3800",  description:"Breathable linen top for slow, luxurious mornings.",               category:"Tops",     image:"https://teemahscollection.netlify.app/WhatsApp%20Image%202026-04-13%20at%2011.51.44%20(3).jpeg",                   status:"Available" },
+      ];
+    }
 
     // ── BUILD FILTER BUTTONS ───────────────────────────────────────
     function buildFilterButtons() {
@@ -1174,15 +1224,29 @@
     }
 
     // ── SALES PAGE ────────────────────────────────────────────────
-    // Sales products come from Supabase (is_sale = true), not a CSV.
     async function openSales() {
       const page = document.getElementById("salesPage");
       const body = document.getElementById("salesBody");
       page.classList.add("open");
       document.body.style.overflow = "hidden";
+      if (!SALES_CSV_URL || SALES_CSV_URL.trim() === "") {
+        body.innerHTML = `<div class="sales-empty">"come back later, when we\'re on sales my queen"<span>💜 Something special is coming…</span></div>`;
+        return;
+      }
       body.innerHTML = `<div class="products-loading"><div class="spinner"></div><p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;">Loading Sales…</p></div>`;
-      // Use already-loaded allProducts; filter is_sale items
-      const saleProducts = (window.allProducts || []).filter(p => p.is_sale);
+      let saleProducts = [];
+      try {
+        const res  = await fetch(SALES_CSV_URL + "&t=" + Date.now());
+        const text = await res.text();
+        saleProducts = parseCSV(text);
+      } catch(e) {
+        try {
+          const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(SALES_CSV_URL);
+          const res   = await fetch(proxy);
+          const json  = await res.json();
+          saleProducts = parseCSV(json.contents);
+        } catch(e2) { saleProducts = []; }
+      }
       if (!saleProducts.length) {
         body.innerHTML = `<div class="sales-empty">"come back later, when we\'re on sales my queen"<span>💜 Something special is coming…</span></div>`;
         return;
@@ -1206,28 +1270,29 @@
         const sold     = (p.status || "").toLowerCase().includes("sold");
         const rawPrice = (p.price || "").toString().replace(/[^0-9.]/g, "");
         const price    = rawPrice ? `₦${Number(rawPrice).toLocaleString()}` : "";
-        const imgSrc   = p.image || p.image_link || p.imagelink || p.img || "";
         const waMsg    = encodeURIComponent(`Hey my queen 👑 I\'m interested in *${p.name}* ${price ? `(${price})` : ""}. Please confirm availability. 💜`);
         const safeData = encodeURIComponent(JSON.stringify(p));
         const sizeVal  = p.size || p.Size || "";
+        const mediaHTML = (typeof buildProductMediaHTML === "function")
+          ? buildProductMediaHTML(p)
+          : `<div class="product-media-wrap"><img src="${p.image||p.image_link||""}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=TC'" /></div>`;
         return `<div class="product-card">
-          <div class="product-image-wrap">
-            ${imgSrc ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy" onerror="this.src=\'https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=TC\';" />`
-              : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--purple-light);font-style:italic;font-family:\'Cormorant Garamond\',serif;padding:2rem;">No image</div>`}
-            <span class="product-badge${sold?" sold":""}">${sold?"Sold Out":"Grab Now"}</span>
-            <div class="product-actions">
-              ${!sold ? `
-                <button class="btn-buy" onclick="addToCartData(this);" data-product="${safeData}">Add to Cart</button>
-                <a class="btn-wa" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">Order via WhatsApp</a>` :
-              `<button class="btn-buy" style="opacity:0.5;cursor:not-allowed" disabled>Sold Out</button>`}
-            </div>
+          <div style="position:relative;overflow:hidden;aspect-ratio:3/4;">
+          ${mediaHTML}
+          <span class="product-badge${sold?" sold":""}">\${sold?"Sold Out":"Grab Now"}</span>
+          <div class="product-actions">
+            \${!sold ? `
+              <button class="btn-buy" onclick="addToCartData(this);" data-product="\${safeData}">Add to Cart</button>
+              <a class="btn-wa" href="https://wa.me/\${WA_NUMBER}?text=\${waMsg}" target="_blank" rel="noopener">Order via WhatsApp</a>` :
+            `<button class="btn-buy" style="opacity:0.5;cursor:not-allowed" disabled>Sold Out</button>`}
+          </div>
           </div>
           <div class="product-info">
-            ${p.category ? `<p class="product-category">${p.category}</p>` : ""}
-            <h3 class="product-name">${p.name}</h3>
-            ${price ? `<p class="product-price">${price}</p>` : ""}
-            ${sizeVal ? `<p class="product-desc"><strong>Size:</strong> ${sizeVal}</p>` : ""}
-            ${p.description ? `<p class="product-desc">${p.description}</p>` : ""}
+            \${p.category ? `<p class="product-category">\${p.category}</p>` : ""}
+            <h3 class="product-name">\${p.name}</h3>
+            \${price ? `<p class="product-price">\${price}</p>` : ""}
+            \${sizeVal ? `<p class="product-desc"><strong>Size:</strong> \${sizeVal}</p>` : ""}
+            \${p.description ? `<p class="product-desc">\${p.description}</p>` : ""}
           </div>
         </div>`;
       }).join("");
@@ -1252,7 +1317,7 @@
 
     // ── RENDER PRODUCTS ────────────────────────────────────────────
     // Products embed their own data so cart works correctly across all filters
-    // Supports: size field, new badge, existing features
+    // Gallery-aware: uses buildProductMediaHTML from cms.js
     function renderProducts(products, targetId) {
       const gridId = targetId || "productsGrid";
       const grid = document.getElementById(gridId);
@@ -1266,39 +1331,38 @@
         const sold     = (p.status || "").toLowerCase().includes("sold");
         const rawPrice = (p.price || "").toString().replace(/[^0-9.]/g, "");
         const price    = rawPrice ? `₦${Number(rawPrice).toLocaleString()}` : "";
-        const imgSrc   = p.image || p.image_link || p.imagelink || p.img || "";
         const waMsg    = encodeURIComponent(`Hey my queen 👑 I\'m interested in *${p.name}* ${price ? `(${price})` : ""}. Please confirm availability. 💜`);
         const safeData = encodeURIComponent(JSON.stringify(p));
-        // Find true index in allProducts for isNew check
         const realIdx  = allProducts.findIndex(ap => ap.name === p.name && ap.category === p.category);
         const newItem  = isNew(p, realIdx >= 0 ? realIdx : idx, total);
         const sizeVal  = p.size || p.Size || "";
+        const mediaHTML = (typeof buildProductMediaHTML === "function")
+          ? buildProductMediaHTML(p)
+          : `<div class="product-media-wrap"><img src="${p.image||p.image_link||""}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=Teema%27s'" /></div>`;
 
-        return `<div class="product-card" data-category="${(p.category||"").replace(/"/g,"")}">
-          <div class="product-image-wrap">
-            ${imgSrc
-              ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy" onerror="this.src=\'https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=Teema%27s\';" />`
-              : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--purple-light);font-style:italic;font-family:\'Cormorant Garamond\',serif;">No image yet</div>`}
-            ${newItem && !sold
-              ? `<span class="product-badge new-arrival">New ✦</span>`
-              : `<span class="product-badge${sold?" sold":""}">${sold?"Sold Out":"Grab Now"}</span>`
-            }
-            <div class="product-actions">
-              ${!sold ? `
-                <button class="btn-buy" onclick="addToCartData(this);" data-product="${safeData}">Add to Cart</button>
-                <a class="btn-wa" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  Order via WhatsApp
-                </a>` :
-              `<button class="btn-buy" style="opacity:0.5;cursor:not-allowed" disabled>Sold Out</button>`}
-            </div>
+        return `<div class="product-card" data-category="\${(p.category||"").replace(/"/g,"")}">
+          <div style="position:relative;overflow:hidden;aspect-ratio:3/4;">
+          \${mediaHTML}
+          \${newItem && !sold
+            ? `<span class="product-badge new-arrival">New ✦</span>`
+            : `<span class="product-badge\${sold?" sold":""}">\${sold?"Sold Out":"Grab Now"}</span>`
+          }
+          <div class="product-actions">
+            \${!sold ? `
+              <button class="btn-buy" onclick="addToCartData(this);" data-product="\${safeData}">Add to Cart</button>
+              <a class="btn-wa" href="https://wa.me/\${WA_NUMBER}?text=\${waMsg}" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Order via WhatsApp
+              </a>` :
+            `<button class="btn-buy" style="opacity:0.5;cursor:not-allowed" disabled>Sold Out</button>`}
+          </div>
           </div>
           <div class="product-info">
-            ${p.category ? `<p class="product-category">${p.category}</p>` : ""}
-            <h3 class="product-name">${p.name}</h3>
-            ${price ? `<p class="product-price">${price}</p>` : ""}
-            ${sizeVal ? `<p class="product-desc" style="margin-top:0.3rem;"><strong>Size:</strong> ${sizeVal}</p>` : ""}
-            ${p.description ? `<p class="product-desc">${p.description}</p>` : ""}
+            \${p.category ? `<p class="product-category">\${p.category}</p>` : ""}
+            <h3 class="product-name">\${p.name}</h3>
+            \${price ? `<p class="product-price">\${price}</p>` : ""}
+            \${sizeVal ? `<p class="product-desc" style="margin-top:0.3rem;"><strong>Size:</strong> \${sizeVal}</p>` : ""}
+            \${p.description ? `<p class="product-desc">\${p.description}</p>` : ""}
           </div>
         </div>`;
       }).join("");
@@ -1656,7 +1720,11 @@
       });
     }
 
-    // Re-patch buildFilterButtons to also refresh mood-card new dots after load
+    // Patch loadProducts callback to also refresh mood dots
+    const _origShowDemo = showDemo;
+    function showDemo() { _origShowDemo(); refreshMoodNewDots(); }
+
+    // Re-patch the async flow: override buildFilterButtons to also refresh dots
     const _origBuildFilterButtons = buildFilterButtons;
     function buildFilterButtons() { _origBuildFilterButtons(); refreshMoodNewDots(); }
 

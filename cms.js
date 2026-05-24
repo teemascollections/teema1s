@@ -1,44 +1,16 @@
 /**
  * ╔══════════════════════════════════════════════════════════════╗
- * ║  TEEMA'S COLLECTIONS — CMS MODULE (cms.js)                  ║
+ * ║  TEEMA'S COLLECTIONS — CMS MODULE (cms.js)  v2.0            ║
  * ║  Supabase-powered dynamic content layer                      ║
- * ║  v2 — Fixed: CSV disabled, auth, image uploads, sync        ║
  * ╚══════════════════════════════════════════════════════════════╝
- *
- * LOAD ORDER (in index.html):
- *   <script src="cms.js"></script>          ← this file, FIRST
- *   <script src="main.js"></script>         ← (or inline script), SECOND
- *
- * This file MUST load before index.html's main script so that
- * window.loadProducts is already replaced before it gets called.
- *
- * TABLES USED:
- *   products            → main product records
- *   product_images      → multiple images per product (with sort + primary)
- *   categories          → product categories
- *   settings            → key/value site settings
- *   homepage_sections   → mood cards
- *   navigation          → nav links
- *   media               → media library entries
  */
 
 // ─── SUPABASE CONFIG ────────────────────────────────────────────────────────
 const SUPABASE_URL  = "https://zvfbkvnbndbptqtjunpt.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2ZmJrdm5ibmRicHRxdGp1bnB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NDg4OTksImV4cCI6MjA5NTEyNDg5OX0.K22NFSvkn6pNuWJeR5SclOlgh02kMkE9kWwdBHUSM5A";
 
-// ─── KILL CSV SYSTEM IMMEDIATELY ────────────────────────────────────────────
-// Stub out every legacy CSV/demo function before the main script loads.
-// This runs at parse time (synchronous) so it wins the race condition.
-window.loadProductsFromCSV = () => { console.log("[CMS] CSV loader disabled — using Supabase"); };
-window.showDemo            = () => { console.log("[CMS] Demo suppressed — using Supabase"); };
-// Also stub fetchCSV / parseCSV if they exist
-window.fetchCSV            = () => Promise.resolve([]);
-window.parseCSV            = () => [];
-
-// ─── SUPABASE REST HELPERS ───────────────────────────────────────────────────
+// ─── SUPABASE REST HELPER ────────────────────────────────────────────────────
 const sb = {
-
-  // Standard GET query
   async from(table, select = "*", filters = {}, opts = {}) {
     let url = `${SUPABASE_URL}/rest/v1/${table}?select=${encodeURIComponent(select)}`;
     Object.entries(filters).forEach(([col, val]) => {
@@ -53,104 +25,71 @@ const sb = {
     };
     if (opts.single) headers["Accept"] = "application/vnd.pgrst.object+json";
     const res = await fetch(url, { headers });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Supabase ${table}: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Supabase ${table}: ${res.status}`);
     return res.json();
   },
 
-  // INSERT — accepts single object or array
-  async insert(table, data, token = null) {
+  async insert(table, data) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
       method:  "POST",
       headers: {
         "apikey":        SUPABASE_ANON,
-        "Authorization": `Bearer ${token || SUPABASE_ANON}`,
+        "Authorization": `Bearer ${SUPABASE_ANON}`,
         "Content-Type":  "application/json",
         "Prefer":        "return=representation",
       },
       body: JSON.stringify(Array.isArray(data) ? data : [data]),
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Supabase insert ${table}: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Supabase insert ${table}: ${res.status}`);
     return res.json();
   },
 
-  // PATCH by id
-  async update(table, id, data, token = null) {
+  async update(table, id, data) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
       method:  "PATCH",
       headers: {
         "apikey":        SUPABASE_ANON,
-        "Authorization": `Bearer ${token || SUPABASE_ANON}`,
+        "Authorization": `Bearer ${SUPABASE_ANON}`,
         "Content-Type":  "application/json",
         "Prefer":        "return=representation",
       },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Supabase update ${table}: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Supabase update ${table}: ${res.status}`);
     return res.json();
   },
 
-  // DELETE by id
-  async delete(table, id, token = null) {
+  async delete(table, id) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
       method:  "DELETE",
       headers: {
         "apikey":        SUPABASE_ANON,
-        "Authorization": `Bearer ${token || SUPABASE_ANON}`,
+        "Authorization": `Bearer ${SUPABASE_ANON}`,
         "Content-Type":  "application/json",
       },
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Supabase delete ${table}: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Supabase delete ${table}: ${res.status}`);
     return true;
   },
 
-  /**
-   * Upload a file to Supabase Storage and return its public URL.
-   * Requires the bucket to have public read access.
-   * Uses upsert (x-upsert: true) so re-uploading the same path replaces the file.
-   *
-   * @param {string} bucket  - storage bucket name (e.g. "products", "banners")
-   * @param {string} path    - file path inside bucket (e.g. "abc123_photo.jpg")
-   * @param {File}   file    - File object from input[type=file]
-   * @param {string} token   - optional auth token for authenticated uploads
-   * @returns {string}       - public URL
-   */
-  async upload(bucket, path, file, token = null) {
+  async upload(bucket, path, file) {
     const res = await fetch(
       `${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`,
       {
         method:  "POST",
         headers: {
           "apikey":        SUPABASE_ANON,
-          "Authorization": `Bearer ${token || SUPABASE_ANON}`,
-          "Content-Type":  file.type || "application/octet-stream",
+          "Authorization": `Bearer ${SUPABASE_ANON}`,
+          "Content-Type":  file.type,
           "Cache-Control": "3600",
-          "x-upsert":      "true",
         },
         body: file,
       }
     );
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `Storage upload ${path}: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Storage upload ${path}: ${res.status}`);
     return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
   },
 };
-
-// Expose sb globally so admin.html inline scripts can share it
-window._sb = sb;
 
 // ─── SETTINGS CACHE ─────────────────────────────────────────────────────────
 let _siteSettings = {};
@@ -161,55 +100,42 @@ async function loadSiteSettings() {
     const rows = await sb.from("settings");
     rows.forEach(r => { _siteSettings[r.key] = r.value; });
     applySiteSettings();
-    console.log("[CMS] Settings loaded:", Object.keys(_siteSettings).length, "keys");
   } catch (e) {
-    console.warn("[CMS] Settings load failed (using static fallback):", e.message);
+    console.warn("CMS settings load failed:", e.message);
   }
 }
 
-/**
- * Apply DB settings to DOM.
- *
- * NOTE on "(html)" labels in admin:
- * Keys like shipping_info / returns_policy / sustainability_info store raw HTML.
- * The admin panel previously showed the raw key name. In admin.html these are now
- * rendered with friendly labels. The "(html)" indicator has been removed from labels.
- * The values are applied via innerHTML so rich text is preserved.
- */
 function applySiteSettings() {
   const s = _siteSettings;
-
-  // Helper: set DOM property safely
   const set = (sel, val, prop = "textContent") => {
     if (!val) return;
     const el = typeof sel === "string" ? document.querySelector(sel) : sel;
     if (!el) return;
-    if      (prop === "innerHTML")   el.innerHTML   = val;
-    else if (prop === "src")         el.src         = val;
-    else if (prop === "href")        el.href        = val;
-    else                             el.textContent = val;
+    if (prop === "innerHTML") el.innerHTML = val;
+    else if (prop === "src")  el.src = val;
+    else if (prop === "href") el.href = val;
+    else el.textContent = val;
   };
 
-  if (s.announcement_text)    set(".announcement", s.announcement_text);
-  if (s.hero_tag)             set(".hero-text .tag", s.hero_tag);
-  if (s.hero_h1)              set(".hero-text h1", s.hero_h1, "innerHTML");
-  if (s.hero_p)               set(".hero-text > p", s.hero_p);
-  if (s.hero_btn_primary)     set("#heroBtnPrimary", s.hero_btn_primary);
-  if (s.hero_btn_outline)     set("#heroBtnOutline", s.hero_btn_outline);
-  // FIX: image URLs must NOT go through sanitize() — sanitize() escapes colons/slashes
-  if (s.hero_image_url)       set(".hero-image img", s.hero_image_url, "src");
-  if (s.hero_badge_label)     set(".hero-badge p", s.hero_badge_label);
-  if (s.hero_badge_quote)     set(".hero-badge strong", s.hero_badge_quote);
-  if (s.quote_strip_text)     set(".quote-strip blockquote", `"${s.quote_strip_text}"`);
+  if (s.announcement_text) set(".announcement", s.announcement_text);
+  if (s.hero_tag)           set(".hero-text .tag", s.hero_tag);
+  if (s.hero_h1)            set(".hero-text h1", s.hero_h1, "innerHTML");
+  if (s.hero_p)             set(".hero-text > p", s.hero_p);
+  if (s.hero_btn_primary)   set("#heroBtnPrimary", s.hero_btn_primary);
+  if (s.hero_btn_outline)   set("#heroBtnOutline", s.hero_btn_outline);
+  if (s.hero_image_url)     set(".hero-image img", s.hero_image_url, "src");
+  if (s.hero_badge_label)   set(".hero-badge p", s.hero_badge_label);
+  if (s.hero_badge_quote)   set(".hero-badge strong", s.hero_badge_quote);
+  if (s.quote_strip_text)   set(".quote-strip blockquote", `"${s.quote_strip_text}"`, "textContent");
   if (s.products_section_tag) set("#productsSectionTag", s.products_section_tag);
-  if (s.products_section_h2)  set("#productsSectionH2",  s.products_section_h2);
-  if (s.promise_h2)           set(".promise-text h2", s.promise_h2);
-  if (s.promise_p)            set(".promise-text > p", s.promise_p);
-  if (s.newsletter_h2)        set(".newsletter h2", s.newsletter_h2);
-  if (s.newsletter_p)         set(".newsletter p",  s.newsletter_p);
-  if (s.footer_tagline)       set(".footer-brand > p", s.footer_tagline);
-  if (s.footer_copyright)     set(".footer-bottom p:first-child", s.footer_copyright);
-  if (s.site_title)           document.title = s.site_title;
+  if (s.products_section_h2)  set("#productsSectionH2", s.products_section_h2);
+  if (s.promise_h2)         set(".promise-text h2", s.promise_h2);
+  if (s.promise_p)          set(".promise-text > p", s.promise_p);
+  if (s.newsletter_h2)      set(".newsletter h2", s.newsletter_h2);
+  if (s.newsletter_p)       set(".newsletter p", s.newsletter_p);
+  if (s.footer_tagline)     set(".footer-brand > p", s.footer_tagline);
+  if (s.footer_copyright)   set(".footer-bottom p:first-child", s.footer_copyright);
+  if (s.site_title)         document.title = s.site_title;
   if (s.site_description) {
     const md = document.querySelector("meta[name='description']");
     if (md) md.content = s.site_description;
@@ -217,17 +143,33 @@ function applySiteSettings() {
   if (s.instagram_url) set(".footer-socials a[aria-label='Instagram']", s.instagram_url, "href");
   if (s.tiktok_url)    set(".footer-socials a[aria-label='TikTok']",    s.tiktok_url,    "href");
 
-  // Marquee — pipe-separated words "Word One|Word Two|..."
+  // Promise section images (CMS-controlled)
+  if (s.promise_img1) {
+    const imgs = document.querySelectorAll(".promise-image-grid img");
+    if (imgs[0]) imgs[0].src = s.promise_img1;
+  }
+  if (s.promise_img2) {
+    const imgs = document.querySelectorAll(".promise-image-grid img");
+    if (imgs[1]) imgs[1].src = s.promise_img2;
+  }
+  if (s.promise_img3) {
+    const imgs = document.querySelectorAll(".promise-image-grid img");
+    if (imgs[2]) imgs[2].src = s.promise_img3;
+  }
+
+  // Marquee
   if (s.marquee_text) {
-    const words   = s.marquee_text.split("|").map(w => w.trim()).filter(Boolean);
+    const words = s.marquee_text.split("|").map(w => w.trim()).filter(Boolean);
     const doubled = [...words, ...words];
-    const track   = document.querySelector(".marquee-track");
+    const track = document.querySelector(".marquee-track");
     if (track) track.innerHTML = doubled.map(w => `<span>${w}</span>`).join("");
   }
 
-  // Override JS constants used in cart / WhatsApp flows
-  if (s.wa_number) window.WA_NUMBER = s.wa_number;
-  if (s.logo_url && s.logo_url !== window.LOGO_URL) {
+  // Override JS constants
+  if (s.wa_number && typeof WA_NUMBER !== "undefined") {
+    window.WA_NUMBER = s.wa_number;
+  }
+  if (s.logo_url && typeof LOGO_URL !== "undefined" && s.logo_url !== LOGO_URL) {
     window.LOGO_URL = s.logo_url;
     const navLogo = document.getElementById("navLogo");
     if (navLogo) {
@@ -241,11 +183,10 @@ function applySiteSettings() {
     }
   }
 
-  // Info modal content — applied as innerHTML so HTML formatting is preserved
-  // These keys store rich HTML edited in the admin Settings panel
+  // Override info modal content
   if (typeof INFO_CONTENT !== "undefined") {
-    if (s.shipping_info)       INFO_CONTENT.shipping.body      = s.shipping_info;
-    if (s.returns_policy)      INFO_CONTENT.returns.body       = s.returns_policy;
+    if (s.shipping_info)      INFO_CONTENT.shipping.body = s.shipping_info;
+    if (s.returns_policy)     INFO_CONTENT.returns.body = s.returns_policy;
     if (s.sustainability_info) INFO_CONTENT.sustainability.body = s.sustainability_info;
   }
 }
@@ -257,143 +198,191 @@ async function loadHomepageSections() {
     const sections = await sb.from(
       "homepage_sections", "*", { is_active: true }, { order: "sort_order.asc" }
     );
-    if (!sections || sections.length === 0) return; // keep static HTML fallback
+    if (!sections || sections.length === 0) return;
     const grid = document.querySelector(".mood-grid");
     if (!grid) return;
     grid.innerHTML = sections.map(s => `
       <div class="mood-card">
-        <img src="${s.image_url || ''}"
-             alt="${sanitize(s.title)}"
-             loading="lazy"
+        <img src="${sanitize(s.image_url)}" alt="${sanitize(s.title)}" loading="lazy"
              onerror="this.src='https://via.placeholder.com/600x800/F0E8FA/8B5CC8?text=TC'" />
         <div class="mood-card-overlay">
           <span class="tag">${sanitize(s.label || "Collection")}</span>
           <h3>${sanitize(s.title)}</h3>
           <p>${sanitize(s.description || "")}</p>
           <button class="mood-link"
-            onclick="filterProducts('${sanitize(s.filter_category || "")}');scrollToSection('products')">
+            onclick="filterProducts('${sanitize(s.filter_category)}');scrollToSection('products')">
             ${sanitize(s.button_text || "View Collection →")}
           </button>
         </div>
       </div>`).join("");
     if (typeof refreshMoodNewDots === "function") refreshMoodNewDots();
-    console.log("[CMS] Mood cards loaded:", sections.length);
   } catch (e) {
-    console.warn("[CMS] Homepage sections failed (static fallback):", e.message);
+    console.warn("CMS homepage sections failed:", e.message);
   }
 }
 
-// ─── PRODUCTS — SUPABASE OVERRIDE ───────────────────────────────────────────
+// ─── PRODUCT GALLERY HELPER ──────────────────────────────────────────────────
 /**
- * This replaces the original loadProducts() defined in index.html's main script.
- *
- * FIX — Race condition: we assign window.loadProducts SYNCHRONOUSLY at parse
- * time here, before DOMContentLoaded. The main script's DOMContentLoaded
- * listener will then call THIS version, not the CSV one.
- *
- * FIX — Empty database: when DB has 0 active products we show an empty state
- * message instead of falling through to CSV/demo data.
- *
- * FIX — Image URLs were passed through sanitize() which escapes colons and
- * slashes, breaking <img src>. Image URLs are now used raw.
+ * Builds the inline gallery HTML for a product card.
+ * If product has multiple images → shows image with dot nav + swipe support.
+ * If product has a video → shows video player.
  */
-window.loadProducts = async function loadProducts() {
-  console.log("[CMS] loadProducts() — fetching from Supabase");
+function buildProductMediaHTML(p) {
+  const images = p._images || [];
+  const videoUrl = p.video_url || "";
 
-  if (!SUPABASE_URL || SUPABASE_URL.includes("PASTE_YOUR")) {
-    console.warn("[CMS] Supabase not configured");
-    return;
+  // Video takes priority if present
+  if (videoUrl) {
+    const imgFallback = images[0] || "";
+    return `
+      <div class="product-media-wrap" data-product-id="${p.id || ""}">
+        <video class="product-video" controls preload="metadata" playsinline
+               poster="${imgFallback}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <source src="${videoUrl}" type="video/mp4" />
+        </video>
+        ${imgFallback ? `<img src="${imgFallback}" alt="${p.name}" loading="lazy" style="display:none" onerror="this.src='https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=TC'" />` : ""}
+        ${images.length > 1 ? buildGalleryDots(images, p.id, 0, true) : ""}
+      </div>`;
   }
 
+  if (images.length === 0) {
+    return `<div class="product-media-wrap"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--purple-light);font-style:italic;font-family:'Cormorant Garamond',serif;">No image yet</div></div>`;
+  }
+
+  if (images.length === 1) {
+    return `
+      <div class="product-media-wrap" data-product-id="${p.id || ""}">
+        <img src="${images[0]}" alt="${p.name}" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=TC'" />
+      </div>`;
+  }
+
+  // Multiple images — build gallery
+  return `
+    <div class="product-media-wrap product-gallery" data-idx="0" data-product-id="${p.id || ""}">
+      <div class="gallery-track" style="display:flex;width:${images.length * 100}%;transition:transform 0.35s ease;">
+        ${images.map((url, i) => `
+          <div style="width:${100 / images.length}%;flex-shrink:0;">
+            <img src="${url}" alt="${p.name} ${i + 1}" loading="${i === 0 ? "eager" : "lazy"}"
+                 onerror="this.src='https://via.placeholder.com/400x500/F0E8FA/8B5CC8?text=TC'" />
+          </div>`).join("")}
+      </div>
+      ${buildGalleryDots(images, p.id, 0, false)}
+      <button class="gallery-prev" onclick="galleryNav(this,-1)" aria-label="Previous">‹</button>
+      <button class="gallery-next" onclick="galleryNav(this,1)"  aria-label="Next">›</button>
+    </div>`;
+}
+
+function buildGalleryDots(images, productId, activeIdx, isVideo) {
+  if (images.length <= 1 && !isVideo) return "";
+  return `<div class="gallery-dots">
+    ${images.map((_, i) => `<span class="gallery-dot${i === activeIdx ? " active" : ""}" onclick="galleryGoTo(this,${i})"></span>`).join("")}
+  </div>`;
+}
+
+// ─── GALLERY NAV FUNCTIONS (global, called from onclick) ────────────────────
+window.galleryNav = function(btn, dir) {
+  const wrap = btn.closest(".product-gallery");
+  if (!wrap) return;
+  const track = wrap.querySelector(".gallery-track");
+  const imgs  = wrap.querySelectorAll(".gallery-track img");
+  const total = imgs.length;
+  if (!total) return;
+  let idx = parseInt(wrap.dataset.idx || "0") + dir;
+  if (idx < 0) idx = total - 1;
+  if (idx >= total) idx = 0;
+  wrap.dataset.idx = idx;
+  track.style.transform = `translateX(-${idx * (100 / total)}%)`;
+  wrap.querySelectorAll(".gallery-dot").forEach((d, i) =>
+    d.classList.toggle("active", i === idx)
+  );
+};
+
+window.galleryGoTo = function(dot, idx) {
+  const wrap = dot.closest(".product-gallery, .product-media-wrap");
+  if (!wrap) return;
+  const track = wrap.querySelector(".gallery-track");
+  const imgs  = wrap.querySelectorAll(".gallery-track img");
+  const total = imgs.length;
+  if (!total) return;
+  wrap.dataset.idx = idx;
+  track.style.transform = `translateX(-${idx * (100 / total)}%)`;
+  wrap.querySelectorAll(".gallery-dot").forEach((d, i) =>
+    d.classList.toggle("active", i === idx)
+  );
+};
+
+// ─── TOUCH/SWIPE SUPPORT FOR GALLERIES ──────────────────────────────────────
+document.addEventListener("touchstart", e => {
+  const wrap = e.target.closest(".product-gallery");
+  if (!wrap) return;
+  wrap._touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+document.addEventListener("touchend", e => {
+  const wrap = e.target.closest(".product-gallery");
+  if (!wrap || wrap._touchStartX == null) return;
+  const dx = e.changedTouches[0].clientX - wrap._touchStartX;
+  if (Math.abs(dx) > 40) {
+    window.galleryNav(wrap.querySelector(".gallery-next"), dx < 0 ? 1 : -1);
+  }
+  wrap._touchStartX = null;
+}, { passive: true });
+
+// ─── PRODUCTS ───────────────────────────────────────────────────────────────
+window.loadProducts = async function loadProducts() {
+  if (!SUPABASE_URL || SUPABASE_URL.includes("PASTE_YOUR")) {
+    if (typeof showDemo === "function") showDemo();
+    return;
+  }
   try {
-    // ── 1. Fetch all active products ──
+    // Fetch active products ordered newest-first for new arrivals detection
     const products = await sb.from(
       "products",
-      "id,name,description,category,price,discount_price,status,size,tags,slug,is_featured,is_sale,date_added,sort_order",
+      "id,name,description,category,price,discount_price,status,size,tags,slug,is_featured,is_sale,date_added,sort_order,video_url",
       { is_active: true },
-      { order: "sort_order.asc,created_at.desc" }
+      { order: "sort_order.asc,date_added.desc,created_at.desc" }
     );
 
-    console.log("[CMS] Products fetched from Supabase:", products ? products.length : 0);
-
-    // ── 2. Empty database → show friendly empty state (NO CSV fallback) ──
     if (!products || products.length === 0) {
-      console.log("[CMS] No products in database. Showing empty state.");
-      cmsShowEmptyState();
+      if (typeof showDemo === "function") showDemo();
       return;
     }
 
-    // ── 3. Fetch all product images, index by product_id ──
+    // Fetch all product images, grouped by product_id
     const images = await sb.from(
       "product_images",
       "product_id,url,is_primary,sort_order",
       {},
       { order: "product_id.asc,is_primary.desc,sort_order.asc" }
     );
-
-    // Build a map: product_id → [url, url, ...] (primary first)
     const imgMap = {};
     (images || []).forEach(img => {
-      if (!img.product_id) return;
       if (!imgMap[img.product_id]) imgMap[img.product_id] = [];
       imgMap[img.product_id].push(img.url);
     });
 
-    // ── 4. Normalize to shape expected by renderProducts() ──
+    // Build normalized product list with ALL images attached
     window.allProducts = products.map(p => ({
       ...p,
-      // Primary image — use raw URL, NOT sanitize() which breaks image paths
-      image:         (imgMap[p.id]?.[0]) || "",
-      image_link:    (imgMap[p.id]?.[0]) || "",
-      // All images for gallery/lightbox
-      _images:       imgMap[p.id] || [],
-      // Ensure price is string (some render functions do string ops on it)
-      price:         p.price != null ? String(p.price) : "",
-      discount_price: p.discount_price != null ? String(p.discount_price) : "",
-      status:        p.status || "Available",
-      tags:          p.tags   || "",
+      image:      (imgMap[p.id] && imgMap[p.id][0]) || "",
+      image_link: (imgMap[p.id] && imgMap[p.id][0]) || "",
+      _images:    imgMap[p.id] || [],          // ALL images for gallery
+      video_url:  p.video_url || "",            // video URL if set
+      price:      p.price ? String(p.price) : "",
+      status:     p.status || "Available",
     }));
 
-    console.log("[CMS] Normalized products:", window.allProducts.length);
-
-    // ── 5. Render ──
-    if (typeof renderProducts   === "function") renderProducts(window.allProducts);
+    if (typeof renderProducts === "function")    renderProducts(window.allProducts);
     if (typeof buildFilterButtons === "function") buildFilterButtons();
     if (typeof refreshMoodNewDots === "function") refreshMoodNewDots();
 
   } catch (e) {
-    console.error("[CMS] Products fetch failed:", e.message);
-    // Show error state — still no CSV fallback
-    cmsShowErrorState(e.message);
+    console.warn("Supabase products failed, using demo:", e.message);
+    if (typeof showDemo === "function") showDemo();
   }
 };
-
-/**
- * Show an empty-state message in the product grid.
- * Called when the database has no active products yet.
- */
-function cmsShowEmptyState() {
-  const grid = document.querySelector(".product-grid, #productGrid, [data-product-grid]");
-  if (!grid) return;
-  grid.innerHTML = `
-    <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#7B6A90;">
-      <p style="font-size:1.1rem;margin-bottom:0.5rem">No products yet.</p>
-      <p style="font-size:0.85rem">Add your first product in the admin dashboard.</p>
-    </div>`;
-}
-
-/**
- * Show an error-state message in the product grid.
- */
-function cmsShowErrorState(msg) {
-  const grid = document.querySelector(".product-grid, #productGrid, [data-product-grid]");
-  if (!grid) return;
-  grid.innerHTML = `
-    <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#dc3545;">
-      <p style="font-size:1rem">Could not load products.</p>
-      <p style="font-size:0.75rem;margin-top:0.3rem;opacity:0.7">${sanitize(msg)}</p>
-    </div>`;
-}
 
 // ─── NAVIGATION ─────────────────────────────────────────────────────────────
 async function loadNavigation() {
@@ -401,70 +390,62 @@ async function loadNavigation() {
   try {
     const links = await sb.from("navigation", "*", { is_active: true }, { order: "sort_order.asc" });
     if (!links || links.length === 0) return;
-
     const desktopNav = document.querySelector(".nav-links");
     const mobileNav  = document.querySelector("#mobileNav ul");
     if (!desktopNav && !mobileNav) return;
-
     const makeLink = (l, mobile = false) => {
-      const label = sanitize(l.label);
       if (l.type === "filter") {
-        const fn = mobile
-          ? `filterProducts('${sanitize(l.filter_value || "")}');scrollToSection('products');closeMobileNav()`
-          : `filterProducts('${sanitize(l.filter_value || "")}');scrollToSection('products')`;
-        return `<li><a href="javascript:void(0)" onclick="${fn}">${label}</a></li>`;
+        const onclick = mobile
+          ? `filterProducts('${l.filter_value}');scrollToSection('products');closeMobileNav()`
+          : `filterProducts('${l.filter_value}');scrollToSection('products')`;
+        return `<li><a href="javascript:void(0)" onclick="${onclick}">${sanitize(l.label)}</a></li>`;
       }
       if (l.type === "scroll") {
-        const fn = mobile
-          ? `scrollToSection('${sanitize(l.target_id || "")}');closeMobileNav()`
-          : `scrollToSection('${sanitize(l.target_id || "")}')`;
-        return `<li><a href="javascript:void(0)" onclick="${fn}">${label}</a></li>`;
+        const onclick = mobile
+          ? `scrollToSection('${l.target_id}');closeMobileNav()`
+          : `scrollToSection('${l.target_id}')`;
+        return `<li><a href="javascript:void(0)" onclick="${onclick}">${sanitize(l.label)}</a></li>`;
       }
       if (l.type === "overlay") {
-        const fn = mobile ? `${sanitize(l.target_id)}();closeMobileNav()` : `${sanitize(l.target_id)}()`;
-        return `<li><a href="javascript:void(0)" onclick="${fn}">${label}</a></li>`;
+        const onclick = mobile
+          ? `${l.target_id}();closeMobileNav()`
+          : `${l.target_id}()`;
+        return `<li><a href="javascript:void(0)" onclick="${onclick}">${sanitize(l.label)}</a></li>`;
       }
-      return `<li><a href="${l.url || '#'}" target="_blank" rel="noopener">${label}</a></li>`;
+      return `<li><a href="${sanitize(l.url || '#')}" target="_blank" rel="noopener">${sanitize(l.label)}</a></li>`;
     };
-
     if (desktopNav) {
-      desktopNav.innerHTML = links.map(l => makeLink(l, false)
-        .replace(/^<li>/, "").replace(/<\/li>$/, "")).join("");
+      desktopNav.innerHTML = links.map(l => {
+        const tag = makeLink(l, false);
+        return tag.replace(/^<li>/, "").replace(/<\/li>$/, "");
+      }).join("");
     }
     if (mobileNav) {
       mobileNav.innerHTML = links.map(l => makeLink(l, true)).join("");
     }
-    console.log("[CMS] Navigation loaded:", links.length, "links");
   } catch (e) {
-    console.warn("[CMS] Navigation failed (static fallback):", e.message);
+    console.warn("CMS navigation failed:", e.message);
   }
 }
 
-// ─── NEWSLETTER PATCH ────────────────────────────────────────────────────────
-// Runs after DOMContentLoaded so window.subscribeNewsletter is already defined
-function patchNewsletter() {
-  if (typeof window.subscribeNewsletter !== "function") return;
-  const _orig = window.subscribeNewsletter;
-  window.subscribeNewsletter = async function () {
-    await _orig();
-    if (!SUPABASE_URL || SUPABASE_URL.includes("PASTE_YOUR")) return;
-    const email = document.getElementById("newsletterEmail")?.value?.trim();
-    if (!email || !email.includes("@")) return;
-    try {
-      await sb.insert("newsletter_subscribers", {
-        email,
-        subscribed_at: new Date().toISOString(),
-      });
-    } catch { /* Silently fail — Formspree already captured it */ }
-  };
-}
+// ─── NEWSLETTER ──────────────────────────────────────────────────────────────
+(function patchNewsletter() {
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.subscribeNewsletter) return;
+    const _orig = window.subscribeNewsletter;
+    window.subscribeNewsletter = async function() {
+      await _orig();
+      if (!SUPABASE_URL || SUPABASE_URL.includes("PASTE_YOUR")) return;
+      const email = document.getElementById("newsletterEmail")?.value?.trim();
+      if (!email || !email.includes("@")) return;
+      try {
+        await sb.insert("newsletter_subscribers", { email, subscribed_at: new Date().toISOString() });
+      } catch (e) { /* silent */ }
+    };
+  });
+})();
 
 // ─── UTILITY ─────────────────────────────────────────────────────────────────
-/**
- * HTML-escape for inserting untrusted strings into HTML text nodes / attributes.
- * DO NOT use on URLs that go into src/href — it will break them.
- * Use raw values for src/href and validate them separately if needed.
- */
 function sanitize(str) {
   if (!str) return "";
   return String(str)
@@ -475,54 +456,9 @@ function sanitize(str) {
     .replace(/'/g, "&#x27;");
 }
 
-// ─── IMAGE UPLOAD HELPER (PUBLIC) ────────────────────────────────────────────
-/**
- * Upload a single File to Supabase Storage.
- * Exposed on window so admin.html and any inline script can call it.
- *
- * Usage:
- *   const url = await cmsUploadImage(file, "products");
- *   // returns full public URL like https://…/storage/v1/object/public/products/123_photo.jpg
- *
- * Buckets expected (create in Supabase Storage → New bucket → Public):
- *   products   → product images
- *   banners    → hero / banner images
- *   sections   → mood card images
- *   general    → logos, misc
- *   videos     → product / promo videos
- *
- * @param {File}   file    - File object
- * @param {string} bucket  - bucket name
- * @param {string} token   - optional admin auth token for authenticated uploads
- * @returns {string}       - public URL
- */
-window.cmsUploadImage = async function (file, bucket = "products", token = null) {
-  if (!file) throw new Error("No file provided");
-  const ext  = file.name.split(".").pop().toLowerCase();
-  const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const path = `${Date.now()}_${safe}`;
-  return sb.upload(bucket, path, file, token);
-};
-
-/**
- * Upload multiple files and return array of public URLs.
- * @param {FileList|File[]} files
- * @param {string} bucket
- * @param {string} token
- * @returns {string[]}
- */
-window.cmsUploadImages = async function (files, bucket = "products", token = null) {
-  const arr = Array.from(files);
-  return Promise.all(arr.map(f => window.cmsUploadImage(f, bucket, token)));
-};
-
-// ─── INIT ────────────────────────────────────────────────────────────────────
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("[CMS] DOMContentLoaded — initialising");
   loadSiteSettings();
   loadHomepageSections();
   loadNavigation();
-  patchNewsletter();
-  // loadProducts() is called by index.html's own init — we've already
-  // replaced window.loadProducts above so it will use Supabase.
 });

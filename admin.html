@@ -292,47 +292,28 @@
     <!-- ── MEDIA ── -->
     <div id="panel-media" class="panel">
       <div class="page-header">
-        <div><h1>Media Library</h1><p>Upload and manage all images and assets used across the site.</p></div>
+        <div><h1>Media Library</h1><p>Upload and manage images and assets used across the site.</p></div>
       </div>
-
-      <!-- Upload area -->
       <div class="settings-section">
         <h3>Upload New Media</h3>
         <div class="form-grid">
           <div class="field">
-            <label>Folder / Bucket</label>
+            <label>Bucket / Folder</label>
             <select id="mediaBucket">
-              <option value="banners">Banners &amp; Hero Images</option>
-              <option value="products">Product Images</option>
-              <option value="sections">Mood Card Images</option>
-              <option value="general">General / Logos</option>
-              <option value="videos">Videos</option>
+              <option value="products">Products</option>
+              <option value="banners">Banners</option>
+              <option value="sections">Mood Cards</option>
+              <option value="general">General</option>
             </select>
           </div>
           <div class="field">
-            <label>Files (multiple allowed)</label>
-            <input type="file" id="mediaFile" accept="image/*,video/*" multiple style="font-size:0.82rem;" />
+            <label>File</label>
+            <input type="file" id="mediaFile" accept="image/*,video/*" />
           </div>
         </div>
-        <button class="btn btn-purple" style="margin-top:1rem" onclick="uploadMedia()">⬆ Upload to Library</button>
+        <button class="btn btn-purple" style="margin-top:1rem" onclick="uploadMedia()">⬆ Upload</button>
       </div>
-
-      <!-- Filter bar -->
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
-        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;flex:1;">
-          <button class="btn btn-sm btn-purple" onclick="setMediaFilter('all')" id="mfAll">All</button>
-          <button class="btn btn-sm btn-outline-purple" onclick="setMediaFilter('banners')" id="mfBanners">Banners</button>
-          <button class="btn btn-sm btn-outline-purple" onclick="setMediaFilter('products')" id="mfProducts">Products</button>
-          <button class="btn btn-sm btn-outline-purple" onclick="setMediaFilter('sections')" id="mfSections">Mood Cards</button>
-          <button class="btn btn-sm btn-outline-purple" onclick="setMediaFilter('general')" id="mfGeneral">General</button>
-          <button class="btn btn-sm btn-outline-purple" onclick="setMediaFilter('videos')" id="mfVideos">Videos</button>
-        </div>
-        <input type="text" id="mediaSearch" placeholder="Search filename…" oninput="renderMediaGrid()"
-          style="width:180px;padding:0.4rem 0.7rem;font-size:0.8rem;border:1px solid var(--border);background:var(--off-white);outline:none;" />
-      </div>
-
-      <div id="mediaGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;"></div>
-      <p id="mediaEmpty" style="display:none;color:var(--text-muted);font-size:0.82rem;padding:2rem 0;text-align:center;">No media files found.</p>
+      <div id="mediaGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;"></div>
     </div>
 
   </main><!-- /main -->
@@ -373,10 +354,33 @@
       <div class="field"><label>Product Images</label></div>
       <div class="img-drop-zone" id="imgDropZone" onclick="document.getElementById('imgFileInput').click()">
         <div>📷 Click to upload images or drag & drop</div>
-        <div style="font-size:0.7rem;margin-top:0.3rem">JPG, PNG, WebP — multiple allowed</div>
+        <div style="font-size:0.7rem;margin-top:0.3rem">JPG, PNG, WebP — multiple allowed. First image = primary.</div>
         <input type="file" id="imgFileInput" accept="image/*" multiple style="display:none" onchange="handleImgSelect(event)" />
       </div>
       <div class="img-preview-grid" id="imgPreviewGrid"></div>
+      <hr style="margin:1.5rem 0;border:none;border-top:1px solid var(--border);" />
+      <div class="field"><label>Product Video (optional)</label>
+        <p style="font-size:0.72rem;color:var(--text-muted);margin:0.3rem 0 0.6rem;">Upload a short video — shown instead of/alongside images on the frontend.</p>
+      </div>
+      <div id="videoPreviewWrap" style="display:none;margin-bottom:0.75rem;">
+        <video id="videoPreview" controls style="width:100%;max-height:200px;border:1px solid var(--border);border-radius:4px;"></video>
+        <button class="btn btn-sm" style="margin-top:0.4rem;background:#fee;color:#c00;border:1px solid #fcc;font-size:0.72rem;" onclick="removeVideo()">✕ Remove Video</button>
+      </div>
+      <div id="existingVideoWrap" style="display:none;margin-bottom:0.75rem;">
+        <p style="font-size:0.72rem;color:var(--text-muted);">Current video: <a id="existingVideoLink" href="#" target="_blank" style="color:var(--purple);">View</a></p>
+        <button class="btn btn-sm" style="background:#fee;color:#c00;border:1px solid #fcc;font-size:0.72rem;" onclick="clearExistingVideo()">✕ Remove Existing Video</button>
+      </div>
+      <div class="img-drop-zone" id="videoDropZone" onclick="document.getElementById('videoFileInput').click()">
+        <div>🎬 Click to upload video or drag & drop</div>
+        <div style="font-size:0.7rem;margin-top:0.3rem">MP4 recommended — max 50MB</div>
+        <input type="file" id="videoFileInput" accept="video/*" style="display:none" onchange="handleVideoSelect(event)" />
+      </div>
+      <div id="videoUploadProgress" style="display:none;margin-top:0.5rem;">
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
+          <div id="videoProgressBar" style="height:100%;background:var(--purple);width:0%;transition:width 0.3s;"></div>
+        </div>
+        <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;" id="videoProgressText">Uploading…</p>
+      </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-outline-purple" onclick="closeProductModal()">Cancel</button>
@@ -397,16 +401,7 @@
         <div class="field span2"><label>Description</label><textarea id="sDesc" style="min-height:70px"></textarea></div>
         <div class="field"><label>Filter Category</label><input type="text" id="sFilterCat" placeholder="Dresses" /></div>
         <div class="field"><label>Button Text</label><input type="text" id="sBtnText" placeholder="View Collection →" /></div>
-        <div class="field span2">
-          <label>Section Image</label>
-          <div id="sImgPreviewWrap" style="margin-bottom:0.5rem;"></div>
-          <div class="img-drop-zone" id="sImgDropZone" onclick="document.getElementById('sImgFileInput').click()" style="padding:1rem;">
-            <div>📷 Click to upload image</div>
-            <div style="font-size:0.7rem;margin-top:0.2rem">JPG, PNG, WebP</div>
-            <input type="file" id="sImgFileInput" accept="image/*" style="display:none" onchange="handleSectionImg(event)" />
-          </div>
-          <input type="hidden" id="sImgUrl" />
-        </div>
+        <div class="field span2"><label>Image URL</label><input type="url" id="sImgUrl" placeholder="https://…" /></div>
         <div class="field"><label>Sort Order</label><input type="number" id="sSort" value="0" min="0" /></div>
         <div class="field"><label>Active</label><select id="sActive"><option value="true">Yes</option><option value="false">No</option></select></div>
       </div>
@@ -535,17 +530,13 @@ async function sbUpload(bucket, path, file, token) {
     method:  "POST",
     headers: {
       "apikey":        SUPABASE_ANON,
-      "Authorization": `Bearer ${token || SUPABASE_ANON}`,
-      "Content-Type":  file.type || "application/octet-stream",
+      "Authorization": `Bearer ${token}`,
+      "Content-Type":  file.type,
       "Cache-Control": "3600",
-      "x-upsert":      "true",
     },
     body: file,
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `Upload failed: ${res.status}`);
-  }
+  if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
   return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
 }
 
@@ -553,6 +544,30 @@ async function sbUpload(bucket, path, file, token) {
 let _token = localStorage.getItem("tc_admin_token") || "";
 let _user  = null;
 let _pendingImages = []; // { file, url (preview), isExisting, existing_url }
+
+// Upload with progress callback (for videos)
+function uploadWithProgress(bucket, path, file, token, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`);
+    xhr.setRequestHeader("apikey",        SUPABASE_ANON);
+    xhr.setRequestHeader("Authorization", `Bearer ${token || SUPABASE_ANON}`);
+    xhr.setRequestHeader("Content-Type",  file.type);
+    xhr.setRequestHeader("Cache-Control", "3600");
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable && onProgress) onProgress(Math.round(e.loaded / e.total * 100));
+    };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(`${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`);
+      } else {
+        reject(new Error(`Upload failed: ${xhr.status}`));
+      }
+    };
+    xhr.onerror = () => reject(new Error("Network error during upload"));
+    xhr.send(file);
+  });
+}
 
 async function checkSession() {
   if (!_token) return false;
@@ -666,6 +681,7 @@ async function loadProductsPanel() { /* shared with loadDashboard */ }
 function openProductModal(id) {
   _pendingImages = [];
   renderImgPreview();
+  resetVideoUI();
   document.getElementById("pId").value = "";
   ["pName","pCategory","pPrice","pDiscountPrice","pSize","pDescription","pTags","pSlug","pSeoTitle","pSeoDesc"].forEach(id => { document.getElementById(id).value = ""; });
   document.getElementById("pSort").value = "0";
@@ -680,9 +696,8 @@ function openProductModal(id) {
 
 async function editProduct(id) {
   try {
-    // FIX: fetch only the specific product by id, not the whole table
-    const rows = await sbFrom("products", "*", { id }, {}, _token);
-    const p    = Array.isArray(rows) ? rows[0] : rows;
+    const product = await sbFrom("products", "*", { id }, {}, _token);
+    const p       = (product || [])[0];
     if (!p) { toast("Product not found"); return; }
     const imgs = await sbFrom("product_images", "*", { product_id: id }, { order: "is_primary.desc,sort_order.asc" }, _token);
     _pendingImages = (imgs || []).map(i => ({ isExisting: true, existing_url: i.url, url: i.url, id: i.id, is_primary: i.is_primary }));
@@ -706,11 +721,19 @@ async function editProduct(id) {
     document.getElementById("pSale").checked           = !!p.is_sale;
     document.getElementById("pActive").checked         = p.is_active !== false;
     document.getElementById("productModalTitle").textContent = "Edit Product";
+    // Populate video if exists
+    resetVideoUI();
+    if (p.video_url) {
+      document.getElementById("existingVideoLink").href      = p.video_url;
+      document.getElementById("existingVideoLink").textContent = "View current video";
+      document.getElementById("existingVideoWrap").style.display = "block";
+      document.getElementById("videoDropZone").style.display     = "none";
+    }
     document.getElementById("productModal").classList.add("open");
   } catch (e) { toast("Error loading product: " + e.message); }
 }
 
-function closeProductModal() { document.getElementById("productModal").classList.remove("open"); _pendingImages = []; }
+function closeProductModal() { document.getElementById("productModal").classList.remove("open"); _pendingImages = []; resetVideoUI(); }
 
 function handleImgSelect(e) {
   Array.from(e.target.files).forEach(file => {
@@ -736,9 +759,56 @@ function renderImgPreview() {
     zone.ondragleave = () => zone.classList.remove("dragover");
     zone.ondrop      = e => { e.preventDefault(); zone.classList.remove("dragover"); Array.from(e.dataTransfer.files).forEach(f => _pendingImages.push({ file: f, url: URL.createObjectURL(f), isExisting: false })); renderImgPreview(); };
   }
+  const vzone = document.getElementById("videoDropZone");
+  if (vzone) {
+    vzone.ondragover  = e => { e.preventDefault(); vzone.classList.add("dragover"); };
+    vzone.ondragleave = () => vzone.classList.remove("dragover");
+    vzone.ondrop      = e => { e.preventDefault(); vzone.classList.remove("dragover"); const f = e.dataTransfer.files[0]; if (f && f.type.startsWith("video/")) handleVideoSelect({ target: { files: [f], value: "" } }); };
+  }
 }
 
 function removeImg(i) { _pendingImages.splice(i, 1); renderImgPreview(); }
+
+// ── VIDEO HANDLING ─────────────────────────────────────────────────────────
+let _pendingVideo = null;  // { file } — new video to upload
+let _clearVideo   = false; // flag to remove existing video from DB
+
+function handleVideoSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 52428800) { toast("Video too large — max 50MB"); return; }
+  _pendingVideo = { file };
+  _clearVideo   = false;
+  const preview = document.getElementById("videoPreview");
+  preview.src   = URL.createObjectURL(file);
+  document.getElementById("videoPreviewWrap").style.display    = "block";
+  document.getElementById("existingVideoWrap").style.display   = "none";
+  document.getElementById("videoDropZone").style.display       = "none";
+  e.target.value = "";
+}
+
+function removeVideo() {
+  _pendingVideo = null;
+  document.getElementById("videoPreview").src = "";
+  document.getElementById("videoPreviewWrap").style.display  = "none";
+  document.getElementById("videoDropZone").style.display     = "";
+}
+
+function clearExistingVideo() {
+  _clearVideo = true;
+  document.getElementById("existingVideoWrap").style.display = "none";
+  document.getElementById("videoDropZone").style.display     = "";
+}
+
+function resetVideoUI() {
+  _pendingVideo = null;
+  _clearVideo   = false;
+  if (document.getElementById("videoPreview"))  document.getElementById("videoPreview").src = "";
+  if (document.getElementById("videoPreviewWrap"))  document.getElementById("videoPreviewWrap").style.display  = "none";
+  if (document.getElementById("existingVideoWrap")) document.getElementById("existingVideoWrap").style.display = "none";
+  if (document.getElementById("videoDropZone"))     document.getElementById("videoDropZone").style.display     = "";
+  if (document.getElementById("videoUploadProgress")) document.getElementById("videoUploadProgress").style.display = "none";
+}
 
 async function saveProduct() {
   const id   = document.getElementById("pId").value.trim();
@@ -779,7 +849,7 @@ async function saveProduct() {
     // Upload new images and save to product_images
     for (let i = 0; i < _pendingImages.length; i++) {
       const img = _pendingImages[i];
-      if (img.isExisting) continue; // already in DB
+      if (img.isExisting) continue;
       try {
         const ext  = img.file.name.split(".").pop();
         const path = `products/${productId}/${Date.now()}_${i}.${ext}`;
@@ -791,6 +861,35 @@ async function saveProduct() {
           sort_order: i,
         }, _token);
       } catch (imgErr) { console.warn("Image upload error:", imgErr.message); }
+    }
+
+    // Upload or clear video
+    if (_pendingVideo) {
+      try {
+        document.getElementById("videoUploadProgress").style.display = "block";
+        document.getElementById("videoProgressBar").style.width = "10%";
+        document.getElementById("videoProgressText").textContent = "Uploading video…";
+        const ext  = _pendingVideo.file.name.split(".").pop();
+        const vpath = `products/${productId}/video_${Date.now()}.${ext}`;
+        // Use XMLHttpRequest for upload progress
+        const videoUrl = await uploadWithProgress("videos", vpath, _pendingVideo.file, _token, (pct) => {
+          document.getElementById("videoProgressBar").style.width = pct + "%";
+          document.getElementById("videoProgressText").textContent = `Uploading video… ${pct}%`;
+        });
+        await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${productId}`, {
+          method:  "PATCH",
+          headers: { ...sbHeaders(_token), "Prefer": "return=minimal" },
+          body:    JSON.stringify({ video_url: videoUrl }),
+        });
+        document.getElementById("videoProgressBar").style.width = "100%";
+        document.getElementById("videoProgressText").textContent = "Video uploaded!";
+      } catch (vidErr) { console.warn("Video upload error:", vidErr.message); }
+    } else if (_clearVideo && id) {
+      await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${productId}`, {
+        method:  "PATCH",
+        headers: { ...sbHeaders(_token), "Prefer": "return=minimal" },
+        body:    JSON.stringify({ video_url: null }),
+      });
     }
 
     toast("✅ Product saved!");
@@ -838,10 +937,8 @@ async function loadSectionsPanel() {
 
 function openSectionModal() {
   ["sId","sTitle","sLabel","sDesc","sFilterCat","sBtnText","sImgUrl"].forEach(id => { document.getElementById(id).value = ""; });
-  document.getElementById("sSort").value  = "0";
+  document.getElementById("sSort").value = "0";
   document.getElementById("sActive").value = "true";
-  document.getElementById("sImgPreviewWrap").innerHTML = "";
-  document.getElementById("sImgDropZone").innerHTML = `<div>📷 Click to upload image</div><div style="font-size:0.7rem;margin-top:0.2rem">JPG, PNG, WebP</div><input type="file" id="sImgFileInput" accept="image/*" style="display:none" onchange="handleSectionImg(event)" />`;
   document.getElementById("sectionModalTitle").textContent = "Add Mood Card";
   document.getElementById("sectionModal").classList.add("open");
 }
@@ -858,38 +955,11 @@ function editSection(id) {
   document.getElementById("sImgUrl").value    = s.image_url || "";
   document.getElementById("sSort").value      = s.sort_order ?? 0;
   document.getElementById("sActive").value    = s.is_active ? "true" : "false";
-  // Show existing image preview
-  const wrap = document.getElementById("sImgPreviewWrap");
-  wrap.innerHTML = s.image_url
-    ? `<img src="${s.image_url}" alt="current" style="max-height:100px;max-width:200px;object-fit:contain;border:1px solid var(--border);margin-bottom:0.4rem;" />`
-    : "";
-  document.getElementById("sImgDropZone").innerHTML = `<div>📷 ${s.image_url ? "Click to replace image" : "Click to upload image"}</div><div style="font-size:0.7rem;margin-top:0.2rem">JPG, PNG, WebP</div><input type="file" id="sImgFileInput" accept="image/*" style="display:none" onchange="handleSectionImg(event)" />`;
   document.getElementById("sectionModalTitle").textContent = "Edit Mood Card";
   document.getElementById("sectionModal").classList.add("open");
 }
 
 function closeSectionModal() { document.getElementById("sectionModal").classList.remove("open"); }
-
-// Handle section image upload
-async function handleSectionImg(e) {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  const zone = document.getElementById("sImgDropZone");
-  zone.textContent = "⬆ Uploading…";
-  try {
-    const path = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-    const url  = await sbUpload("sections", path, file, _token);
-    document.getElementById("sImgUrl").value = url;
-    const wrap = document.getElementById("sImgPreviewWrap");
-    wrap.innerHTML = `<img src="${url}" alt="preview" style="max-height:100px;max-width:200px;object-fit:contain;border:1px solid var(--border);" />`;
-    zone.innerHTML = `<div>✅ Uploaded — click to replace</div><input type="file" id="sImgFileInput" accept="image/*" style="display:none" onchange="handleSectionImg(event)" />`;
-    toast("Image uploaded!");
-  } catch (err) {
-    zone.innerHTML = `<div>📷 Click to upload image</div><div style="font-size:0.7rem;margin-top:0.2rem">JPG, PNG, WebP</div><input type="file" id="sImgFileInput" accept="image/*" style="display:none" onchange="handleSectionImg(event)" />`;
-    toast("Upload error: " + err.message);
-  }
-  e.target.value = "";
-}
 
 async function saveSection() {
   const title = document.getElementById("sTitle").value.trim();
@@ -926,79 +996,82 @@ const SETTINGS_GROUPS = [
   {
     title: "General / SEO",
     fields: [
-      { key: "site_title",       label: "Site Title",              type: "text" },
-      { key: "site_description", label: "Meta Description",        type: "textarea" },
-      { key: "logo_url",         label: "Logo Image",              type: "upload", bucket: "general" },
+      { key: "site_title",       label: "Site Title",          type: "text" },
+      { key: "site_description", label: "Meta Description",    type: "textarea" },
+      { key: "logo_url",         label: "Logo Image URL",      type: "url" },
     ]
   },
   {
     title: "Announcement Bar",
     fields: [
-      { key: "announcement_text", label: "Announcement Text",      type: "text" },
+      { key: "announcement_text", label: "Announcement Text", type: "text" },
     ]
   },
   {
     title: "Hero Section",
     fields: [
-      { key: "hero_tag",          label: "Small Tag Label",        type: "text" },
-      { key: "hero_h1",           label: "Headline (supports bold/italic HTML tags)", type: "textarea" },
-      { key: "hero_p",            label: "Subheading Paragraph",   type: "textarea" },
-      { key: "hero_btn_primary",  label: "Primary Button Text",    type: "text" },
-      { key: "hero_btn_outline",  label: "Outline Button Text",    type: "text" },
-      { key: "hero_image_url",    label: "Hero Image",             type: "upload", bucket: "banners" },
-      { key: "hero_badge_label",  label: "Hero Badge Label",       type: "text" },
-      { key: "hero_badge_quote",  label: "Hero Badge Quote",       type: "text" },
+      { key: "hero_tag",         label: "Small Tag Label",     type: "text" },
+      { key: "hero_h1",         label: "Headline (HTML OK)",   type: "textarea" },
+      { key: "hero_p",          label: "Subheading Paragraph", type: "textarea" },
+      { key: "hero_btn_primary",label: "Primary Button Text",  type: "text" },
+      { key: "hero_btn_outline",label: "Outline Button Text",  type: "text" },
+      { key: "hero_image_url",  label: "Hero Image URL",       type: "url" },
+      { key: "hero_badge_label",label: "Hero Badge Label",     type: "text" },
+      { key: "hero_badge_quote",label: "Hero Badge Quote",     type: "text" },
     ]
   },
   {
     title: "Marquee & Quote",
     fields: [
-      { key: "marquee_text",     label: "Marquee Items (separate each word with a | pipe character)", type: "text" },
-      { key: "quote_strip_text", label: "Quote Strip Text",        type: "text" },
+      { key: "marquee_text",    label: "Marquee Items (pipe-separated | )", type: "text" },
+      { key: "quote_strip_text",label: "Quote Strip Text",    type: "text" },
     ]
   },
   {
     title: "Products Section",
     fields: [
-      { key: "products_section_tag", label: "Section Tag Label",   type: "text" },
-      { key: "products_section_h2",  label: "Section Heading",     type: "text" },
+      { key: "products_section_tag", label: "Section Tag Label", type: "text" },
+      { key: "products_section_h2",  label: "Section Heading",   type: "text" },
     ]
   },
   {
     title: "Our Promise / About",
     fields: [
-      { key: "promise_h2", label: "Heading",                       type: "text" },
-      { key: "promise_p",  label: "Paragraph",                     type: "textarea" },
+      { key: "promise_h2",   label: "Heading",         type: "text" },
+      { key: "promise_p",    label: "Paragraph",        type: "textarea" },
+      { key: "promise_img1", label: "Promise Image 1 URL (tall left)",  type: "url" },
+      { key: "promise_img2", label: "Promise Image 2 URL (top right)",  type: "url" },
+      { key: "promise_img3", label: "Promise Image 3 URL (bottom right)",type: "url" },
     ]
   },
   {
     title: "Newsletter Section",
     fields: [
-      { key: "newsletter_h2", label: "Heading",                    type: "text" },
-      { key: "newsletter_p",  label: "Subheading",                 type: "textarea" },
+      { key: "newsletter_h2", label: "Heading",    type: "text" },
+      { key: "newsletter_p",  label: "Subheading", type: "textarea" },
     ]
   },
   {
     title: "Footer",
     fields: [
-      { key: "footer_tagline",   label: "Brand Tagline",           type: "textarea" },
-      { key: "footer_copyright", label: "Copyright Text",          type: "text" },
+      { key: "footer_tagline",   label: "Brand Tagline",  type: "textarea" },
+      { key: "footer_copyright", label: "Copyright Text", type: "text" },
     ]
   },
   {
     title: "Contact & Social",
     fields: [
-      { key: "wa_number",     label: "WhatsApp Number (digits only, no + or spaces)", type: "text" },
-      { key: "instagram_url", label: "Instagram Profile URL",      type: "text" },
-      { key: "tiktok_url",    label: "TikTok Profile URL",         type: "text" },
+      { key: "wa_number",      label: "WhatsApp Number (digits only, no +)", type: "text" },
+      { key: "instagram_url",  label: "Instagram URL",  type: "url" },
+      { key: "tiktok_url",     label: "TikTok URL",     type: "url" },
     ]
   },
   {
     title: "Info Modals",
     fields: [
-      { key: "shipping_info",       label: "Shipping Information (you can use HTML for headings and bold text)", type: "textarea" },
-      { key: "returns_policy",      label: "Returns Policy (you can use HTML for headings and bold text)",       type: "textarea" },
-      { key: "sustainability_info", label: "Sustainability Info (you can use HTML for headings and bold text)",  type: "textarea" },
+      { key: "shipping_info",      label: "Shipping Info (HTML)",     type: "textarea" },
+      { key: "returns_policy",     label: "Returns Policy (HTML)",    type: "textarea" },
+      { key: "sustainability_info",label: "Sustainability Info (HTML)",type: "textarea" },
     ]
   },
 ];
@@ -1018,64 +1091,15 @@ function renderSettingsForms() {
   container.innerHTML = SETTINGS_GROUPS.map(group => `
     <div class="settings-section">
       <h3>${group.title}</h3>
-      ${group.fields.map(f => {
-        const val = _currentSettings[f.key] || "";
-        if (f.type === "upload") {
-          // Image upload field with current preview and file picker
-          return `<div class="settings-field">
-            <label for="setting_${f.key}">${f.label}</label>
-            <div>
-              ${val ? `<img src="${val}" alt="current" style="max-height:80px;max-width:200px;object-fit:contain;margin-bottom:0.5rem;border:1px solid var(--border);" onerror="this.style.display='none'" />` : ""}
-              <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
-                <input type="hidden" id="setting_${f.key}" value="${esc(val)}" />
-                <input type="file" id="setting_file_${f.key}" accept="image/*" style="font-size:0.8rem;flex:1;min-width:0;"
-                  onchange="uploadSettingImage('${f.key}','${f.bucket || 'general'}')" />
-                ${val ? `<span style="font-size:0.65rem;color:var(--text-muted);word-break:break-all;max-width:200px">${esc(val.split('/').pop())}</span>` : `<span style="font-size:0.7rem;color:var(--text-muted)">No image set</span>`}
-              </div>
-            </div>
-          </div>`;
-        }
-        return `<div class="settings-field">
+      ${group.fields.map(f => `
+        <div class="settings-field">
           <label for="setting_${f.key}">${f.label}</label>
           ${f.type === "textarea"
-            ? `<textarea id="setting_${f.key}" rows="3">${esc(val)}</textarea>`
-            : `<input type="text" id="setting_${f.key}" value="${esc(val)}" />`
+            ? `<textarea id="setting_${f.key}" rows="3">${esc(_currentSettings[f.key] || "")}</textarea>`
+            : `<input type="${f.type}" id="setting_${f.key}" value="${esc(_currentSettings[f.key] || "")}" />`
           }
-        </div>`;
-      }).join("")}
+        </div>`).join("")}
     </div>`).join("");
-}
-
-// Upload an image for a settings field and update hidden input + preview
-async function uploadSettingImage(key, bucket) {
-  const fileEl = document.getElementById(`setting_file_${key}`);
-  const file   = fileEl?.files?.[0];
-  if (!file) return;
-  const btn = fileEl;
-  btn.disabled = true;
-  try {
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const path     = `${Date.now()}_${safeName}`;
-    toast("⬆ Uploading…");
-    const url = await sbUpload(bucket, path, file, _token);
-    // Update the hidden input with the new URL
-    document.getElementById(`setting_${key}`).value = url;
-    // Re-render the preview image inline
-    const wrap = btn.closest("div").parentElement;
-    const existingImg = wrap.querySelector("img");
-    if (existingImg) { existingImg.src = url; existingImg.style.display = ""; }
-    else {
-      const img = document.createElement("img");
-      img.src = url; img.alt = "uploaded";
-      img.style.cssText = "max-height:80px;max-width:200px;object-fit:contain;margin-bottom:0.5rem;border:1px solid var(--border);display:block;";
-      wrap.prepend(img);
-    }
-    toast("✅ Image uploaded! Click Save All Settings to apply.");
-  } catch (e) {
-    toast("Upload error: " + e.message);
-  } finally {
-    btn.disabled = false;
-  }
 }
 
 async function saveSettings() {
@@ -1088,22 +1112,23 @@ async function saveSettings() {
     });
   });
 
-  let saved = 0;
   try {
+    // Upsert each setting (INSERT ON CONFLICT UPDATE)
     for (const u of updates) {
-      // Use Supabase upsert via Prefer: resolution=merge-duplicates
-      // This inserts if not exists, updates if key already exists
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/settings`, {
-        method:  "POST",
-        headers: {
-          ...sbHeaders(_token),
-          "Prefer": "return=minimal,resolution=merge-duplicates",
-        },
-        body: JSON.stringify({ key: u.key, value: u.value }),
-      });
-      if (res.ok) { _currentSettings[u.key] = u.value; saved++; }
+      const existing = Object.keys(_currentSettings).includes(u.key);
+      if (existing) {
+        // Update via key filter
+        await fetch(`${SUPABASE_URL}/rest/v1/settings?key=eq.${encodeURIComponent(u.key)}`, {
+          method:  "PATCH",
+          headers: { ...sbHeaders(_token), "Prefer": "return=minimal" },
+          body:    JSON.stringify({ value: u.value }),
+        });
+      } else {
+        await sbUpsert("settings", u, _token);
+      }
+      _currentSettings[u.key] = u.value;
     }
-    toast(`✅ ${saved} settings saved! Refresh your website to see changes.`);
+    toast("✅ Settings saved! Refresh the website to see changes.");
   } catch (e) { toast("Error saving settings: " + e.message); }
 }
 
@@ -1197,151 +1222,95 @@ async function deleteNav(id) {
 }
 
 // ─── MEDIA PANEL ─────────────────────────────────────────────────────────────
-// Static/existing site images that are hardcoded in index.html.
-// These auto-populate the media library so they're visible and copyable.
-const STATIC_SITE_IMAGES = [
-  { url: "https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779233956/Logo_hyry63.png",      name: "Logo (nav/favicon)",  bucket: "static" },
-  { url: "https://res.cloudinary.com/dqbdcvsmr/image/upload/v1779242719/Logo_50_ajimg1.jpg",   name: "Logo (social share)", bucket: "static" },
-  { url: "https://res.cloudinary.com/dqbdcvsmr/image/upload/IMG_4328_yf7ce0.jpg",              name: "Floral Wrap Top",     bucket: "static" },
-];
-
-let _allMediaFiles  = []; // all files loaded from storage
-let _mediaFilter    = "all";
-
-function setMediaFilter(bucket) {
-  _mediaFilter = bucket;
-  // Update button states
-  ["all","banners","products","sections","general","videos"].forEach(b => {
-    const btn = document.getElementById(`mf${b.charAt(0).toUpperCase()+b.slice(1)}`);
-    if (!btn) return;
-    btn.className = `btn btn-sm ${b === bucket ? "btn-purple" : "btn-outline-purple"}`;
-  });
-  renderMediaGrid();
-}
-
-function renderMediaGrid() {
-  const query   = (document.getElementById("mediaSearch")?.value || "").toLowerCase();
-  const grid    = document.getElementById("mediaGrid");
-  const empty   = document.getElementById("mediaEmpty");
-
-  const filtered = _allMediaFiles.filter(f => {
-    const matchBucket = _mediaFilter === "all" || f.bucket === _mediaFilter;
-    const matchSearch = !query || f.name.toLowerCase().includes(query);
-    return matchBucket && matchSearch;
-  });
-
-  if (!filtered.length) {
-    grid.innerHTML = "";
-    empty.style.display = "block";
-    return;
-  }
-  empty.style.display = "none";
-
-  grid.innerHTML = filtered.map(f => {
-    const isVideo   = /\.(mp4|mov|webm|ogg)$/i.test(f.name);
-    const isStatic  = f.bucket === "static";
-    const bucketLabel = f.bucket.charAt(0).toUpperCase() + f.bucket.slice(1);
-    return `
-      <div style="border:1px solid var(--border);background:#fff;display:flex;flex-direction:column;">
-        <div style="position:relative;background:var(--purple-mist);height:110px;overflow:hidden;">
-          ${isVideo
-            ? `<video src="${f.url}" style="width:100%;height:100%;object-fit:cover;" muted></video>`
-            : `<img src="${f.url}" alt="${esc(f.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.7rem;\'>No preview</div>'" />`
-          }
-          <span style="position:absolute;top:4px;left:4px;background:var(--purple);color:#fff;font-size:0.5rem;padding:2px 5px;letter-spacing:0.05em;text-transform:uppercase;">${bucketLabel}</span>
-        </div>
-        <div style="padding:0.4rem 0.5rem;font-size:0.6rem;color:var(--text-muted);word-break:break-all;overflow:hidden;max-height:2.5rem;">${esc(f.name)}</div>
-        <div style="padding:0 0.4rem 0.5rem;display:flex;gap:0.3rem;flex-wrap:wrap;">
-          <button onclick="copyUrl('${f.url}')" class="btn btn-sm btn-outline-purple" style="font-size:0.55rem;padding:0.25rem 0.5rem;">Copy URL</button>
-          ${!isStatic ? `<button onclick="deleteMedia('${f.bucket}','${esc(f.name)}','${esc(f.url)}')" class="btn btn-sm btn-danger" style="font-size:0.55rem;padding:0.25rem 0.5rem;">Delete</button>` : ""}
-        </div>
-      </div>`;
-  }).join("");
-}
-
 async function loadMediaPanel() {
   const grid = document.getElementById("mediaGrid");
-  grid.innerHTML = `<div style="grid-column:1/-1;display:flex;align-items:center;gap:0.5rem;padding:1rem;color:var(--text-muted);font-size:0.8rem;"><div class="spinner-sm"></div> Loading media library…</div>`;
+  grid.innerHTML = `<div class="spinner-sm" style="margin:auto"></div>`;
+  try {
+    const allFiles = [];
 
-  // Start with static images
-  _allMediaFiles = [...STATIC_SITE_IMAGES];
-
-  const buckets = ["banners", "products", "sections", "general", "videos"];
-  for (const b of buckets) {
+    // 1. Product images from database (includes all CMS-uploaded images)
     try {
-      const res = await fetch(`${SUPABASE_URL}/storage/v1/object/list/${b}`, {
-        method:  "POST",
-        headers: sbHeaders(_token),
-        body:    JSON.stringify({ limit: 200, offset: 0, sortBy: { column: "created_at", order: "desc" } }),
+      const dbImgs = await sbFrom("product_images", "url,product_id", {}, { order: "created_at.desc", limit: 200 }, _token);
+      (dbImgs || []).forEach(img => {
+        if (!img.url) return;
+        const name = img.url.split("/").pop();
+        allFiles.push({ url: img.url, name: name || "product-image", bucket: "products", type: "image" });
       });
-      if (!res.ok) continue;
-      const files = await res.json();
-      (Array.isArray(files) ? files : []).forEach(f => {
-        if (!f.name || f.name.endsWith("/")) return; // skip folders
-        _allMediaFiles.push({
-          url:    `${SUPABASE_URL}/storage/v1/object/public/${b}/${f.name}`,
-          name:   f.name,
-          bucket: b,
-        });
-      });
-    } catch { /* bucket may not exist yet — skip */ }
-  }
+    } catch {}
 
-  renderMediaGrid();
+    // 2. Settings images (hero, promise, logo, sections)
+    try {
+      const settings = await sbFrom("settings", "key,value", {}, {}, _token);
+      const imgKeys = ["hero_image_url","logo_url","promise_img1","promise_img2","promise_img3"];
+      (settings || []).forEach(s => {
+        if (imgKeys.includes(s.key) && s.value && s.value.startsWith("http")) {
+          allFiles.push({ url: s.value, name: s.key.replace(/_/g," "), bucket: "settings", type: "image", settingKey: s.key });
+        }
+      });
+    } catch {}
+
+    // 3. Storage buckets (uploaded via admin)
+    const buckets = ["products", "banners", "sections", "general", "videos"];
+    for (const b of buckets) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/storage/v1/object/list/${b}`, {
+          method: "POST",
+          headers: sbHeaders(_token),
+          body: JSON.stringify({ limit: 100, offset: 0 }),
+        });
+        if (!res.ok) continue;
+        const files = await res.json();
+        (files || []).forEach(f => {
+          if (!f.name || f.name === ".emptyFolderPlaceholder") return;
+          const url = `${SUPABASE_URL}/storage/v1/object/public/${b}/${f.name}`;
+          const isVid = /\.(mp4|mov|webm|avi)$/i.test(f.name);
+          allFiles.push({ url, name: f.name, bucket: b, type: isVid ? "video" : "image" });
+        });
+      } catch {}
+    }
+
+    // Deduplicate by URL
+    const seen = new Set();
+    const unique = allFiles.filter(f => { if (seen.has(f.url)) return false; seen.add(f.url); return true; });
+
+    if (!unique.length) {
+      grid.innerHTML = `<p style="color:var(--text-muted);font-size:0.82rem;padding:1rem">No media found. Upload images or add products with images to populate the library.</p>`;
+      return;
+    }
+
+    grid.innerHTML = unique.map(f => `
+      <div style="position:relative;border:1px solid var(--border);background:#fafafa;">
+        ${f.type === "video"
+          ? `<video src="${f.url}" style="width:100%;height:110px;object-fit:cover;" muted></video>`
+          : `<img src="${f.url}" alt="${esc(f.name)}" loading="lazy" style="width:100%;height:110px;object-fit:cover;" onerror="this.style.display='none'" />`}
+        <div style="padding:0.35rem 0.4rem;">
+          <div style="font-size:0.58rem;color:var(--text-muted);word-break:break-all;line-height:1.3;margin-bottom:0.3rem;">${esc(f.name)}</div>
+          <div style="font-size:0.55rem;color:var(--purple-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">${esc(f.bucket)}</div>
+          <button onclick="copyUrl('${f.url}')" class="btn btn-sm btn-outline-purple" style="font-size:0.55rem;padding:0.2rem 0.5rem;">Copy URL</button>
+        </div>
+      </div>`).join("");
+  } catch (e) { console.warn("Media panel:", e.message); grid.innerHTML = `<p style="color:var(--text-muted)">Failed to load media.</p>`; }
 }
 
 async function uploadMedia() {
-  const bucket  = document.getElementById("mediaBucket").value;
-  const fileEl  = document.getElementById("mediaFile");
-  const files   = Array.from(fileEl.files || []);
-  if (!files.length) { toast("Please select at least one file"); return; }
-
-  toast(`⬆ Uploading ${files.length} file(s)…`);
-  let uploaded = 0;
-  for (const file of files) {
-    try {
-      const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-      const path = `${Date.now()}_${safe}`;
-      const url  = await sbUpload(bucket, path, file, _token);
-      _allMediaFiles.unshift({ url, name: path, bucket });
-      uploaded++;
-    } catch (e) {
-      toast(`Error uploading ${file.name}: ${e.message}`);
-    }
-  }
-  fileEl.value = "";
-  if (uploaded) {
-    toast(`✅ ${uploaded} file(s) uploaded!`);
-    renderMediaGrid();
-  }
-}
-
-async function deleteMedia(bucket, name, url) {
-  if (!confirm(`Delete "${name}" from ${bucket}? This cannot be undone.`)) return;
+  const bucket = document.getElementById("mediaBucket").value;
+  const fileEl = document.getElementById("mediaFile");
+  if (!fileEl.files.length) { toast("Please select a file"); return; }
+  const file = fileEl.files[0];
+  const path = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
   try {
-    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${bucket}/${encodeURIComponent(name)}`, {
-      method:  "DELETE",
-      headers: sbHeaders(_token),
-    });
-    if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
-    _allMediaFiles = _allMediaFiles.filter(f => f.url !== url);
-    renderMediaGrid();
-    toast("🗑 File deleted");
-  } catch (e) { toast("Delete error: " + e.message); }
+    const url = await sbUpload(bucket, path, file, _token);
+    toast("✅ Uploaded! URL copied.");
+    navigator.clipboard.writeText(url).catch(() => {});
+    fileEl.value = "";
+    loadMediaPanel();
+  } catch (e) { toast("Upload error: " + e.message); }
 }
 
 function copyUrl(url) {
   navigator.clipboard.writeText(url)
-    .then(() => toast("✅ URL copied to clipboard!"))
-    .catch(() => {
-      // Fallback for browsers without clipboard API
-      const ta = document.createElement("textarea");
-      ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      toast("✅ URL copied!");
-    });
+    .then(() => toast("URL copied to clipboard!"))
+    .catch(() => toast("Copy failed — URL: " + url));
 }
 
 // ─── UTIL ────────────────────────────────────────────────────────────────────
